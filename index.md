@@ -1,9 +1,5 @@
 ## RI COVID Graphs
 
-You can use the [editor on GitHub](https://github.com/computergeek1100/ri-covid-data/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
 ### Initial Graph test
 
 <iframe src="graphs/caseMap.html" height = '525' width = '100%'></iframe>
