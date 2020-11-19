@@ -6,4 +6,4 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 
 ### Initial Graph test
 
-<iframe src="/graphs/caseMap.html"></iframe>
+<iframe src="graphs/caseMap.html"></iframe>
