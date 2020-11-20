@@ -33,6 +33,6 @@ deathHeatmap <- ggplot(riMAP)+geom_sf(aes(text=paste(riMAP$NAME),fill=deaths100k
 caseHeatmap <- plotly::ggplotly(caseHeatmap%>%style(hoveron='fill'))
 hospHeatmap <- plotly::ggplotly(hospHeatmap%>%style(hoveron='fill'))
 deathHeatmap <- plotly::ggplotly(deathHeatmap%>%style(hoveron='fill'))
-withr::with_dir('graphs', saveWidget(caseHeatmap, file="MAP_cases.html")+
-                saveWidget(hospHeatmap,file="MAP_hosp.html")+
-                saveWidget(deathHeatmap,file="MAP_deaths.html"))
+withr::with_dir('../graphs', saveWidget(caseHeatmap, file="MAP_cases.html",title="casemap")+
+                saveWidget(hospHeatmap,file="MAP_hosp.html",title="hospmap")+
+                saveWidget(deathHeatmap,file="MAP_deaths.html",title="deathmap"))
