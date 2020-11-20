@@ -18,7 +18,7 @@ rateDataCleaned$weekEnding <- paste("2020",rateDataCleaned$weekEnding,sep="-")
 rateDataCleaned$weekEnding <- sub("/","-",rateDataCleaned$weekEnding)
 rateDataCleaned$weekEnding <- as.Date(rateDataCleaned$weekEnding)
 
-cases100kGraph <- ggplot(rateDataCleaned,aes(weekEnding,casesPer100k))+geom_point()+geom_smooth(se=FALSE)+
-  labs(title="Weekly Cases per 100k Residents")
-cases100kGraph <- ggplotly(cases100kGraph)
-withr::with_dir('../graphs', saveWidget(caseGraph, file="WEEKLY_100k.html",title="weekly100k"))
+cases100kGraph <- ggplot(rateDataCleaned,aes(weekEnding,casesPer100k))+geom_point()+geom_smooth(se=FALSE)
+cases100kGraph <- ggplotly(cases100kGraph)%>%
+  layout(title = paste0('Weekly Cases per 100,000 Residents - Updated ', as.Date.POSIXct(as.numeric(dateUpdated))))
+withr::with_dir('../graphs', saveWidget(cases100kGraph, file="WEEKLY_100k.html",title="weekly100k"))
