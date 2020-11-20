@@ -1,0 +1,38 @@
+library(tidyverse)
+library(plotly)
+library(tigris)
+library(htmlwidgets)
+library(leaflet)
+library(googlesheets4)
+
+townData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937",
+                       sheet = "Municipality")
+caseBreaks <- c(0,2500,5000,7500,10000)
+graphs_out <- paste0(getwd(),'/Graphs')
+hospBreaks <- c(0,200,400,600)
+deathBreaks <- c(0,100,200,300)
+colorMap <- c("#f2f1bd","#f88700","#f85900","#d8001d")
+riMAP <- county_subdivisions("Rhode Island")%>%
+  left_join(townData, by = c("NAME" = "Municipality of residence"))%>%
+  filter(!row_number() == 8)
+names(riMAP)[20] <- 'cases100k'
+names(riMAP)[22] <- 'hosp100k'
+names(riMAP)[24] <- 'deaths100k'
+riMAP$cases100k <- as.numeric(as.character((riMAP$cases100k)))
+riMAP$hosp100k <- as.numeric(as.character((riMAP$hosp100k)))
+riMAP$deaths100k <- as.numeric(as.character((riMAP$deaths100k)))
+caseHeatmap <- ggplot(riMAP)+geom_sf(aes(text=paste(riMAP$NAME),fill=cases100k))+
+  scale_fill_gradientn(name="Cases per 100k", colors=colorMap, na.value = "grey100", breaks = caseBreaks, labels = caseBreaks)+
+  labs(title="Total cases per 100,000 residents")+theme_map()
+hospHeatmap <- ggplot(riMAP)+geom_sf(aes(text=paste(riMAP$NAME),fill=hosp100k))+
+  scale_fill_gradientn(name="Hospitalizations per 100k", colors=colorMap, na.value = "grey100", breaks = hospBreaks, labels = hospBreaks)+
+  labs(title="Total hospitalizations per 100,000 residents")+theme_map()
+deathHeatmap <- ggplot(riMAP)+geom_sf(aes(text=paste(riMAP$NAME),fill=deaths100k))+
+  scale_fill_gradientn(name="Deaths per 100k", colors=colorMap, na.value = "grey100", breaks = deathBreaks, labels = deathBreaks)+
+  labs(title="Total deaths per 100,000 residents")+theme_map()
+caseHeatmap <- plotly::ggplotly(caseHeatmap%>%style(hoveron='fill'))
+hospHeatmap <- plotly::ggplotly(hospHeatmap%>%style(hoveron='fill'))
+deathHeatmap <- plotly::ggplotly(deathHeatmap%>%style(hoveron='fill'))
+withr::with_dir('graphs', saveWidget(caseHeatmap, file="MAP_cases.html")+
+                saveWidget(hospHeatmap,file="MAP_hosp.html")+
+                saveWidget(deathHeatmap,file="MAP_deaths.html"))
