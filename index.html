@@ -13,6 +13,7 @@
 <body>
   <center>
     <h1>RI COVID-19 Graphs</h1>
+  </center>
     <div id=navbar>
     </div>
     <br>
@@ -22,7 +23,7 @@
       <button class="tablinks" onclick="openTab(event, 'PercentPos')">Daily Positivity</button>
       <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Daily Hospitalizations</button>
       <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Daily Deaths</button>
-      <button class="tablinks" onclick=openTab(event, 'Weekly100k' )>Weekly Cases per 100k</button>
+      <button class="tablinks" onclick="openTab(event, 'Weekly100k')">Weekly Cases per 100k</button>
     </div>
     <div id="Cases" class="tabcontent" style=display:block>
       <iframe src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
@@ -43,7 +44,6 @@
     <div id="Weekly100k" class="tabcontent">
       <iframe src="graphs/WEEKLY_100k.html" height='600' width='100%'></iframe>
     </div>
-  </center>
   <script src="docs/assets/script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
