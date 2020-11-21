@@ -66,7 +66,7 @@
 }
 
 /* Add a color to the active/current link */
-.navbar ul li:focus {
+.navbar ul li.active {
   background-color: #4CAF50;
   color: white;
 }

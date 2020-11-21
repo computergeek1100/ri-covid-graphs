@@ -15,21 +15,21 @@
       <li><a href="index.html">Daily Graphs</a></li>
       <li><a href="heatmaps.html">Heatmaps</a></li>
     </ul>
-    <script>
-      $(function() {
-        var current = location.pathname;
-        $('#navbar li a').each(function() {
-          var $this = $(this);
-          // if the current path is like this link, make it active
-          if ($this.attr('href').indexOf(current) !== -1) {
-            $this.parent().addClass('active');
-          }
-        })
-      })
-    </script>
   </div>
   <script src="docs/assets/script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(function() {
+      var current = location.pathname;
+      $('#navbar li a').each(function() {
+        var $this = $(this);
+        // if the current path is like this link, make it active
+        if ($this.attr('href').indexOf(current) !== -1) {
+          $this.parent().addClass('active');
+        }
+      })
+    })
+  </script>
 </body>
 
 </html>
