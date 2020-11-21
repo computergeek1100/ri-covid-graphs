@@ -43,7 +43,7 @@
   margin-right: 0.5em;
   border-style: solid;
   border-width: 1px;
-  border-color: rgba(0,0,0,0..8)
+  border-color: rgba(0,0,0,0.5)
 }
 
 /* Style the links inside the navigation bar */
@@ -60,10 +60,4 @@
 .navbar a:hover {
   background-color: #ddd;
   color: #000;
-}
-
-/* Add a color to the active/current link */
-.navbar ul li.active {
-  background-color: #32a3db;
-  color: #fff;
 }
