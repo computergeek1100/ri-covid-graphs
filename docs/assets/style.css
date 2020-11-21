@@ -35,9 +35,18 @@
 }
 
 /* Add a black background color to the top navigation */
-.topnav {
+.navbar {
   background-color: #333;
   overflow: hidden;
+}
+
+.navbar ul {
+  list-style-type: none;
+}
+
+.navbar ul li {
+  float: left;
+  margin-right: 0.5em;
 }
 
 /* Style the links inside the navigation bar */
@@ -57,7 +66,7 @@
 }
 
 /* Add a color to the active/current link */
-.topnav ul li.active {
+.navbar ul li.active {
   background-color: #4CAF50;
   color: white;
 }
