@@ -12,15 +12,15 @@
 <body>
   <div class="navbar">
     <ul id="navItems">
-      <li><a href="/ri-covid-data/index.html">Daily Graphs</a></li>
-      <li><a href="/ri-covid-data/heatmaps.html">Heatmaps</a></li>
+      <li><a href="index.html">Daily Graphs</a></li>
+      <li><a href="heatmaps.html">Heatmaps</a></li>
     </ul>
   </div>
   <script src="docs/assets/script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     $(function() {
-      var current = location.pathname;
+      var current = "/ri-covid-data/" + location.pathname;
       $('#navItems li a').each(function() {
         var $this = $(this);
         // if the current path is like this link, make it active
