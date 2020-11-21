@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Daily Graphs | RI COVID-19 Graphs</title>
+  <title>Graphs | RI COVID-19 Graphs</title>
 
   <link rel="stylesheet" href="docs/assets/style.css">
 
@@ -17,8 +17,32 @@
     </div>
     <br>
     <br>
-    <h2>Daily cases</h2>
-    <iframe src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
+    <div class="tab">
+      <button class="active" onclick="openTab(event, 'DailyCases')">Daily Cases</button>
+      <button class="tablinks" onclick="openTab(event, 'PercentPos')">Daily Positivity</button>
+      <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Daily Hospitalizations</button>
+      <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Daily Deaths</button>
+      <button class="tablinks" onclick=openTab(event, 'Weekly100k' )>Weekly Cases per 100k</button>
+    </div>
+    <div id="Cases" class="tabcontent" style=display:block>
+      <iframe src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="PercentPos" class="tabcontent">
+      <iframe src="graphs/DAILY_pos.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="DailyHosp" class="tabcontent">
+      <iframe src="graphs/DAILY_hosp.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="DailyDeaths" class="tabcontent">
+      <iframe src="graphs/DAILY_deaths.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="Weekly100k" class="tabcontent">
+      <iframe src="graphs/WEEKLY_100k.html" height='600' width='100%'></iframe>
+    </div>
   </center>
   <script src="docs/assets/script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
