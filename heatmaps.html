@@ -14,11 +14,6 @@
     <h1>RI COVID-19 Graphs</h1>
     <div id=navbar>
     </div>
-    <script>
-      $(function() {
-        $("#navbar").load("nav.html");
-      });
-    </script>
     <h2>Heatmaps (total per 100,000 residents, by town)</h2>
     <div class="tab">
       <button class="tablinks" onclick="openTab(event, 'Cases')">Cases per 100k</button>
@@ -38,6 +33,11 @@
     </div>
     <script src="docs/assets/script.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(function() {
+        $("#navbar").load("nav.html");
+      });
+    </script>
 </body>
 
 </html>
