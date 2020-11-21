@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>Navbar</title>
+
+    <link rel="stylesheet" href="docs/assets/style.css">
+
   </head>
   <body>
     <div class="topnav">
@@ -10,17 +13,6 @@
      <a href="#news">Weekly Trends</a>
      <a href="heatmaps.html">Heatmaps</a>
    </div>
-   <script>
-      $(function(){
-    var current = location.pathname;
-    $('#topnav a').each(function(){
-        var $this = $(this);
-        // if the current path is like this link, make it active
-        if($this.attr('href').indexOf(current) !== -1){
-            $this.parent().addClass('active');
-        }
-    })
-})
 </script>
   </body>
 </html>
