@@ -34,12 +34,6 @@
  border-top: none;
 }
 
-/* Add a black background color to the top navigation */
-.navbar {
-  background-color: #333;
-  overflow: hidden;
-}
-
 .navbar ul {
   list-style-type: none;
 }
@@ -47,6 +41,9 @@
 .navbar ul li {
   float: left;
   margin-right: 0.5em;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0,0,0,0..8)
 }
 
 /* Style the links inside the navigation bar */
@@ -67,6 +64,6 @@
 
 /* Add a color to the active/current link */
 .navbar ul li.active {
-  background-color: #4CAF50;
+  background-color: #32a3db;
   color: white;
 }
