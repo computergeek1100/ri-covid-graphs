@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Heatmaps</title>
+
+    <link rel="stylesheet" href="docs/assets/style.css">
+
+  </head>
+  <body>
+    <script src="docs/assets/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <center><h1>RI COVID-19 Graphs</h1>
+      <div id = navbar>
+      </div>
+      <script>
+        $(function(){
+          $("#navbar").load("nav.html");
+        });
+      </script>
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'Cases')">Cases per 100k</button>
+      <button class="tablinks" onclick="openTab(event, 'Hospitalizations')">Hospitalizations per 100k</button>
+      <button class="tablinks" onclick="openTab(event, 'Deaths')">Deaths per 100k</button>
+    </div>
+    <div id="Cases" class="tabcontent">
+      <iframe src="graphs/MAP_cases.html" height = '525' width = '100%'></iframe>
+    </div>
+
+    <div id="Hospitalizations" class="tabcontent">
+      <iframe src="graphs/MAP_hosp.html" height = '525' width = '100%'></iframe>
+    </div>
+
+    <div id="Deaths" class="tabcontent">
+      <iframe src="graphs/MAP_deaths.html" height = '525' width = '100%'></iframe>
+    </div>
+  </body>
+</html>
