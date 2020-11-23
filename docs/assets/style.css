@@ -33,13 +33,18 @@
  border: 1px solid #ccc;
  border-top: none;
 }
+/*Navbar Styling*/
 
+.navbar{
+  width: 50%;
+  margin: auto;
+}
 .navbar ul {
   list-style-type: none;
 }
 
 .navbar ul li {
-  float: left;
+  float: center;
   margin-right: 0.5em;
   border-style: solid;
   border-width: 1px;
@@ -51,9 +56,9 @@
   float: left;
   color: #000;
   text-align: center;
-  padding: 14px 16px;
+  padding: 10px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 /* Change the color of links on hover */
