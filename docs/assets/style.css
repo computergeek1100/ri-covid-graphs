@@ -42,7 +42,7 @@
 }
 
 .navbar ul li {
-  float: center;
+  float: none;
   margin-right: 0.5em;
   border-style: solid;
   border-width: 1px;
