@@ -16,16 +16,6 @@
     <a name="top"></a>
     <h1>RI COVID-19 Graphs</h1>
   </center>
-  <div class="navbar">
-    <ul id="navItems">
-      <li><a href="#dailyGraphs">Daily Trends</a></li>
-      <li><a href="#heatmaps">Heatmaps</a></li>
-    </ul>
-  </div>
-  <h2>
-    <center>Graphs (Daily Trends)</center>
-  </h2>
-  <a name="dailyGraphs"></a>
   <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="default-daily">Daily Cases</button>
     <button class="tablinks" onclick="openTab(event, 'DailyTests')">Daily Tests</button>
@@ -33,6 +23,9 @@
     <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Daily Hospitalizations</button>
     <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Daily Deaths</button>
     <button class="tablinks" onclick="openTab(event, 'Weekly100k')">Weekly Cases per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'CaseMap')" id="default-map">Cases per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'HospMap')">Hospitalizations per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'DeathMap')">Deaths per 100k</button>
   </div>
   <div id="DailyCases" class="tabcontent">
     <iframe src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
@@ -56,16 +49,6 @@
 
   <div id="Weekly100k" class="tabcontent">
     <iframe src="graphs/WEEKLY_100k.html" height='600' width='100%'></iframe>
-  </div>
-  <a name="heatmaps"></a>
-    <center>
-      <h2>Heatmaps (total per 100,000 residents, by town)</h2>
-      <p>Updated by RIDOH every Wednesday</p>
-    </center>
-  <div class="tab2">
-    <button class="tablinks" onclick="openTab(event, 'CaseMap')" id="default-map">Cases per 100k</button>
-    <button class="tablinks" onclick="openTab(event, 'HospMap')">Hospitalizations per 100k</button>
-    <button class="tablinks" onclick="openTab(event, 'DeathMap')">Deaths per 100k</button>
   </div>
   <div id="CaseMap" class="tabcontent">
     <iframe src="graphs/MAP_cases.html" height='600' width='100%'></iframe>
