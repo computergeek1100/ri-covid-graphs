@@ -27,7 +27,7 @@
   </h2>
   <a name="dailyGraphs"></a>
   <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="default">Daily Cases</button>
+    <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="default-daily">Daily Cases</button>
     <button class="tablinks" onclick="openTab(event, 'DailyTests')">Daily Tests</button>
     <button class="tablinks" onclick="openTab(event, 'PercentPos')">Daily Positivity</button>
     <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Daily Hospitalizations</button>
@@ -64,7 +64,7 @@
     </center>
   </h2>
   <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'CaseMap')" id="default">Cases per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'CaseMap')" id="default-map">Cases per 100k</button>
     <button class="tablinks" onclick="openTab(event, 'HospMap')">Hospitalizations per 100k</button>
     <button class="tablinks" onclick="openTab(event, 'DeathMap')">Deaths per 100k</button>
   </div>
@@ -91,7 +91,8 @@
     </p>
   </center>
   <script>
-    document.getElementById("default").click();
+    document.getElementById("default-daily").click();
+    document.getElementById("default-map").click();
   </script>
 </body>
 
