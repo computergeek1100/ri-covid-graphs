@@ -51,7 +51,7 @@
 
 /* Style the links inside the navigation bar */
 .navbar ul li a {
-  float: left;
+  float: none;
   color: #000;
   text-align: center;
   padding: 10px;
