@@ -31,7 +31,7 @@
     <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Daily Deaths</button>
     <button class="tablinks" onclick="openTab(event, 'Weekly100k')">Weekly Cases per 100k</button>
   </div>
-  <div id="Cases" class="tabcontent">
+  <div id="DailyCases" class="tabcontent">
     <iframe src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
   </div>
 
@@ -55,19 +55,19 @@
     <center>Heatmaps (total per 100,000 residents, by town)</center>
   </h2>
   <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'Cases')">Cases per 100k</button>
-    <button class="tablinks" onclick="openTab(event, 'Hospitalizations')">Hospitalizations per 100k</button>
-    <button class="tablinks" onclick="openTab(event, 'Deaths')">Deaths per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'CaseMap')">Cases per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'HospMap')">Hospitalizations per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'DeathMap')">Deaths per 100k</button>
   </div>
-  <div id="Cases" class="tabcontent">
+  <div id="CaseMap" class="tabcontent">
     <iframe src="graphs/MAP_cases.html" height='600' width='100%'></iframe>
   </div>
 
-  <div id="Hospitalizations" class="tabcontent">
+  <div id="HospMap" class="tabcontent">
     <iframe src="graphs/MAP_hosp.html" height='600' width='100%'></iframe>
   </div>
 
-  <div id="Deaths" class="tabcontent">
+  <div id="DeathMap" class="tabcontent">
     <iframe src="graphs/MAP_deaths.html" height='600' width='100%'></iframe>
   </div>
   <div class="navbar">
