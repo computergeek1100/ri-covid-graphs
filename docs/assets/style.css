@@ -37,9 +37,7 @@
 
 .navbar ul {
   list-style-type: none;
-  width: 80%;
   margin: 0;
-  padding: 0;
   overflow: hidden;
   background-color: #eee;
 }
@@ -49,9 +47,10 @@
 }
 
 .navbar li a {
+  display: block;
+  margin: 0 auto;
   color: black;
   text-align: center;
-  padding: 14px 16px;
   text-decoration: none;
 }
 
