@@ -35,12 +35,10 @@
 }
 /*Navbar Styling*/
 
-.navbar{
-  width: 50%;
-  margin: auto;
-}
 .navbar ul {
   list-style-type: none;
+  width: 50%;
+  margin: auto;
 }
 
 .navbar ul li {
