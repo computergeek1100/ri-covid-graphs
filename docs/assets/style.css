@@ -1,4 +1,4 @@
-/* Style the tab */
+/* Tab Styling - code from W3Schools, aesthetics modified */
 .tab {
  overflow: hidden;
  border: 1px solid #ccc;
@@ -40,6 +40,11 @@
   width: 80%;
   overflow: hidden;
   background-color: #eee;
+  display: inline-block;
+}
+
+.navbar ul li {
+  float: none;
   display: inline-block;
 }
 
