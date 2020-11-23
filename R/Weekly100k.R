@@ -21,5 +21,5 @@ rateDataCleaned$weekEnding <- as.Date(rateDataCleaned$weekEnding)
 
 cases100kGraph <- ggplot(rateDataCleaned,aes(weekEnding,casesPer100k))+geom_point()+geom_line()
 cases100kGraph <- ggplotly(cases100kGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)%>%
-  layout(title = paste('Weekly Cases per 100,000 Residents - Updated', as.Date.POSIXct(as.numeric(dateUpdated))))
+  layout(title = paste('Updated', as.Date.POSIXct(as.numeric(dateUpdated))))
 htmlwidgets::saveWidget(cases100kGraph, file="../graphs/WEEKLY_100k.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title="weekly100k")
