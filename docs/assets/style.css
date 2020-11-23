@@ -18,12 +18,14 @@
 
 /* Change background color of buttons on hover */
 .tab button:hover {
- background-color: #ddd;
+ background-color: #5585e6;
+ color: #fff;
 }
 
 /* Create an active/current tablink class */
 .tab button.active {
- background-color: #ccc;
+ background-color: #3165cc;
+ color: #fff;
 }
 
 /* Style the tab content */
