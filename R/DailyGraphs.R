@@ -31,8 +31,8 @@ ICUGraph <- ggplotly(ICUGraph)
 dailyDeathGraph <- ggplot(stateData,aes(date,dailyDeaths))+geom_point()+geom_line(aes(y=rollmean(dailyDeaths,7,na.pad=TRUE)),color='blue')
 dailyDeathGraph <- ggplotly(dailyDeathGraph)
 
-withr::with_dir('../graphs', saveWidget(caseGraph, file="DAILY_cases.html",title='dailycase')+
-                  saveWidget(posGraph,file="DAILY_pos.html",title='dailypos')+
-                  saveWidget(hospGraph,file="DAILY_hosp.html",title='dailyhosp')+
-                  saveWidget(ICUGraph,file="DAILY_ICU.html",title='dailyicu')+
-                  saveWidget(dailyDeathGraph,file="DAILY_death.html",title='dailydeath'))
+htmlwidgets::saveWidget(caseGraph, file="../graphs/DAILY_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycase')
+htmlwidgets::saveWidget(posGraph,file="../graphs/DAILY_pos.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailypos')
+htmlwidgets::saveWidget(hospGraph,file="../graphs/DAILY_hosp.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyhosp')
+htmlwidgets::saveWidget(ICUGraph,file="../graphs/DAILY_ICU.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyicu')
+htmlwidgets::saveWidget(dailyDeathGraph,file="../graphs/DAILY_death.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailydeath')
