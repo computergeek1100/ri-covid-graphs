@@ -18,17 +18,17 @@ stateData <- stateData%>%
 caseGraph <- ggplot(stateData, aes(date,cases))+geom_col()+geom_line(aes(y=rollmean(cases, 7,na.pad=TRUE)),color="blue")
 caseGraph <- plotly::ggplotly(caseGraph)
 
-posGraph <- ggplot(stateData,aes(date,percentPos))+geom_point()+geom_line(aes(y=rollmean(percentPos,7, na.pad=TRUE)),color="blue")
+posGraph <- ggplot(stateData,aes(date,percentPos))+geom_col()+geom_line(aes(y=rollmean(percentPos,7, na.pad=TRUE)),color="blue")
 posGraph <- ggplotly(posGraph)
 
-hospGraph <- ggplot(stateData,aes(date,currentHosp))+geom_point()+geom_line(aes(y=rollmean(currentHosp,7,na.pad=TRUE)),color='blue')
+hospGraph <- ggplot(stateData,aes(date,currentHosp))+geom_col()+geom_line(aes(y=rollmean(currentHosp,7,na.pad=TRUE)),color='blue')
 hospGraph <- ggplotly(hospGraph)
 
-ICUGraph <- ggplot(stateData,aes(date,))+geom_point(aes(,ICU),color="red")+geom_line(aes(y=rollmean(ICU,7,na.pad=TRUE)),color='red')+
-  geom_point(aes(,vent),color='blue')+geom_line(aes(y=rollmean(vent,7,na.pad=TRUE)),color='blue')
+ICUGraph <- ggplot(stateData,aes(date,))+geom_col(aes(,ICU),color="red")+geom_line(aes(y=rollmean(ICU,7,na.pad=TRUE)),color='red')+
+  geom_col(aes(,vent),color='blue')+geom_line(aes(y=rollmean(vent,7,na.pad=TRUE)),color='blue')
 ICUGraph <- ggplotly(ICUGraph)
 
-dailyDeathGraph <- ggplot(stateData,aes(date,dailyDeaths))+geom_point()+geom_line(aes(y=rollmean(dailyDeaths,7,na.pad=TRUE)),color='blue')
+dailyDeathGraph <- ggplot(stateData,aes(date,dailyDeaths))+geom_col()+geom_line(aes(y=rollmean(dailyDeaths,7,na.pad=TRUE)),color='blue')
 dailyDeathGraph <- ggplotly(dailyDeathGraph)
 
 htmlwidgets::saveWidget(caseGraph, file="../graphs/DAILY_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')
