@@ -17,13 +17,13 @@
     <h1>RI COVID-19 Graphs</h1>
   </center>
   <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="default-daily">Daily Cases</button>
+    <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="defaultTab">Daily Cases</button>
     <button class="tablinks" onclick="openTab(event, 'DailyTests')">Daily Tests</button>
     <button class="tablinks" onclick="openTab(event, 'PercentPos')">Daily Positivity</button>
     <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Daily Hospitalizations</button>
     <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Daily Deaths</button>
     <button class="tablinks" onclick="openTab(event, 'Weekly100k')">Weekly Cases per 100k</button>
-    <button class="tablinks" onclick="openTab(event, 'CaseMap')" id="default-map">Cases per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'CaseMap')">Cases per 100k</button>
     <button class="tablinks" onclick="openTab(event, 'HospMap')">Hospitalizations per 100k</button>
     <button class="tablinks" onclick="openTab(event, 'DeathMap')">Deaths per 100k</button>
   </div>
@@ -73,8 +73,7 @@
     </p>
   </center>
   <script>
-    document.getElementById("default-daily").click();
-    document.getElementById("default-map").click();
+    document.getElementById("defaultTab").click();
   </script>
 </body>
 
