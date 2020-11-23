@@ -1,5 +1,4 @@
 function openTab(evt, name) {
-  document.getElementsByClassName('tablinks')[0].click()
   // Declare all variables
   var i, tabcontent, tablinks;
 
