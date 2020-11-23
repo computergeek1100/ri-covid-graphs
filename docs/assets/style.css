@@ -33,11 +33,19 @@
  border: 1px solid #ccc;
  border-top: none;
 }
+
 /*Navbar Styling*/
+
+.navbar {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
 
 .navbar ul {
   list-style-type: none;
   margin: 0;
+  padding: 0;
   overflow: hidden;
   background-color: #eee;
 }
@@ -54,7 +62,6 @@
   text-decoration: none;
 }
 
-/* Change the link color to #111 (black) on hover */
 .navbar li a:hover {
   color: #eee;
   background-color: #3165cc;
