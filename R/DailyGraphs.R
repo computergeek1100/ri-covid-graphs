@@ -13,7 +13,7 @@ stateData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKz
 stateData <- stateData%>%
   select(date=1,tests=7,cases=9,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
-  mutate(percentPos = cases/tests * 100)
+  mutate(percentPos = round((cases/tests * 100),2))
 
 caseGraph <- ggplot(stateData, aes(date,cases))+geom_col()+geom_line(aes(y=rollmean(cases, 7,na.pad=TRUE)),color="blue")
 caseGraph <- plotly::ggplotly(caseGraph)
