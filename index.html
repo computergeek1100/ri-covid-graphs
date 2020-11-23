@@ -6,7 +6,7 @@
   <title>RI COVID-19 Graphs</title>
   <link rel="stylesheet" href="docs/assets/style.css">
   <script src="docs/assets/script.js"></script>
-  <link rel= "shortcut icon" href="favicon.ico"/>
+  <link rel="shortcut icon" href="favicon.ico" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
 </head>
@@ -18,22 +18,21 @@
   </center>
   <div class="navbar">
     <ul id="navItems">
-      <li><a href="#daily">Daily Trends</a></li>
+      <li><a href="#dailyGraphs">Daily Trends</a></li>
       <li><a href="#heatmaps">Heatmaps</a></li>
     </ul>
   </div>
   <h2>
     <center>Graphs (Daily Trends)</center>
   </h2>
-  <a name="daily"></a>
+  <a name="dailyGraphs"></a>
   <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'DailyCases')">Daily Cases</button>
+    <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="default">Daily Cases</button>
     <button class="tablinks" onclick="openTab(event, 'DailyTests')">Daily Tests</button>
     <button class="tablinks" onclick="openTab(event, 'PercentPos')">Daily Positivity</button>
     <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Daily Hospitalizations</button>
     <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Daily Deaths</button>
     <button class="tablinks" onclick="openTab(event, 'Weekly100k')">Weekly Cases per 100k</button>
-    
   </div>
   <div id="DailyCases" class="tabcontent">
     <iframe src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
@@ -61,8 +60,8 @@
   <a name="heatmaps"></a>
   <h2>
     <center>Heatmaps (total per 100,000 residents, by town)
-    <p>Updated by RIDOH every Wednesday</p>
-  </center>
+      <p>Updated by RIDOH every Wednesday</p>
+    </center>
   </h2>
   <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'CaseMap')">Cases per 100k</button>
@@ -85,9 +84,15 @@
       <li><a href="#top">Back to Top</a></li>
     </ul>
   </div>
-  <center><p>Site icon designed by <a href="https://openmoji.org/">OpenMoji</a> – the open-source emoji and icon project. License:
-    <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0.</a>
-    Graphs created with <a href="https://plotly.com/graphing-libraries/">plotly.</a></p></center>
+  <center>
+    <p>Site icon designed by <a href="https://openmoji.org/">OpenMoji</a> – the open-source emoji and icon project. License:
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0.</a>
+      Graphs created with <a href="https://plotly.com/graphing-libraries/">plotly.</a>
+    </p>
+  </center>
+  <script>
+    document.getElementById("default").click();
+  </script>
 </body>
 
 </html>
