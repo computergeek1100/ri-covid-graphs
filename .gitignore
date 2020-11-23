@@ -1,4 +1,14 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
+R/.RData/
+R/.Rhistory/
+R/.Rproj.user/
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.*.sw[op]
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
