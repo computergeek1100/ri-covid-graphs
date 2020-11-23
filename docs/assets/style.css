@@ -56,7 +56,7 @@
 
 .navbar li a {
   display: block;
-  margin: 0 auto;
+  padding: 14px 16px;
   color: black;
   text-align: center;
   text-decoration: none;
