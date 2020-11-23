@@ -18,23 +18,23 @@ stateData <- stateData%>%
   mutate(percentPos = round((cases/tests * 100),2))
 
 caseGraph <- ggplot(stateData, aes(date,cases))+geom_col()+geom_line(aes(y=rollmean(cases, 7,na.pad=TRUE)),color="blue")
-caseGraph <- plotly::ggplotly(caseGraph,dynamicTicks=TRUE, originalData=FALSE)
+caseGraph <- plotly::ggplotly(caseGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 testGraph <- ggplot(stateData, aes(date,tests))+geom_col()+geom_line(aes(y=rollmean(tests, 7,na.pad=TRUE)),color="blue")
-testGraph <- plotly::ggplotly(testGraph,dynamicTicks=TRUE, originalData=FALSE)
+testGraph <- plotly::ggplotly(testGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 posGraph <- ggplot(stateData,aes(date,percentPos))+geom_col()+geom_line(aes(y=rollmean(percentPos,7, na.pad=TRUE)),color="blue")
-posGraph <- ggplotly(posGraph,dynamicTicks=TRUE, originalData=FALSE)
+posGraph <- ggplotly(posGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 hospGraph <- ggplot(stateData,aes(date,currentHosp))+geom_col()+geom_line(aes(y=rollmean(currentHosp,7,na.pad=TRUE)),color='blue')
-hospGraph <- ggplotly(hospGraph,dynamicTicks=TRUE, originalData=FALSE)
+hospGraph <- ggplotly(hospGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 ICUGraph <- ggplot(stateData,aes(date,))+geom_col(aes(,ICU,fill="ICU"))+geom_line(aes(y=rollmean(ICU,7,na.pad=TRUE)),color='red')+
   geom_col(aes(,vent,fill='Ventilator'))+geom_line(aes(y=rollmean(vent,7,na.pad=TRUE)),color='blue')+scale_color_manual(values = ICUcolors)
-ICUGraph <- ggplotly(ICUGraph,dynamicTicks=TRUE, originalData=FALSE)
+ICUGraph <- ggplotly(ICUGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 dailyDeathGraph <- ggplot(stateData,aes(date,dailyDeaths))+geom_col()+geom_line(aes(y=rollmean(dailyDeaths,7,na.pad=TRUE)),color='blue')
-dailyDeathGraph <- ggplotly(dailyDeathGraph,dynamicTicks=TRUE, originalData=FALSE)
+dailyDeathGraph <- ggplotly(dailyDeathGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 htmlwidgets::saveWidget(caseGraph, file="../graphs/DAILY_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')
 htmlwidgets::saveWidget(testGraph, file="../graphs/DAILY_tests.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailytests')
