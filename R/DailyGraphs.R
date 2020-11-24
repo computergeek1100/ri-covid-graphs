@@ -33,7 +33,7 @@ ICUGraph <- ggplot(stateData,aes(date,))+geom_col(aes(,ICU,fill="ICU"))+geom_lin
   geom_col(aes(,vent,fill='Ventilator'))+geom_line(aes(y=rollmean(vent,7,na.pad=TRUE,align="right")),color='blue')+scale_color_manual(values = ICUcolors)
 ICUGraph <- ggplotly(ICUGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-dailyDeathGraph <- ggplot(stateData,aes(date,dailyDeaths))+geom_col()+geom_line(aes(y=rollmean(dailyDeaths,7,na.pad=TRUE,align="right")),color='blue')
+dailyDeathGraph <- ggplot(stateData,aes(date,dailyDeaths))+geom_col()+geom_line(aes(y=rollmean(dailyDeaths,7,na.pad=TRUE,align="right")),color="blue")
 dailyDeathGraph <- ggplotly(dailyDeathGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 htmlwidgets::saveWidget(caseGraph, file="../graphs/DAILY_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')

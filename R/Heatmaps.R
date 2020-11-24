@@ -34,9 +34,15 @@ hospHeatmap <- ggplot(riMAP)+geom_sf(aes(text=paste(riMAP$NAME),fill=hosp100k))+
 deathHeatmap <- ggplot(riMAP)+geom_sf(aes(text=paste(riMAP$NAME),fill=deaths100k))+
   scale_fill_gradientn(name="Deaths per 100k", colors=colorMap2, na.value = "grey100", breaks = deathBreaks, labels = deathBreaks)+
   labs(title="Total deaths per 100,000 residents")+theme_map()
-caseHeatmap <- plotly::ggplotly(caseHeatmap%>%style(hoveron='fill'))
-hospHeatmap <- plotly::ggplotly(hospHeatmap%>%style(hoveron='fill'))
-deathHeatmap <- plotly::ggplotly(deathHeatmap%>%style(hoveron='fill'))
+caseHeatmap <- plotly::ggplotly(caseHeatmap,dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  style(hoveron='fill')
+hospHeatmap <- plotly::ggplotly(hospHeatmap,dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  style(hoveron='fill')
+deathHeatmap <- plotly::ggplotly(deathHeatmap,dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  style(hoveron='fill')
 htmlwidgets::saveWidget(caseHeatmap, file="../graphs/MAP_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title="casemap")
 htmlwidgets::saveWidget(hospHeatmap,file="../graphs/MAP_hosp.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title="hospmap")
 htmlwidgets::saveWidget(deathHeatmap,file="../graphs/MAP_deaths.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title="deathmap")
