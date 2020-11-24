@@ -18,10 +18,10 @@ stateData <- stateData%>%
   mutate(percentPos = round((cases/tests * 100),2))
 
 caseGraph <- ggplot(stateData, aes(date,cases))+geom_col()+geom_line(aes(y=rollmean(cases, 7,na.pad=TRUE)),color="blue")
-caseGraph <- plotly::ggplotly(caseGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+caseGraph <- ggplotly(caseGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 testGraph <- ggplot(stateData, aes(date,tests))+geom_col()+geom_line(aes(y=rollmean(tests, 7,na.pad=TRUE)),color="blue")
-testGraph <- plotly::ggplotly(testGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+testGraph <- ggplotly(testGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 posGraph <- ggplot(stateData,aes(date,percentPos))+geom_col()+geom_line(aes(y=rollmean(percentPos,7, na.pad=TRUE)),color="blue")
 posGraph <- ggplotly(posGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
