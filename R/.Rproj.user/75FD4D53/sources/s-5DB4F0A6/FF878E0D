@@ -1,0 +1,24 @@
+{
+    "id": "FF878E0D",
+    "path": "~/Documents/GitHub/ri-covid-data/R/Heatmaps.R",
+    "project_path": "Heatmaps.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606150673988.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "cursorPosition": "38,23",
+        "scrollLine": "20"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1606180788,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606180788373,
+    "read_only": false,
+    "read_only_alternatives": []
+}

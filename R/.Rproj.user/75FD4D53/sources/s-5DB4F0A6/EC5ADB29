@@ -1,0 +1,24 @@
+{
+    "id": "EC5ADB29",
+    "path": "~/Documents/GitHub/ri-covid-data/R/Weekly100k.R",
+    "project_path": "Weekly100k.R",
+    "type": "r_source",
+    "hash": "498586055",
+    "contents": "",
+    "dirty": false,
+    "created": 1606150249896.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "cursorPosition": "23,24",
+        "scrollLine": "3"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1606171731,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606171731213,
+    "read_only": false,
+    "read_only_alternatives": []
+}
