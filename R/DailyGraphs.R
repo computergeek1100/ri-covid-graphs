@@ -37,7 +37,8 @@ hospGraph <- ggplot(stateData,aes(date))+geom_col(aes(y=currentHosp))+geom_line(
 hospGraph <- ggplotly(hospGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 ICUGraph <- ggplot(stateData,aes(x=date))+geom_col(aes(y=ICU,fill="ICU"))+geom_line(aes(y=Avg7Day_ICU),color='red')+
-  geom_col(aes(y=vent,fill='Ventilator'))+geom_line(aes(y=Avg7Day_Vent),color='blue')+scale_color_manual(values = ICUcolors)
+  geom_col(aes(y=vent,fill='Ventilator'))+geom_line(aes(y=Avg7Day_Vent),color='blue')+
+  scale_color_manual(name = "Legend", labels = c("ICU", "Ventilator"),values = ICUcolors)
 ICUGraph <- ggplotly(ICUGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 dailyDeathGraph <- ggplot(stateData,aes(date))+geom_col(aes(y=dailyDeaths))+geom_line(aes(y=Avg7Day_Deaths),color="blue")
