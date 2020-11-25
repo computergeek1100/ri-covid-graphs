@@ -10,9 +10,13 @@ library(googlesheets4)
 
 ICUcolors <- c("ICU" = "red", "Ventilator" = "blue")
 
-stateData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Trends")
+stateDataTMP <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Trends")
 
-stateData <- stateData%>%
+if(identical(stateDataCur,stateDataTMP)){
+  stop("graphs are up to date")
+}else {
+stateDataCur <- stateDataTMP
+stateDataCleaned <- stateDataCur%>%
   select(date=1,tests=7,cases=9,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
@@ -24,24 +28,24 @@ stateData <- stateData%>%
          Avg7Day_Vent = round((rollmean(vent,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Deaths = round((rollmean(dailyDeaths,7,na.pad=TRUE,align="right")),0))
 
-caseGraph <- ggplot(stateData, aes(date))+geom_col(aes(y=cases))+geom_line(aes(y=Avg7Day_Cases),color="blue")
+caseGraph <- ggplot(stateDataCleaned, aes(date))+geom_col(aes(y=cases))+geom_line(aes(y=Avg7Day_Cases),color="blue")
 caseGraph <- ggplotly(caseGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-testGraph <- ggplot(stateData, aes(date))+geom_col(aes(y=tests))+geom_line(aes(y=Avg7Day_Tests),color="blue")
+testGraph <- ggplot(stateDataCleaned, aes(date))+geom_col(aes(y=tests))+geom_line(aes(y=Avg7Day_Tests),color="blue")
 testGraph <- ggplotly(testGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-posGraph <- ggplot(stateData,aes(date))+geom_col(aes(y=percentPos))+geom_line(aes(y=Avg7Day_Pos),color="blue")
+posGraph <- ggplot(stateDataCleaned,aes(date))+geom_col(aes(y=percentPos))+geom_line(aes(y=Avg7Day_Pos),color="blue")
 posGraph <- ggplotly(posGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-hospGraph <- ggplot(stateData,aes(date))+geom_col(aes(y=currentHosp))+geom_line(aes(y=Avg7Day_Hosp),color='blue')
+hospGraph <- ggplot(stateDataCleaned,aes(date))+geom_col(aes(y=currentHosp))+geom_line(aes(y=Avg7Day_Hosp),color='blue')
 hospGraph <- ggplotly(hospGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-ICUGraph <- ggplot(stateData,aes(x=date))+geom_col(aes(y=ICU,fill="ICU"))+geom_line(aes(y=Avg7Day_ICU),color='red')+
+ICUGraph <- ggplot(stateDataCleaned,aes(x=date))+geom_col(aes(y=ICU,fill="ICU"))+geom_line(aes(y=Avg7Day_ICU),color='red')+
   geom_col(aes(y=vent,fill='Ventilator'))+geom_line(aes(y=Avg7Day_Vent),color='blue')+
   scale_color_manual(name = "Legend", labels = c("ICU", "Ventilator"),values = ICUcolors)
 ICUGraph <- ggplotly(ICUGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-dailyDeathGraph <- ggplot(stateData,aes(date))+geom_col(aes(y=dailyDeaths))+geom_line(aes(y=Avg7Day_Deaths),color="blue")
+dailyDeathGraph <- ggplot(stateDataCleaned,aes(date))+geom_col(aes(y=dailyDeaths))+geom_line(aes(y=Avg7Day_Deaths),color="blue")
 dailyDeathGraph <- ggplotly(dailyDeathGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 htmlwidgets::saveWidget(caseGraph, file="../graphs/DAILY_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')
@@ -50,3 +54,4 @@ htmlwidgets::saveWidget(posGraph,file="../graphs/DAILY_pos.html",selfcontained=F
 htmlwidgets::saveWidget(hospGraph,file="../graphs/DAILY_hosp.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyhosp')
 htmlwidgets::saveWidget(ICUGraph,file="../graphs/DAILY_ICU.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyicu')
 htmlwidgets::saveWidget(dailyDeathGraph,file="../graphs/DAILY_deaths.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailydeaths')
+}
