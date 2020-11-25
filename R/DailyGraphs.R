@@ -13,7 +13,7 @@ ICUcolors <- c("ICU" = "red", "Ventilator" = "blue")
 stateDataTMP <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Trends")
 
 if(identical(stateDataCur,stateDataTMP)){
-  stop("graphs are up to date")
+  stop("Graphs already up to date")
 }else {
 stateDataCur <- stateDataTMP
 stateDataCleaned <- stateDataCur%>%

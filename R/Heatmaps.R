@@ -6,8 +6,13 @@ library(htmlwidgets)
 library(leaflet)
 library(googlesheets4)
 
-townData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937",
+townDataTMP <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937",
                        sheet = "Municipality")
+
+if(identical(townDataCur,townDataTMP)){
+  stop("Graphs already up to date")
+}else {
+  townDataCur <- townDataTMP
 caseBreaks <- c(0,2500,5000,7500,10000)
 graphs_out <- paste0(getwd(),'/Graphs')
 hospBreaks <- c(0,200,400,600)
@@ -15,7 +20,7 @@ deathBreaks <- c(0,100,200,300)
 colorMap <- c("#f2e56b","#fcba03","#f88700","#f83a00","#a61903")
 colorMap2 <- c("#ffffff","#f2e56b","#fcba03","#f88700","#f83a00","#a61903")
 riMAP <- county_subdivisions("Rhode Island")%>%
-  left_join(townData, by = c("NAME" = "Municipality of residence"))%>%
+  left_join(townDataCur, by = c("NAME" = "Municipality of residence"))%>%
   filter(!row_number() == 8)
 names(riMAP)[20] <- 'cases100k'
 names(riMAP)[22] <- 'hosp100k'
@@ -46,3 +51,4 @@ deathHeatmap <- plotly::ggplotly(deathHeatmap,dynamicTicks=TRUE, originalData=FA
 htmlwidgets::saveWidget(caseHeatmap, file="../graphs/MAP_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title="casemap")
 htmlwidgets::saveWidget(hospHeatmap,file="../graphs/MAP_hosp.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title="hospmap")
 htmlwidgets::saveWidget(deathHeatmap,file="../graphs/MAP_deaths.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title="deathmap")
+}
