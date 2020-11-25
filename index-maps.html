@@ -14,8 +14,7 @@
 <body>
   <center>
     <a name="top"></a>
-    <h1 style="display:inline-block;"><img style="float:left;padding-right:10px"
-      src="favicon.ico" height="32" width="auto">RI COVID-19 Graphs</h1>
+    <h1 style="display:inline-block;"><img style="float:left;padding-right:10px" src="favicon.ico" height="32" width="auto">RI COVID-19 Graphs & Heatmaps</h1>
   </center>
   <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="defaultTab">Daily Cases</button>
@@ -24,7 +23,9 @@
     <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Daily Hospitalizations</button>
     <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Daily Deaths</button>
     <button class="tablinks" onclick="openTab(event, 'Weekly100k')">Weekly Cases per 100k</button>
-    <button>Maps coming soon!</button>
+    <button class="tablinks" onclick="openTab(event, 'CaseMap')">Map - Cases per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'HospMap')">Map - Hospitalizations per 100k</button>
+    <button class="tablinks" onclick="openTab(event, 'DeathMap')">Map - Deaths per 100k</button>
   </div>
   <div id="DailyCases" class="tabcontent">
     <iframe src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
@@ -48,6 +49,17 @@
 
   <div id="Weekly100k" class="tabcontent">
     <iframe src="graphs/WEEKLY_100k.html" height='600' width='100%'></iframe>
+  </div>
+  <div id="CaseMap" class="tabcontent">
+    <iframe src="graphs/MAP_cases.html" height='600' width='100%'></iframe>
+  </div>
+
+  <div id="HospMap" class="tabcontent">
+    <iframe src="graphs/MAP_hosp.html" height='600' width='100%'></iframe>
+  </div>
+
+  <div id="DeathMap" class="tabcontent">
+    <iframe src="graphs/MAP_deaths.html" height='600' width='100%'></iframe>
   </div>
   <div class="navbar">
     <ul id="navItems">
