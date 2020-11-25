@@ -18,11 +18,12 @@
       src="favicon.ico" height="32" width="auto">RI COVID-19 Graphs</h1>
   </center>
   <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="defaultTab">Daily Cases</button>
-    <button class="tablinks" onclick="openTab(event, 'DailyTests')">Daily Tests</button>
-    <button class="tablinks" onclick="openTab(event, 'PercentPos')">Daily Positivity</button>
-    <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Daily Hospitalizations</button>
-    <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Daily Deaths</button>
+    <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="defaultTab">Cases</button>
+    <button class="tablinks" onclick="openTab(event, 'DailyTests')">Tests</button>
+    <button class="tablinks" onclick="openTab(event, 'PercentPos')">Percent Positive</button>
+    <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Total Hospitalizations</button>
+    <button class="tablinks" onclick="openTab(event, 'DailyICU')">ICU/Ventilator</button>
+    <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Deaths</button>
     <button class="tablinks" onclick="openTab(event, 'Weekly100k')">Weekly Cases per 100k</button>
     <button>Maps coming soon!</button>
   </div>
@@ -40,6 +41,10 @@
 
   <div id="DailyHosp" class="tabcontent">
     <iframe src="graphs/DAILY_hosp.html" height='600' width='100%'></iframe>
+  </div>
+
+  <div id="DailyICU" class="tabcontent">
+    <iframe src="graphs/DAILY_ICU.html" height='600' width='100%'></iframe>
   </div>
 
   <div id="DailyDeaths" class="tabcontent">
