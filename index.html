@@ -5,61 +5,62 @@
   <meta charset="utf-8">
   <title>RI COVID-19 Graphs</title>
   <link rel="stylesheet" href="docs/assets/style.css">
-  <script src="docs/assets/script.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="shortcut icon" href="favicon.ico" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
 </head>
 
 <body>
   <center>
     <a name="top"></a>
-    <h1 style="display:inline-block;"><img style="float:left;padding-right:10px"
-      src="favicon.ico" height="32" width="auto">RI COVID-19 Graphs</h1>
+    <h1 style="display:inline-block;">
+      <img style="float:left;padding-right:10px" src="favicon.ico" height="32" width="auto">
+      RI COVID-19 Graphs
+    </h1>
   </center>
-  <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'DailyCases')" id="defaultTab">Cases</button>
-    <button class="tablinks" onclick="openTab(event, 'DailyTests')">Tests</button>
-    <button class="tablinks" onclick="openTab(event, 'PercentPos')">Percent Positive</button>
-    <button class="tablinks" onclick="openTab(event, 'DailyHosp')">Total Hospitalizations</button>
-    <button class="tablinks" onclick="openTab(event, 'DailyICU')">ICU/Ventilator</button>
-    <button class="tablinks" onclick="openTab(event, 'DailyDeaths')">Deaths</button>
-    <button class="tablinks" onclick="openTab(event, 'Weekly100k')">Weekly Cases per 100k</button>
-    <button>Maps coming soon!</button>
-  </div>
-  <div id="DailyCases" class="tabcontent">
-    <iframe src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
-  </div>
-
-  <div id="DailyTests" class="tabcontent">
-    <iframe src="graphs/DAILY_tests.html" height='600' width='100%'></iframe>
-  </div>
-
-  <div id="PercentPos" class="tabcontent">
-    <iframe src="graphs/DAILY_pos.html" height='600' width='100%'></iframe>
-  </div>
-
-  <div id="DailyHosp" class="tabcontent">
-    <iframe src="graphs/DAILY_hosp.html" height='600' width='100%'></iframe>
-  </div>
-
-  <div id="DailyICU" class="tabcontent">
-    <iframe src="graphs/DAILY_ICU.html" height='600' width='100%'></iframe>
-  </div>
-
-  <div id="DailyDeaths" class="tabcontent">
-    <iframe src="graphs/DAILY_deaths.html" height='600' width='100%'></iframe>
-  </div>
-
-  <div id="Weekly100k" class="tabcontent">
-    <p><center>Updated every Wednesday</center></p>
-    <iframe src="graphs/WEEKLY_100k.html" height='600' width='100%'></iframe>
-  </div>
-
-  <div class="navbar">
-    <ul id="navItems">
-      <li><a href="#top">Back to Top</a></li>
+  <div class="tabs" id="navTabs">
+    <ul class="tabs-list">
+      <li class="active"><a href="#DailyCases">Cases</a></li>
+      <li><a href="#DailyTests">Tests</a></li>
+      <li><a href="#PercentPos">Percent Positive</a></li>
+      <li><a href="#DailyHosp">Total Hospitalizations</a></li>
+      <li onclick="document.getElementById('ICUReload').src += '';">
+        <a href="#DailyICU">ICU/Ventilator</a>
+      </li>
+      <li><a href="#DailyDeaths">Deaths</a></li>
+      <li onclick="document.getElementById('100kReload').src += '';">
+        <a href="#Weekly100k">Weekly Cases per 100k</a>
+      </li>
+      <li>Maps coming soon!</li>
     </ul>
+    <div id="DailyCases" class="tab active">
+      <iframe onload='reloadFrame()' src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="DailyTests" class="tab">
+      <iframe src="graphs/DAILY_tests.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="PercentPos" class="tab">
+      <iframe src="graphs/DAILY_pos.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="DailyHosp" class="tab">
+      <iframe src="graphs/DAILY_hosp.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="DailyICU" class="tab">
+      <iframe id="ICUReload" src="graphs/DAILY_ICU.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="DailyDeaths" class="tab">
+      <iframe src="graphs/DAILY_deaths.html" height='600' width='100%'></iframe>
+    </div>
+
+    <div id="Weekly100k" class="tab">
+      <iframe id='100kReload' src="graphs/WEEKLY_100k.html" height='600' width='100%'></iframe>
+    </div>
   </div>
   <center>
     <p>Site icon designed by <a href="https://openmoji.org/">OpenMoji</a> – the open-source emoji and icon project. License:
@@ -68,7 +69,19 @@
     </p>
   </center>
   <script>
-    document.getElementById("defaultTab").click();
+    $(document).ready(function() {
+      $(".tabs-list li a").click(function(e) {
+        e.preventDefault();
+      });
+      $(".tabs-list li").click(function() {
+        var tabid = $(this).find("a").attr("href");
+        $(".tabs-list li,.tabs div.tab").removeClass("active"); // removing active class from tab
+
+        $(".tab").hide(); // hiding open tab
+        $(tabid).show(); // show tab
+        $(this).addClass("active"); //  adding active class to clicked tab
+      });
+    });
   </script>
 </body>
 
