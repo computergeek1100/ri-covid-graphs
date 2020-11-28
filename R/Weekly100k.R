@@ -17,7 +17,16 @@ rateDataCleaned <- rateDataCur%>%
 rateDataCleaned$casesPer100k <- as.numeric(as.character(rateDataCleaned$casesPer100k))
 rateDataCleaned$weekEnding <- sub("\\d{1,2}/\\d{1,2}-","", rateDataCleaned$weekEnding)
 rateDataCleaned$weekEnding <- sub(" \\(.*","",rateDataCleaned$weekEnding)
-rateDataCleaned$weekEnding <- paste("2020",rateDataCleaned$weekEnding,sep="-")
+if(nrow(rateDataCleaned) < 44){
+  rateDataCleaned$weekEnding <- paste("2020",rateDataCleaned$weekEnding,sep="-")
+}else{
+  for(row in 1:43(rateDataCleaned)){
+    rateDataCleaned$weekEnding[row] <- paste("2020",rateDataCleaned$weekEnding[row],sep="-")
+  }
+  for(row in 44:nrow(rateDataCleaned)){
+    rateDataCleaned$weekEnding[row] <- paste("2021",rateDataCleaned$weekEnding[row],sep="-")
+  }
+}
 rateDataCleaned$weekEnding <- sub("/","-",rateDataCleaned$weekEnding)
 rateDataCleaned$weekEnding <- as.Date(rateDataCleaned$weekEnding)
 
