@@ -1,70 +1,56 @@
-/* Tab Styling - code from W3Schools, aesthetics modified */
-.tab {
- overflow: hidden;
- border: 1px solid #ccc;
- background-color: #f1f1f1;
-}
-
-/* Style the buttons that are used to open the tab content */
-.tab button {
- background-color: inherit;
- float: left;
- border: none;
- outline: none;
- cursor: pointer;
- padding: 14px 16px;
- transition: 0.3s;
-}
-
-/* Change background color of buttons on hover */
-.tab button:hover {
- background-color: #5585e6;
- color: #fff;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
- background-color: #3165cc;
- color: #fff;
-}
-
-/* Style the tab content */
-.tabcontent {
- display: none;
- padding: 6px 12px;
- border: 1px solid #ccc;
- border-top: none;
-}
-
-/*Navbar Styling*/
-
-.navbar {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-}
-
-.navbar ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+/* Tab Styling */
+.tabs {
   overflow: hidden;
-  background-color: #eee;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
 }
 
-.navbar li {
-  display: inline-block;
+.tabs .tabs-list {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
 }
 
-.navbar li a {
-  display: block;
+.tabs .tabs-list li {
+  width: auto;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
   padding: 14px 16px;
-  color: black;
-  text-align: center;
-  text-decoration: none;
 }
 
-.navbar li a:hover {
-  color: #eee;
+.tabs .tabs-list li a {
+  text-decoration: none;
+  color: black;
+  padding: 14px 16px;
+}
+
+/* Hover effects */
+.tabs .tabs-list li:hover {
+  background-color: #5585e6;
+  transition-duration: 0.3s;
+}
+
+.tabs .tabs-list a:hover {
+  color: white;
+}
+
+/* Tab content */
+.tabs .tab {
+  display: none;
+  padding: 6px 12px;
+}
+
+/* Active tab */
+.active {
+  display: block !important;
+}
+
+.tabs .tabs-list li.active {
   background-color: #3165cc;
+}
+
+.active a {
+  color: white !important;
 }
