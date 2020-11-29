@@ -25,17 +25,17 @@
       <li><a href="#DailyTests">Tests</a></li>
       <li><a href="#PercentPos">Percent Positive</a></li>
       <li><a href="#DailyHosp">Total Hospitalizations</a></li>
-      <li onclick="document.getElementById('ICUReload').src += '';">
+      <li onclick="document.getElementById('iframe-ICU').src += '';">
         <a href="#DailyICU">ICU/Ventilator</a>
       </li>
       <li><a href="#DailyDeaths">Deaths</a></li>
-      <li onclick="document.getElementById('100kReload').src += '';">
+      <li onclick="document.getElementById('iframe-100k').src += '';">
         <a href="#Weekly100k">Weekly Cases per 100k</a>
       </li>
       <!--<li>Maps coming soon!</li>-->
     </ul>
     <div id="DailyCases" class="tab active">
-      <iframe onload='reloadFrame()' src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
+      <iframe src="graphs/DAILY_cases.html" height='600' width='100%'></iframe>
     </div>
 
     <div id="DailyTests" class="tab">
@@ -51,7 +51,7 @@
     </div>
 
     <div id="DailyICU" class="tab">
-      <iframe id="ICUReload" src="graphs/DAILY_ICU.html" height='600' width='100%'></iframe>
+      <iframe id="iframe-ICU" src="graphs/DAILY_ICU.html" height='600' width='100%'></iframe>
     </div>
 
     <div id="DailyDeaths" class="tab">
@@ -59,7 +59,7 @@
     </div>
 
     <div id="Weekly100k" class="tab">
-      <iframe id='100kReload' src="graphs/WEEKLY_100k.html" height='600' width='100%'></iframe>
+      <iframe id='iframe-100k' src="graphs/WEEKLY_100k.html" height='600' width='100%'></iframe>
     </div>
   </div>
   <center>
