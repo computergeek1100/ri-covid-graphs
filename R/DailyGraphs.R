@@ -10,12 +10,12 @@ library(googlesheets4)
 
 ICUcolors <- c("ICU" = "red", "Ventilator" = "blue")
 
-stateDataTMP <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Trends")
+stateData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Trends")
 
-if(identical(stateDataCur,stateDataTMP)){
+if(identical(stateDataCur,stateData)){
   stop("Graphs already up to date")
 }else {
-stateDataCur <- stateDataTMP
+stateDataCur <- stateData
 stateDataCleaned <- stateDataCur%>%
   select(date=1,tests=7,cases=9,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
