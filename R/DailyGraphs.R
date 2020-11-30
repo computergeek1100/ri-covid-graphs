@@ -28,29 +28,37 @@ stateDataCleaned <- stateDataCur%>%
          Avg7Day_Vent = round((rollmean(vent,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Deaths = round((rollmean(dailyDeaths,7,na.pad=TRUE,align="right")),0))
 
-caseGraph <- ggplot(stateDataCleaned, aes(date))+
+caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", date,
+                                                     "<br>Cases: ", cases,
+                                                     "<br>7-Day Average: ", Avg7Day_Cases)))+
   geom_col(aes(y=cases))+
-  geom_line(aes(y=Avg7Day_Cases),color="blue")+
+  geom_line(aes(y=Avg7Day_Cases), color="blue")+
   labs(x="Date", y = "Cases Reported")
-caseGraph <- ggplotly(caseGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-testGraph <- ggplot(stateDataCleaned, aes(date))+
+testGraph <- ggplot(stateDataCleaned, aes(date, group=1, text=paste("Date: ", date,
+                                                                  "<br>Tests: ", tests,
+                                                                  "<br>7-Day Average: ", Avg7Day_Tests)))+
   geom_col(aes(y=tests))+
   geom_line(aes(y=Avg7Day_Tests),color="blue")+
   labs(x="Date", y="Tests Performed")
-testGraph <- ggplotly(testGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-posGraph <- ggplot(stateDataCleaned,aes(date))+
+posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
+                                                                  "<br>Percent Pos.: ", percentPos,
+                                                                  "<br>7-Day Average: ", Avg7Day_Pos)))+
   geom_col(aes(y=percentPos))+
   geom_line(aes(y=Avg7Day_Pos),color="blue")+
   labs(x="Date", y="Percent Positive")
-posGraph <- ggplotly(posGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+posGraph <- ggplotly(posGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-hospGraph <- ggplot(stateDataCleaned,aes(date))+
+hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
+                                                                   "<br>Hospitalized: ", currentHosp,
+                                                                   "<br>7-Day Average: ", Avg7Day_Hosp)))+
   geom_col(aes(y=currentHosp))+
   geom_line(aes(y=Avg7Day_Hosp),color='blue')+
   labs(x="Date", y="Hospitalized")
-hospGraph <- ggplotly(hospGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+hospGraph <- ggplotly(hospGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 ICUGraph <- ggplot(stateDataCleaned,aes(x=date))+
   geom_col(aes(y=ICU,fill="ICU"))+
