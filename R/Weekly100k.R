@@ -31,7 +31,7 @@ rateDataCleaned$weekEnding <- sub("/","-",rateDataCleaned$weekEnding)
 rateDataCleaned$weekEnding <- as.Date(rateDataCleaned$weekEnding)
 
 cases100kGraph <- ggplot(rateDataCleaned,aes(weekEnding,casesPer100k, group=1, text=paste("Week Ending: ", weekEnding,
-                                                                                 "Cases per 100k: ", casesPer100k)))+
+                                                                                 "<br>Cases per 100k: ", casesPer100k)))+
   geom_line(color="blue")+
   labs(x="Week Ending", y = "Weekly Cases per 100,000 Residents")
 cases100kGraph <- ggplotly(cases100kGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
