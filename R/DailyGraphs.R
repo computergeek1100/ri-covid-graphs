@@ -60,20 +60,30 @@ hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", dat
   labs(x="Date", y="Hospitalized")
 hospGraph <- ggplotly(hospGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-ICUGraph <- ggplot(stateDataCleaned,aes(x=date))+
-  geom_col(aes(y=ICU,fill="ICU"))+
-  geom_line(aes(y=Avg7Day_ICU),color='red')+
-  geom_col(aes(y=vent,fill="Ventilator"))+
-  geom_line(aes(y=Avg7Day_Vent),color='blue')+
+ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
+  geom_col(aes(y=ICU,fill="ICU", text=paste("Date: ", date,
+                                            "<br>ICU: ", ICU,
+                                            "<br>7-Day Average: ", Avg7Day_ICU)),color='red')+
+  geom_line(aes(y=Avg7Day_ICU, text=paste("Date: ", date,
+                                        "<br>ICU: ", ICU,
+                                        "<br>7-Day Average: ", Avg7Day_ICU)),color='red')+
+  geom_col(aes(y=vent,fill="Ventilator", text=paste("Date: ", date,
+                                                    "<br>Ventilator: ", vent,
+                                                    "<br>7-Day Average: ", Avg7Day_Vent)),color='blue')+
+  geom_line(aes(y=Avg7Day_Vent, text=paste("Date: ", date,
+                                           "<br>Ventilator: ", vent,
+                                           "<br>7-Day Average: ", Avg7Day_Vent)),color='blue')+
   scale_fill_manual(name="Legend", labels = c("ICU", "Ventilator"),values = ICUcolors)+
   labs(x="Date", y="ICU/Ventilator")
-ICUGraph <- ggplotly(ICUGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+ICUGraph <- ggplotly(ICUGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-dailyDeathGraph <- ggplot(stateDataCleaned,aes(date))+
+dailyDeathGraph <- ggplot(stateDataCleaned,aes(date), group=1, text=paste("Date: ", date,
+                                                                          "<br>Deaths: ", dailyDeaths,
+                                                                          "<br>7-Day Average: ", Avg7Day_Deaths))+
   geom_col(aes(y=dailyDeaths))+
   geom_line(aes(y=Avg7Day_Deaths),color="blue")+
   labs(x="Date", y="Deaths Reported")
-dailyDeathGraph <- ggplotly(dailyDeathGraph,dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+dailyDeathGraph <- ggplotly(dailyDeathGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 htmlwidgets::saveWidget(caseGraph, file="../graphs/DAILY_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')
 htmlwidgets::saveWidget(testGraph, file="../graphs/DAILY_tests.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailytests')
