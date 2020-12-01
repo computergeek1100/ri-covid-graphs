@@ -6,13 +6,13 @@ library(htmlwidgets)
 library(leaflet)
 library(googlesheets4)
 
-townDataTMP <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937",
+townData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937",
                        sheet = "Municipality")
 
-if(identical(townDataCur,townDataTMP)){
+if(identical(townDataCur,townData)){
   stop("Graphs already up to date")
 }else {
-  townDataCur <- townDataTMP
+  townDataCur <- townData
 caseBreaks <- c(0,2500,5000,7500,10000)
 graphs_out <- paste0(getwd(),'/Graphs')
 hospBreaks <- c(0,200,400,600)
