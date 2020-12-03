@@ -1,7 +1,5 @@
 library(tidyverse)
 library(plotly)
-library(ggthemes)
-library(lubridate)
 library(htmlwidgets)
 library(googlesheets4)
 

@@ -1,8 +1,6 @@
 library(tidyverse)
 library(plotly)
 library(zoo)
-library(ggthemes)
-library(lubridate)
 library(htmlwidgets)
 library(googlesheets4)
 
