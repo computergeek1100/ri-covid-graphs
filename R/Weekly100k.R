@@ -33,8 +33,6 @@ rateDataCleaned$weekEnding <- as.Date(rateDataCleaned$weekEnding)
 cases100kGraph <- ggplot(rateDataCleaned,aes(weekEnding,casesPer100k, group=1, text=paste("Week Ending: ", weekEnding,
                                                                                  "<br>Cases per 100k: ", casesPer100k)))+
   geom_line(color="blue")+
-  geom_hline(yintercept=100, linetype = "dotted")+
-  annotate(geom="text", label="100 Cases per 100,000", x = as.Date("2020-03-11"), y = 110)+
   labs(x="Week Ending", y = "Weekly Cases per 100,000 Residents")
 cases100kGraph <- ggplotly(cases100kGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 htmlwidgets::saveWidget(cases100kGraph, file="../graphs/WEEKLY_100k.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title="weekly100k")
