@@ -4,9 +4,9 @@ library(zoo)
 library(ggthemes)
 library(lubridate)
 library(htmlwidgets)
-library(tigris)
-library(leaflet)
 library(googlesheets4)
+
+gs4_deauth()
 
 ICUcolors <- c("ICU" = "#ff8066", "Ventilator" = "#6685ff")
 
