@@ -26,12 +26,17 @@ stateDataCleaned <- stateDataCur%>%
          Avg7Day_Vent = round((rollmean(vent,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Deaths = round((rollmean(dailyDeaths,7,na.pad=TRUE,align="right")),0))
 
+updated <- tail(stateDataCleaned$date, 1) # get last row of data frame for most recent data
+updated <- format(updated, format="%B %d, %Y")
+hospUpdated <- stateDataCleaned$date[nrow(stateDataCleaned) - 1]
+hospUpdated <- format(hospUpdated,format="%B %d, %Y") # get second-to-last row as hospitalizations are a day behind
+
 caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", date,
                                                      "<br>Cases: ", cases,
                                                      "<br>7-Day Average: ", Avg7Day_Cases)))+
   geom_col(aes(y=cases))+
   geom_line(aes(y=Avg7Day_Cases), color="blue")+
-  labs(x="Date", y = "Cases Reported")
+  labs(title = paste("Latest data:", updated), x="Date", y = "Cases Reported")
 caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 testGraph <- ggplot(stateDataCleaned, aes(date, group=1, text=paste("Date: ", date,
@@ -39,7 +44,7 @@ testGraph <- ggplot(stateDataCleaned, aes(date, group=1, text=paste("Date: ", da
                                                                   "<br>7-Day Average: ", Avg7Day_Tests)))+
   geom_col(aes(y=tests))+
   geom_line(aes(y=Avg7Day_Tests),color="blue")+
-  labs(x="Date", y="Tests Performed")
+  labs(title = paste("Latest data:", updated), x="Date", y="Tests Performed")
 testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
@@ -47,7 +52,7 @@ posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date
                                                                   "<br>7-Day Average: ", Avg7Day_Pos)))+
   geom_col(aes(y=percentPos))+
   geom_line(aes(y=Avg7Day_Pos),color="blue")+
-  labs(x="Date", y="Percent Positive")
+  labs(title = paste("Latest data:", updated), x="Date", y="Percent Positive")
 posGraph <- ggplotly(posGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
@@ -55,7 +60,7 @@ hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", dat
                                                                    "<br>7-Day Average: ", Avg7Day_Hosp)))+
   geom_col(aes(y=currentHosp))+
   geom_line(aes(y=Avg7Day_Hosp),color='blue')+
-  labs(x="Date", y="Hospitalized")
+  labs(title = paste("Latest data:", hospUpdated), x="Date", y="Hospitalized")
 hospGraph <- ggplotly(hospGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
@@ -72,7 +77,7 @@ ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
                                            "<br>Ventilator: ", vent,
                                            "<br>7-Day Average: ", Avg7Day_Vent)),color='blue')+
   scale_fill_manual(name="Legend", labels = c("ICU", "Ventilator"),values = ICUcolors)+
-  labs(x="Date", y="ICU/Ventilator")
+  labs(title = paste("Latest data:", hospUpdated), x="Date", y="ICU/Ventilator")
 ICUGraph <- ggplotly(ICUGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 dailyDeathGraph <- ggplot(stateDataCleaned,aes(date), group=1, text=paste("Date: ", date,
@@ -80,7 +85,7 @@ dailyDeathGraph <- ggplot(stateDataCleaned,aes(date), group=1, text=paste("Date:
                                                                           "<br>7-Day Average: ", Avg7Day_Deaths))+
   geom_col(aes(y=dailyDeaths))+
   geom_line(aes(y=Avg7Day_Deaths),color="blue")+
-  labs(x="Date", y="Deaths Reported")
+  labs(title = paste("Latest data:", updated), x="Date", y="Deaths Reported")
 dailyDeathGraph <- ggplotly(dailyDeathGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 htmlwidgets::saveWidget(caseGraph, file="../graphs/DAILY_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')
