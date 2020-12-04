@@ -6,7 +6,11 @@ library(googlesheets4)
 gs4_deauth()
 
 rateData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Rate Trends by Age")
+rateDataPrev <- read_rds("prevRate.rds")
 
+if(identical(rateDataPrev,rateData)){
+  stop("Graphs already up to date")
+}else {
 saveRDS(rateData, "prevRate.rds")
 rateDataCleaned <- rateData%>%
   select(weekEnding=1,casesPer100k=14)%>%
