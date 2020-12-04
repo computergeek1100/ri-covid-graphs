@@ -7,11 +7,8 @@ gs4_deauth()
 
 rateData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Rate Trends by Age")
 
-if(identical(rateDataCur,rateData)){
-  stop("Graphs already up to date")
-}else {
-rateDataCur <- rateData
-rateDataCleaned <- rateDataCur%>%
+saveRDS(rateData, "prevRate.rds")
+rateDataCleaned <- rateData%>%
   select(weekEnding=1,casesPer100k=14)%>%
   filter(row_number() >= 8)
 rateDataCleaned$casesPer100k <- as.numeric(as.character(rateDataCleaned$casesPer100k))
