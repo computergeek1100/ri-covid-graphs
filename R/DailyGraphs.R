@@ -27,9 +27,9 @@ stateDataCleaned <- stateDataCur%>%
          Avg7Day_Deaths = round((rollmean(dailyDeaths,7,na.pad=TRUE,align="right")),0))
 
 updated <- tail(stateDataCleaned$date, 1) # get last row of data frame for most recent data
-updated <- format(updated, format="%B %d, %Y")
+updated <- format(updated, "%B %d, %Y")
 hospUpdated <- stateDataCleaned$date[nrow(stateDataCleaned) - 1]
-hospUpdated <- format(hospUpdated,format="%B %d, %Y") # get second-to-last row as hospitalizations are a day behind
+hospUpdated <- format(hospUpdated, "%B %d, %Y") # get second-to-last row as hospitalizations are a day behind
 
 caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", date,
                                                      "<br>Cases: ", cases,
