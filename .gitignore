@@ -10,3 +10,6 @@ ehthumbs.db
 Thumbs.db
 .Rproj.user
 log.txt
+
+.RData
+.Rhistory
