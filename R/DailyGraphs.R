@@ -9,12 +9,12 @@ gs4_deauth()
 ICUcolors <- c("ICU" = "#ff8066", "Ventilator" = "#6685ff")
 
 stateData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Trends")
-stateDataPrev <- readRDS("prevState.rds") 
+stateDataPrev <- readRDS("prev/prevState.rds") 
 
 if(identical(stateDataPrev,stateData)){
   stop("Graphs already up to date")
 }else {
-saveRDS(stateData, "prevState.rds")
+saveRDS(stateData, "prev/prevState.rds")
 stateDataCleaned <- stateData%>%
   select(date=1,tests=7,cases=9,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
