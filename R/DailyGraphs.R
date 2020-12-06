@@ -38,7 +38,7 @@ caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", 
   geom_col(aes(y=cases))+
   geom_line(aes(y=Avg7Day_Cases), color="blue")+
   labs(title = paste("Latest data:", updated,
-                     "\tCases Reported:", tail(stateDataCleaned$cases, 1)),
+                     "\tCases Reported:", formatC((tail(stateDataCleaned$cases, 1)), format = "d", big.mark = ",")),
        x="Date", y = "Cases Reported")
 caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
@@ -48,7 +48,7 @@ testGraph <- ggplot(stateDataCleaned, aes(date, group=1, text=paste("Date: ", da
   geom_col(aes(y=tests))+
   geom_line(aes(y=Avg7Day_Tests),color="blue")+
   labs(title = paste("Latest data:", updated,
-                     "\tTests Performed:",tail(stateDataCleaned$tests, 1)),
+                     "\tTests Performed:",formatC((tail(stateDataCleaned$tests, 1)), format = "d", big.mark = ",")),
        x="Date", y="Tests Performed")
 testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
@@ -57,8 +57,8 @@ posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date
                                                                   "<br>7-Day Average: ", Avg7Day_Pos)))+
   geom_col(aes(y=percentPos))+
   geom_line(aes(y=Avg7Day_Pos),color="blue")+
-  labs(title = paste("Latest data:", updated,
-                     "\tPercent Positive:", tail(stateDataCleaned$percentPos, 1)),
+  labs(title = paste0("Latest data: ", updated,
+                     " \tPercent Positive: ", tail(stateDataCleaned$percentPos, 1), "%"),
        x="Date", y="Percent Positive")
 posGraph <- ggplotly(posGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
