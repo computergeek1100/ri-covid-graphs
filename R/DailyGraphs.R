@@ -92,9 +92,9 @@ ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
        x="Date", y="ICU/Ventilator")
 ICUGraph <- ggplotly(ICUGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-dailyDeathGraph <- ggplot(stateDataCleaned,aes(date), group=1, text=paste("Date: ", date,
+dailyDeathGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                           "<br>Deaths: ", dailyDeaths,
-                                                                          "<br>7-Day Average: ", Avg7Day_Deaths))+
+                                                                          "<br>7-Day Average: ", Avg7Day_Deaths)))+
   geom_col(aes(y=dailyDeaths))+
   geom_line(aes(y=Avg7Day_Deaths),color="blue")+
   labs(title = paste("Latest data:", updated,
