@@ -37,7 +37,9 @@ weeklyUpdated <- format(weeklyUpdated, "%B %d, %Y")
 cases100kGraph <- ggplot(rateDataCleaned,aes(weekEnding,casesPer100k, group=1, text=paste("Week Ending: ", weekEnding,
                                                                                  "<br>Cases per 100k: ", casesPer100k)))+
   geom_line(color="blue")+
-  labs(title=paste("Latest data: Week ending", weeklyUpdated), x="Week Ending", y = "Weekly Cases per 100,000 Residents")
+  labs(title=paste("Latest data: Week ending", weeklyUpdated,
+                   "\tCases per 100k:", tail(rateDataCleaned$casesPer100k, 1)),
+       x="Week Ending", y = "Weekly Cases per 100,000 Residents")
 cases100kGraph <- ggplotly(cases100kGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 htmlwidgets::saveWidget(cases100kGraph, file="../graphs/WEEKLY_100k.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title="weekly100k")
 }
