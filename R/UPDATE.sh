@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd /home/pi/ri-covid-graphs/R
+echo > /home/pi/ri-covid-graphs/log.txt
 
-echo > log.txt
+cd /home/pi/ri-covid-graphs/R
 
 git fetch ri-covid-graphs gh-pages
 
