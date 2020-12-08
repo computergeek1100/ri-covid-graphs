@@ -60,14 +60,15 @@ case100kGraph <- ggplotly(case100kGraph,tooltip="text",dynamicTicks=TRUE,origina
 testGraph <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
   geom_col()+
   geom_line(aes(y=Avg7Day_Tests, text=paste("Date: ", date,
-                                            "<br>Positive Tests: ", Result$Positive,
-                                            "<br>Negative Tests: ", Result$Negative,
-                                            "<br>Total Tests: ", Total,
+                                            "<br>Positive Tests: ", numTests,
+                                            "<br>Negative Tests: ", total-numTests,
+                                            "<br>Total Tests: ", total,
                                             "<br>7-Day Average: ", Avg7Day_Tests)),color="blue")+
 labs(title = paste("Latest data:", updated,
                      "\tTests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
        x="Date", y="Tests Performed")
 testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+
 
 
 posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
