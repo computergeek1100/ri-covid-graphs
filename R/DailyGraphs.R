@@ -60,7 +60,9 @@ case100kGraph <- ggplotly(case100kGraph,tooltip="text",dynamicTicks=TRUE,origina
 testGraph <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
   geom_col()+
   geom_line(aes(y=Avg7Day_Tests, text=paste("Date: ", date,
-                                            "<br>Tests: ", total,
+                                            "<br>Positive Tests: ", Result$Positive,
+                                            "<br>Negative Tests: ", Result$Negative,
+                                            "<br>Total Tests: ", Total,
                                             "<br>7-Day Average: ", Avg7Day_Tests)),color="blue")+
 labs(title = paste("Latest data:", updated,
                      "\tTests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
