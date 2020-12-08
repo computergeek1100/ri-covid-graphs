@@ -19,7 +19,8 @@ stateDataCleaned <- stateData%>%
   select(date=1,tests=7,cases=9,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
-         Avg7Day_Cases = round((rollmean(cases,7,na.pad=TRUE, align="right")),0),
+         Avg7Day_Cases = round((rollmean(cases,7,na.pad=TRUE, align="right")) * (100000 / 1059361),0),
+         Last7Days_100k = round((rollsumr(cases, 7, fill=NA,align='right')),0),
          Avg7Day_Tests = round((rollmean(tests,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Pos = round((rollmean(percentPos,7,na.pad=TRUE,align="right")),1),
          Avg7Day_Hosp = round((rollmean(currentHosp,7,na.pad=TRUE,align="right")),0),
