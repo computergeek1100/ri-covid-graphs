@@ -19,8 +19,8 @@ stateDataCleaned <- stateData%>%
   select(date=1,tests=7,cases=9,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
-         Avg7Day_Cases = round((rollmean(cases,7,na.pad=TRUE, align="right")) * (100000 / 1059361),0),
-         Last7Days_100k = round((rollsumr(cases, 7, fill=NA,align='right')),0),
+         Avg7Day_Cases = round((rollmean(cases,7,na.pad=TRUE, align="right")), 0),
+         Last7Days_100k = round((rollsumr(cases, 7, fill=NA,align='right')) * (100000/1059361),0),
          Avg7Day_Tests = round((rollmean(tests,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Pos = round((rollmean(percentPos,7,na.pad=TRUE,align="right")),1),
          Avg7Day_Hosp = round((rollmean(currentHosp,7,na.pad=TRUE,align="right")),0),
@@ -42,6 +42,11 @@ caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", 
                      "\tCases Reported:", formatC((tail(stateDataCleaned$cases, 1)), format = "d", big.mark = ",")),
        x="Date", y = "Cases Reported")
 caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+
+case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date: ", date,
+                                                                       "<br>Cases per 100k (last 7 days): ", Last7Days_100k)))+
+                        geom_line(color="blue")
+case100kGraph <- ggplotly(case100kGraph,tooltip="text",dynamicTicks=TRUE,originalData=FALSE)%>%config(displayModeBar=FALSE)
 
 testGraph <- ggplot(stateDataCleaned, aes(date, group=1, text=paste("Date: ", date,
                                                                   "<br>Tests: ", tests,
@@ -103,10 +108,11 @@ dailyDeathGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: 
        x="Date", y="Deaths Reported")
 dailyDeathGraph <- ggplotly(dailyDeathGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-htmlwidgets::saveWidget(caseGraph, file="../graphs/DAILY_cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')
-htmlwidgets::saveWidget(testGraph, file="../graphs/DAILY_tests.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailytests')
-htmlwidgets::saveWidget(posGraph,file="../graphs/DAILY_pos.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailypos')
-htmlwidgets::saveWidget(hospGraph,file="../graphs/DAILY_hosp.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyhosp')
-htmlwidgets::saveWidget(ICUGraph,file="../graphs/DAILY_ICU.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyicu')
-htmlwidgets::saveWidget(dailyDeathGraph,file="../graphs/DAILY_deaths.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailydeaths')
+htmlwidgets::saveWidget(caseGraph, file="../graphs/cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')
+htmlwidgets::saveWidget(case100kGraph, file="../graphs/cases100k.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='cases100k')
+htmlwidgets::saveWidget(testGraph, file="../graphs/tests.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailytests')
+htmlwidgets::saveWidget(posGraph,file="../graphs/pos.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailypos')
+htmlwidgets::saveWidget(hospGraph,file="../graphs/hosp.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyhosp')
+htmlwidgets::saveWidget(ICUGraph,file="../graphs/ICU.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyicu')
+htmlwidgets::saveWidget(dailyDeathGraph,file="../graphs/deaths.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailydeaths')
 }
