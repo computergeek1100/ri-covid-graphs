@@ -43,8 +43,8 @@ caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", 
        x="Date", y = "Cases Reported")
 caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date: ", date,
-                                                                       "<br>Cases per 100k (last 7 days): ", Last7Days_100k)))+
+case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date:", date,
+                                                                       "<br>Cases per 100k (last 7 days):", Last7Days_100k)))+
                         geom_line(color="blue")+
   labs(title = paste("Latest data:", updated,
                      "\tCases per 100,000 (last 7 days):",formatC((tail(stateDataCleaned$Last7Days_100k, 1)), format = "d", big.mark = ",")),
