@@ -23,7 +23,7 @@ stateDataCleaned <- stateData%>%
          Last7Days_100k = round((rollsumr(cases, 7, fill=NA,align='right')) * (100000/1059361),0),
          Avg7Day_Tests = round((rollmean(tests,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Pos = round((rollmean(percentPos,7,na.pad=TRUE,align="right")),1),
-         Avg7Day_Adm = round((rollmean(admissions,7,na.pad=TRUE,align=right)),0),
+         Avg7Day_Adm = round((rollmean(admissions,7,na.pad=TRUE,align='right')),0),
          Avg7Day_Hosp = round((rollmean(currentHosp,7,na.pad=TRUE,align="right")),0),
          Avg7Day_ICU = round((rollmean(ICU,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Vent = round((rollmean(vent,7,na.pad=TRUE,align="right")),0),
@@ -84,11 +84,16 @@ posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date
        x="Date", y="Percent Positive")
 posGraph <- ggplotly(posGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-admissionGraph <- ggplot(stateDataCleaned,aes(date,admissions, group=1, text=paste("Date: ", date,
+admissionGraph <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date: ", date,
                                                                                    "<br>Admissions: ", admissions,
-                                                                                   "7-Day Average: ", Avg7Day_Adm)))+
-  geom_col()+
-  labs(title=paste("Latest data:", updated, "\tHospital Admissions:", tail(stateDataCleaned$admissions, 1)))
+                                                                                   "<br>7-Day Average: ", Avg7Day_Adm)))+
+  geom_col(aes(y=admissions))+
+  geom_line(aes(y=Avg7Day_Adm),color='blue')+
+  labs(title=paste("Latest data:", updated,
+                   "\tHospital Admissions:", stateDataCleaned$admissions[nrow(stateDataCleaned) - 1]),
+       x="Date", y="New Hospital Admissions")
+admissionGraph <- ggplotly(admissionGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+
 
 hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                    "<br>Hospitalized: ", currentHosp,
@@ -134,6 +139,7 @@ htmlwidgets::saveWidget(caseGraph, file="../graphs/cases.html",selfcontained=FAL
 htmlwidgets::saveWidget(case100kGraph, file="../graphs/cases100k.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='cases100k')
 htmlwidgets::saveWidget(testGraph, file="../graphs/tests.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailytests')
 htmlwidgets::saveWidget(posGraph,file="../graphs/pos.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailypos')
+htmlwidgets::saveWidget(admissionGraph,file="../graphs/admissions.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='admissions')
 htmlwidgets::saveWidget(hospGraph,file="../graphs/hosp.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyhosp')
 htmlwidgets::saveWidget(ICUGraph,file="../graphs/ICU.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyicu')
 htmlwidgets::saveWidget(dailyDeathGraph,file="../graphs/deaths.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailydeaths')
