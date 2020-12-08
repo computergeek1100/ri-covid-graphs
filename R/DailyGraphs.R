@@ -46,6 +46,8 @@ caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=F
 case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date:", date,
                                                                        "<br>Cases per 100k (last 7 days):", Last7Days_100k)))+
                         geom_line(color="blue")+
+  geom_segment(x=head(stateDataCleaned$date, 1), y = 100, xend = tail(stateDataCleaned$date, 1), yend=100, color="red")+
+  geom_text(aes(x=date[116],y=100, label = "100 Cases per 100k"), color = 'red', size = 5,nudge_y=15)+
   labs(title = paste("Latest data:", updated,
                      "\tCases per 100,000 (last 7 days):",formatC((tail(stateDataCleaned$Last7Days_100k, 1)), format = "d", big.mark = ",")),
        x="Date", y="Cases per 100,000 (Last 7 days)")
@@ -56,7 +58,7 @@ testGraph <- ggplot(stateDataCleaned, aes(date, group=1, text=paste("Date: ", da
                                                                   "<br>7-Day Average: ", Avg7Day_Tests)))+
   geom_col(aes(y=tests))+
   geom_line(aes(y=Avg7Day_Tests),color="blue")+
-  labs(title = paste("Latest data:", updated,
+labs(title = paste("Latest data:", updated,
                      "\tTests Performed:",formatC((tail(stateDataCleaned$tests, 1)), format = "d", big.mark = ",")),
        x="Date", y="Tests Performed")
 testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
@@ -66,6 +68,8 @@ posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date
                                                                   "<br>7-Day Average: ", Avg7Day_Pos)))+
   geom_col(aes(y=percentPos))+
   geom_line(aes(y=Avg7Day_Pos),color="blue")+
+  geom_segment(x=head(stateDataCleaned$date, 1), y = 5, xend = tail(stateDataCleaned$date, 1), yend=5, color="red")+
+  geom_text(aes(x=date[116],y=5, label = "5% Positive"), color = 'red', size = 5,nudge_y=0.5)+
   labs(title = paste0("Latest data: ", updated,
                      " \tPercent Positive: ", tail(stateDataCleaned$percentPos, 1), "%"),
        x="Date", y="Percent Positive")
