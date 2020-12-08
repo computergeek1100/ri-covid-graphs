@@ -16,13 +16,14 @@ if(identical(stateDataPrev,stateData)){
 }else {
 saveRDS(stateData, "prev/prevState.rds")
 stateDataCleaned <- stateData%>%
-  select(date=1,posTest=2, negTest=5,tests=7,cases=9,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
+  select(date=1,posTest=2, negTest=5,tests=7,cases=9,admissions=15,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
          Avg7Day_Cases = round((rollmean(cases,7,na.pad=TRUE, align="right")), 0),
          Last7Days_100k = round((rollsumr(cases, 7, fill=NA,align='right')) * (100000/1059361),0),
          Avg7Day_Tests = round((rollmean(tests,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Pos = round((rollmean(percentPos,7,na.pad=TRUE,align="right")),1),
+         Avg7Day_Adm = round((rollmean(admissions,7,na.pad=TRUE,align=right)),0),
          Avg7Day_Hosp = round((rollmean(currentHosp,7,na.pad=TRUE,align="right")),0),
          Avg7Day_ICU = round((rollmean(ICU,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Vent = round((rollmean(vent,7,na.pad=TRUE,align="right")),0),
@@ -82,6 +83,12 @@ posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date
                      " \tPercent Positive: ", tail(stateDataCleaned$percentPos, 1), "%"),
        x="Date", y="Percent Positive")
 posGraph <- ggplotly(posGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+
+admissionGraph <- ggplot(stateDataCleaned,aes(date,admissions, group=1, text=paste("Date: ", date,
+                                                                                   "<br>Admissions: ", admissions,
+                                                                                   "7-Day Average: ", Avg7Day_Adm)))+
+  geom_col()+
+  labs(title=paste("Latest data:", updated, "\tHospital Admissions:", tail(stateDataCleaned$admissions, 1)))
 
 hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                    "<br>Hospitalized: ", currentHosp,
