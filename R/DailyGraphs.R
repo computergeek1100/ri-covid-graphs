@@ -16,7 +16,7 @@ if(identical(stateDataPrev,stateData)){
 }else {
 saveRDS(stateData, "prev/prevState.rds")
 stateDataCleaned <- stateData%>%
-  select(date=1,tests=7,cases=9,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
+  select(date=1,posTest=2, negTest=5,tests=7,cases=9,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
          Avg7Day_Cases = round((rollmean(cases,7,na.pad=TRUE, align="right")), 0),
@@ -28,6 +28,10 @@ stateDataCleaned <- stateData%>%
          Avg7Day_Vent = round((rollmean(vent,7,na.pad=TRUE,align="right")),0),
          Avg7Day_Deaths = round((rollmean(dailyDeaths,7,na.pad=TRUE,align="right")),0))
 
+testData <- stateDataCleaned%>%
+  select(date,Positive=posTest,Negative=negTest,Avg7Day_Tests,total=tests)%>%
+  pivot_longer(c(Positive,Negative), names_to="Result",values_to="numTests")
+  
 updated <- tail(stateDataCleaned$date, 1) # get last row of data frame for most recent data
 updated <- format(updated, "%B %d, %Y")
 hospUpdated <- stateDataCleaned$date[nrow(stateDataCleaned) - 1]
@@ -53,15 +57,16 @@ case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1,
        x="Date", y="Cases per 100,000 (Last 7 days)")
 case100kGraph <- ggplotly(case100kGraph,tooltip="text",dynamicTicks=TRUE,originalData=FALSE)%>%config(displayModeBar=FALSE)
 
-testGraph <- ggplot(stateDataCleaned, aes(date, group=1, text=paste("Date: ", date,
-                                                                  "<br>Tests: ", tests,
-                                                                  "<br>7-Day Average: ", Avg7Day_Tests)))+
-  geom_col(aes(y=tests))+
-  geom_line(aes(y=Avg7Day_Tests),color="blue")+
+testGraph <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
+  geom_col()+
+  geom_line(aes(y=Avg7Day_Tests, text=paste("Date: ", date,
+                                            "<br>Tests: ", total,
+                                            "<br>7-Day Average: ", Avg7Day_Tests)),color="blue")+
 labs(title = paste("Latest data:", updated,
-                     "\tTests Performed:",formatC((tail(stateDataCleaned$tests, 1)), format = "d", big.mark = ",")),
+                     "\tTests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
        x="Date", y="Tests Performed")
 testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+
 
 posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                   "<br>Percent Pos.: ", percentPos,
