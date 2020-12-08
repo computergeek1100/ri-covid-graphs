@@ -46,7 +46,9 @@ caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", 
   labs(title = paste("Latest data:", updated,
                      "\tCases Reported:", formatC((tail(stateDataCleaned$cases, 1)), format = "d", big.mark = ",")),
        x="Date", y = "Cases Reported")
-caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+ layout(yaxis = list(rangemode="tozero"))
 
 case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date:", date,
                                                                        "<br>Cases per 100k (last 7 days):", Last7Days_100k)))+
@@ -56,7 +58,9 @@ case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1,
   labs(title = paste("Latest data:", updated,
                      "\tCases per 100,000 (last 7 days):",formatC((tail(stateDataCleaned$Last7Days_100k, 1)), format = "d", big.mark = ",")),
        x="Date", y="Cases per 100,000 (Last 7 days)")
-case100kGraph <- ggplotly(case100kGraph,tooltip="text",dynamicTicks=TRUE,originalData=FALSE)%>%config(displayModeBar=FALSE)
+case100kGraph <- ggplotly(case100kGraph,tooltip="text",dynamicTicks=TRUE,originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  layout(yaxis=list(rangemode="tozero"))
 
 testGraph <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
   geom_col()+
@@ -68,9 +72,9 @@ testGraph <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
 labs(title = paste("Latest data:", updated,
                      "\tTests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
        x="Date", y="Tests Performed")
-testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
-
-
+testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  layout(yaxis=list(rangemode="tozero"))
 
 posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                   "<br>Percent Pos.: ", percentPos,
@@ -92,7 +96,9 @@ admissionGraph <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date:
   labs(title=paste("Latest data:", updated,
                    "\tHospital Admissions:", stateDataCleaned$admissions[nrow(stateDataCleaned) - 1]),
        x="Date", y="New Hospital Admissions")
-admissionGraph <- ggplotly(admissionGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+admissionGraph <- ggplotly(admissionGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  layout(yaxis=list(rangemode="tozero"))
 
 
 hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
@@ -103,7 +109,9 @@ hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", dat
   labs(title = paste("Latest data:", hospUpdated,
                      "\tHospitalized:", stateDataCleaned$currentHosp[nrow(stateDataCleaned) - 1]),
        x="Date", y="Hospitalized")
-hospGraph <- ggplotly(hospGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+hospGraph <- ggplotly(hospGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  layout(yaxis=list(rangemode="tozero"))
 
 ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
   geom_col(aes(y=ICU,fill="ICU", text=paste("Date: ", date,
@@ -123,7 +131,9 @@ ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
                      "\tICU:", stateDataCleaned$ICU[nrow(stateDataCleaned) - 1],
                      "\tVentilator:", stateDataCleaned$vent[nrow(stateDataCleaned) - 1]),
        x="Date", y="ICU/Ventilator")
-ICUGraph <- ggplotly(ICUGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+ICUGraph <- ggplotly(ICUGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  layout(yaxis=list(rangemode="tozero"))
 
 dailyDeathGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                           "<br>Deaths: ", dailyDeaths,
@@ -133,7 +143,9 @@ dailyDeathGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: 
   labs(title = paste("Latest data:", updated,
                      "\tDeaths:", tail(stateDataCleaned$dailyDeaths, 1)),
        x="Date", y="Deaths Reported")
-dailyDeathGraph <- ggplotly(dailyDeathGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+dailyDeathGraph <- ggplotly(dailyDeathGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  layout(yaxis=list(rangemode="tozero"))
 
 htmlwidgets::saveWidget(caseGraph, file="../graphs/cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')
 htmlwidgets::saveWidget(case100kGraph, file="../graphs/cases100k.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='cases100k')
