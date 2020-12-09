@@ -86,7 +86,9 @@ posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date
   labs(title = paste0("Latest data: ", updated,
                      " \tPercent Positive: ", tail(stateDataCleaned$percentPos, 1), "%"),
        x="Date", y="Percent Positive")
-posGraph <- ggplotly(posGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%config(displayModeBar=FALSE)
+posGraph <- ggplotly(posGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+  config(displayModeBar=FALSE)%>%
+  layout(yaxis=list(rangemode="tozero"))
 
 admissionGraph <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date: ", date,
                                                                                    "<br>Admissions: ", admissions,
