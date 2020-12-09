@@ -95,7 +95,7 @@ admissionGraph <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date:
                                                                                    "<br>7-Day Average: ", Avg7Day_Adm)))+
   geom_col(aes(y=admissions))+
   geom_line(aes(y=Avg7Day_Adm),color='blue')+
-  labs(title=paste("Latest data:", updated,
+  labs(title=paste("Latest data:", hospUpdated,
                    "\tHospital Admissions:", stateDataCleaned$admissions[nrow(stateDataCleaned) - 1]),
        x="Date", y="New Hospital Admissions")
 admissionGraph <- ggplotly(admissionGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
