@@ -16,7 +16,7 @@ if(identical(stateDataPrev,stateData)){
 }else {
 saveRDS(stateData, "prev/prevState.rds")
 stateDataCleaned <- stateData%>%
-  select(date=1,posTest=2, negTest=5,tests=7,cases=9,admissions=15,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
+  select(date=1,posTest=2, negTest=5,tests=7,cases=9,admissions=15,discharges=17,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
          Avg7Day_Cases = round((rollmean(cases,7,na.pad=TRUE, align="right")), 0),
@@ -32,7 +32,12 @@ stateDataCleaned <- stateData%>%
 testData <- stateDataCleaned%>%
   select(date,Positive=posTest,Negative=negTest,Avg7Day_Tests,total=tests)%>%
   pivot_longer(c(Positive,Negative), names_to="Result",values_to="numTests")
-  
+
+admissionsData <- stateDataCleaned%>%
+  select(date,admissions,discharges)%>%
+  mutate(negDis = -1 * discharges,
+         net = admissions-discharges)
+         
 updated <- tail(stateDataCleaned$date, 1) # get last row of data frame for most recent data
 updated <- format(updated, "%B %d, %Y")
 hospUpdated <- stateDataCleaned$date[nrow(stateDataCleaned) - 1]
