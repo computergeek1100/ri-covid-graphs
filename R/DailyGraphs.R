@@ -100,6 +100,8 @@ admissionGraph <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date:
                                                                                    "<br>7-Day Average: ", Avg7Day_Adm)))+
   geom_col(aes(y=admissions))+
   geom_line(aes(y=Avg7Day_Adm),color='blue')+
+  geom_segment(x=head(stateDataCleaned$date, 1), y = 30, xend = (tail(stateDataCleaned$date, 1) - 1), yend=30, color="red")+
+  geom_text(aes(x=date[116],y=30, label = "30 Admissions per Day (210 per week)"), color = 'red', size = 5,nudge_y=2)+
   labs(title=paste("Latest data:", hospUpdated,
                    "\tHospital Admissions:", stateDataCleaned$admissions[nrow(stateDataCleaned) - 1]),
        x="Date", y="New Hospital Admissions")
