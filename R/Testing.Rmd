@@ -1,0 +1,97 @@
+---
+title: "test"
+author: "/u/computergeek1100"
+date: "12/8/2020"
+output: html_document
+---
+
+##Load Libraries
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(zoo)
+library(rvest)
+library(RSelenium)
+```
+
+## Graph of daily tests, shaded by pos/neg
+```{r}
+testData <- stateData%>%
+  select(date=1,Positive=2,Negative=5)%>%
+  pivot_longer(c(Positive,Negative), names_to="Result",values_to="numTests")
+```
+```{r}
+ggplot(testData,aes(date,numTests,fill=Result))+
+  geom_col()
+```
+
+## Positivity Comparison
+```{r}
+PercentPosMethods <- stateData%>%
+  select(date=1, m1_pos=2,m2_pos=9,m3_neg=12,total_tests=7)%>%
+  mutate(m1_rate = (m1_pos / total_tests) * 100)%>%
+  mutate(m2_rate = (m2_pos / total_tests) * 100)%>%
+  mutate(m3_rate = (m2_pos / (m2_pos + m3_neg)) * 100)%>%
+  pivot_longer(cols=c(m1_rate, m2_rate, m3_rate), names_to = "method", values_to="percentPos")
+```
+
+```{r}
+ggplot(PercentPosMethods, aes(date, percentPos, color=method))+
+  geom_line()+
+  scale_color_discrete(name="",labels=c("Method 1 (Total Cases)", "Method 2 (Total People)", "Method 3 (First-Time Tests Only)"))+
+  theme(legend.position="bottom")+
+  labs(title="Methods to Calculate Test Positivity")
+```
+
+## Net Admissions/Discharges
+```{r}
+ggplot(admissionsData, aes(x=date))+geom_col(aes(y=admissions))+geom_col(aes(y=negDis))+geom_line(aes(y=net))
+```
+
+##Web Scraping (Vaccination Data)
+```{r message=FALSE, warning=FALSE}
+rD = rsDriver(browser='phantomjs')
+```
+
+```{r}
+remDr$open()
+remDr$navigate("https://datastudio.google.com/u/0/reporting/72a35680-e3a8-45c1-8389-2e2f0dbad08c/page/3ztgB")
+```
+
+```{r}
+totalVax <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[38]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
+totalVax <- totalVax$getElementText()[[1]]
+
+dateUpdated_vax <- remDr$findElement(using="xpath",'/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[22]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div/div')
+dateUpdated_vax <- dateUpdated_vax$getElementText()[[1]]
+
+vaxVector <- c(dateUpdated_vax, totalVax)
+vaxData <- rbind(vaxData, vaxVector)
+
+vaxDataCleaned <- vaxData
+
+vaxDataCleaned$date <- as.Date(vaxDataCleaned$date, format="%b %d, %Y")-1
+vaxDataCleaned$totalVaccinated <- as.numeric(gsub(",","",vaxDataCleaned$totalVaccinated))
+vaxDataCleaned <- vaxDataCleaned %>% 
+  mutate(vaxDaily = totalVaccinated - lag(totalVaccinated))
+```
+
+```{r}
+ggplot(vaxDataCleaned, aes(date, vaxDaily))+geom_col()+labs(title="People vaccinated per day\n(Mondays include weekend data)")
+```
+
+```{r}
+vaxData <- vaxData[-c(5), ] # remove rows added during testing
+vaxDataCleaned <- vaxDataCleaned[-c(5), ] # remove rows added during testing
+
+```
+
+```{r}
+vaxData <- data.frame(date=c("Dec 17, 2020", "Dec 18, 2020", "Dec 21, 2020", "Dec 22, 2020"), totalVaccinated=c("0", "1,226","4,827","6,400")) # initialize original df in case of issues
+```
+
+```{r}
+remDr$quit() 
+remDr$errorDetails()
+rD$server$stop()
+```
+
