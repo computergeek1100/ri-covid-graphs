@@ -1,7 +1,7 @@
 
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-   e9b7878..4761aad  gh-pages   -> ri-covid-graphs/gh-pages
+   4761aad..da9605d  gh-pages   -> ri-covid-graphs/gh-pages
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
 Already up to date.
@@ -35,20 +35,7 @@ The following objects are masked from ‘package:base’:
 
     as.Date, as.Date.numeric
 
-Error: Client error: (429) RESOURCE_EXHAUSTED
-  * Either out of resource quota or reaching rate limiting. The client should look for google.rpc.QuotaFailure error detail for more information.
-  * Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute' of service 'sheets.googleapis.com' for consumer 'project_number:603366585132'.
-
-Error details:
-  * Error details of type 'google.rpc.ErrorInfo' are not implemented yet.
-  * Workaround: use `tryCatch()` and inspect error payload yourself.
-  * Please open an issue at https://github.com/r-lib/gargle/issues, so we can fix.
-Backtrace:
-    █
- 1. └─googlesheets4::read_sheet(...)
- 2.   └─googlesheets4:::get_cells(...)
- 3.     └─googlesheets4::gs4_get(ssid)
- 4.       └─googlesheets4:::gs4_get_impl_(as_sheets_id(ss))
- 5.         └─gargle::response_process(raw_resp)
- 6.           └─gargle:::stop_request_failed(error_message(resp), resp)
+Reading from "COVID-19 Rhode Island Data"
+Range "'Trends'"
+Error: Graphs already up to date
 Execution halted
