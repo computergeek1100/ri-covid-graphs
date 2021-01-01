@@ -1,10 +1,6 @@
 
-From https://github.com/computergeek1100/ri-covid-graphs
- * branch            gh-pages   -> FETCH_HEAD
-   dfb4ef9..5b7c818  gh-pages   -> ri-covid-graphs/gh-pages
-From https://github.com/computergeek1100/ri-covid-graphs
- * branch            gh-pages   -> FETCH_HEAD
-Already up to date.
+fatal: unable to access 'https://github.com/computergeek1100/ri-covid-graphs.git/': gnutls_handshake() failed: Error in the pull function.
+fatal: unable to access 'https://github.com/computergeek1100/ri-covid-graphs.git/': gnutls_handshake() failed: Error in the pull function.
 ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
 ✔ ggplot2 3.3.2     ✔ purrr   0.3.4
 ✔ tibble  3.0.4     ✔ dplyr   1.0.2
@@ -35,7 +31,7 @@ The following objects are masked from ‘package:base’:
 
     as.Date, as.Date.numeric
 
-Reading from "COVID-19 Rhode Island Data"
-Range "'Trends'"
-Error: Graphs already up to date
+Error in curl::curl_fetch_memory(url, handle = handle) : 
+  Timeout was reached: [sheets.googleapis.com] Operation timed out after 10001 milliseconds with 0 out of 0 bytes received
+Calls: read_sheet ... request_fetch -> request_fetch.write_memory -> <Anonymous>
 Execution halted
