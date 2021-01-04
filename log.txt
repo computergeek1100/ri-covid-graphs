@@ -1,12 +1,10 @@
 
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-   5b7c818..b77fe9a  gh-pages   -> ri-covid-graphs/gh-pages
+   b77fe9a..7400b70  gh-pages   -> ri-covid-graphs/gh-pages
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-Merge made by the 'recursive' strategy.
- index.html | 1 +
- 1 file changed, 1 insertion(+)
+Already up to date.
 ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
 ✔ ggplot2 3.3.2     ✔ purrr   0.3.4
 ✔ tibble  3.0.4     ✔ dplyr   1.0.2
