@@ -66,25 +66,30 @@ remDr$navigate("https://datastudio.google.com/u/0/reporting/72a35680-e3a8-45c1-8
 ```
 
 ```{r}
-totalVax <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[38]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
-totalVax <- totalVax$getElementText()[[1]]
+totalDose1 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[38]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
+totalDose1 <- totalDose1$getElementText()[[1]]
+
+totalDose2 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[41]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
+totalDose2 <- totalDose2$getElementText()[[1]]
 
 dateUpdated_vax <- remDr$findElement(using="xpath",'/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[22]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div/div')
 dateUpdated_vax <- dateUpdated_vax$getElementText()[[1]]
 
-vaxVector <- c(dateUpdated_vax, totalVax)
+vaxVector <- c(dateUpdated_vax, totalDose1, totalDose2)
 vaxData <- rbind(vaxData, vaxVector)
 
 vaxDataCleaned <- vaxData
 
 vaxDataCleaned$date <- as.Date(vaxDataCleaned$date, format="%b %d, %Y")
-vaxDataCleaned$totalVaccinated <- as.numeric(gsub(",","",vaxDataCleaned$totalVaccinated))
+vaxDataCleaned$totalDose1 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose1))
+vaxDataCleaned$totalDose2 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose2))
 vaxDataCleaned <- vaxDataCleaned %>% 
-  mutate(vaxDaily = totalVaccinated - lag(totalVaccinated))
+  mutate(dose1PriorDay = totalDose1 - lag(totalDose1),
+         dose2PriorDay = totalDose2 - lag(totalDose2))
 ```
 
 ```{r}
-ggplot(vaxDataCleaned, aes(date, vaxDaily))+geom_col()+labs(title="People vaccinated per day\n(Mondays include weekend data)")
+ggplot(vaxDataCleaned, aes(date, dose1PriorDay))+geom_col()+labs(title="People vaccinated per day (First Dose Only)\nMondays include weekend data")
 ```
 
 ```{r}
@@ -94,7 +99,7 @@ vaxDataCleaned <- vaxDataCleaned[-c(5), ] # remove rows added during testing
 ```
 
 ```{r}
-vaxData <- data.frame(date=c("Dec 17, 2020", "Dec 18, 2020", "Dec 21, 2020", "Dec 22, 2020", "Dec 23, 2020", "Dec 28, 2020", "Dec 29, 2020", "Dec 30, 2020"), totalVaccinated=c("0", "1,226","4,827","6,400","7,072","11,935", "12,869","17,020")) # initialize original df in case of issues
+vaxData <- data.frame(date=c("Dec 17, 2020", "Dec 18, 2020", "Dec 21, 2020", "Dec 22, 2020", "Dec 23, 2020", "Dec 28, 2020", "Dec 29, 2020", "Dec 30, 2020"), totalDose1=c("0", "1,226","4,827","6,400","7,072","11,935", "12,869","17,020"), totalDose2=c("0","0","0","0","0","0","0","0")) # initialize original df in case of issues
 ```
 
 ```{r}
