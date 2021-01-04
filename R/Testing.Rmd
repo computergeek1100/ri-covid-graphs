@@ -49,10 +49,18 @@ ggplot(admissionsData, aes(x=date))+geom_col(aes(y=admissions))+geom_col(aes(y=n
 
 ##Web Scraping (Vaccination Data)
 ```{r message=FALSE, warning=FALSE}
-rD = rsDriver(browser='phantomjs')
+rD <- RSelenium::rsDriver(
+  browser = "firefox",
+  extraCapabilities = list(
+    "moz:firefoxOptions" = list(
+      args = list('-p webscrape','--headless')
+    )
+  )
+)
 ```
 
 ```{r}
+remDr <- rD$client
 remDr$open()
 remDr$navigate("https://datastudio.google.com/u/0/reporting/72a35680-e3a8-45c1-8389-2e2f0dbad08c/page/3ztgB")
 ```
@@ -69,7 +77,7 @@ vaxData <- rbind(vaxData, vaxVector)
 
 vaxDataCleaned <- vaxData
 
-vaxDataCleaned$date <- as.Date(vaxDataCleaned$date, format="%b %d, %Y")-1
+vaxDataCleaned$date <- as.Date(vaxDataCleaned$date, format="%b %d, %Y")
 vaxDataCleaned$totalVaccinated <- as.numeric(gsub(",","",vaxDataCleaned$totalVaccinated))
 vaxDataCleaned <- vaxDataCleaned %>% 
   mutate(vaxDaily = totalVaccinated - lag(totalVaccinated))
@@ -86,11 +94,11 @@ vaxDataCleaned <- vaxDataCleaned[-c(5), ] # remove rows added during testing
 ```
 
 ```{r}
-vaxData <- data.frame(date=c("Dec 17, 2020", "Dec 18, 2020", "Dec 21, 2020", "Dec 22, 2020"), totalVaccinated=c("0", "1,226","4,827","6,400")) # initialize original df in case of issues
+vaxData <- data.frame(date=c("Dec 17, 2020", "Dec 18, 2020", "Dec 21, 2020", "Dec 22, 2020", "Dec 23, 2020", "Dec 28, 2020", "Dec 29, 2020", "Dec 30, 2020"), totalVaccinated=c("0", "1,226","4,827","6,400","7,072","11,935", "12,869","17,020")) # initialize original df in case of issues
 ```
 
 ```{r}
-remDr$quit() 
+remDr$close()
 remDr$errorDetails()
 rD$server$stop()
 ```
