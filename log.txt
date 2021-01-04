@@ -1,7 +1,7 @@
 
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-   75f5005..f2fb88a  gh-pages   -> ri-covid-graphs/gh-pages
+   f2fb88a..2d04d24  gh-pages   -> ri-covid-graphs/gh-pages
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
 Already up to date.
@@ -37,5 +37,18 @@ The following objects are masked from ‘package:base’:
 
 Reading from "COVID-19 Rhode Island Data"
 Range "'Trends'"
-Error: Graphs already up to date
-Execution halted
+Warning messages:
+1: `group_by_()` is deprecated as of dplyr 0.7.0.
+Please use `group_by()` instead.
+See vignette('programming') for more help
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated. 
+2: Ignoring unknown aesthetics: text 
+3: Removed 1 rows containing missing values (position_stack). 
+4: Removed 1 rows containing missing values (position_stack). 
+5: Ignoring unknown aesthetics: text 
+6: Ignoring unknown aesthetics: text 
+7: Ignoring unknown aesthetics: text 
+8: Ignoring unknown aesthetics: text 
+9: Removed 1 rows containing missing values (position_stack). 
+10: Removed 1 rows containing missing values (position_stack). 
