@@ -1,7 +1,7 @@
 
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-   2d04d24..fc3037f  gh-pages   -> ri-covid-graphs/gh-pages
+   fc3037f..17ee550  gh-pages   -> ri-covid-graphs/gh-pages
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
 Already up to date.
