@@ -1,11 +1,1 @@
 
-From https://github.com/computergeek1100/ri-covid-graphs
- * branch            gh-pages   -> FETCH_HEAD
-   0b0a082..3d1cd69  gh-pages   -> ri-covid-graphs/gh-pages
-From https://github.com/computergeek1100/ri-covid-graphs
- * branch            gh-pages   -> FETCH_HEAD
-Updating 7aeb984..3d1cd69
-Fast-forward
- R/Testing.Rmd | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
-/home/pi/ri-covid-graphs/R/UPDATE.sh: line 11: Rscript: command not found
