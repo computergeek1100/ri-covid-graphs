@@ -53,7 +53,7 @@ caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", 
        x="Date", y = "Cases Reported")
 caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
   config(displayModeBar=FALSE)%>%
- layout(yaxis = list(rangemode="tozero"))
+  layout(yaxis = list(rangemode="tozero"))
 
 case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date:", date,
                                                                        "<br>Cases per 100k (last 7 days):", Last7Days_100k)))+
