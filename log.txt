@@ -1,14 +1,8 @@
 
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-   4702e71..8a2f01d  gh-pages   -> ri-covid-graphs/gh-pages
+   8a2f01d..776a8d1  gh-pages   -> ri-covid-graphs/gh-pages
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-Updating 714938b..8a2f01d
-Fast-forward
- R/DailyGraphs.R                                  |   2 +-
- graphs/cases.html                                |   8 +-
- graphs/plotlyJS/plotly-binding-4.9.2.1/plotly.js | 935 +++++++++++++++++++++++
- 3 files changed, 940 insertions(+), 5 deletions(-)
- create mode 100644 graphs/plotlyJS/plotly-binding-4.9.2.1/plotly.js
+Already up to date.
 /home/pi/ri-covid-graphs/R/UPDATE.sh: line 11: Rscript: command not found
