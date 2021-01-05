@@ -1,1 +1,8 @@
 
+From https://github.com/computergeek1100/ri-covid-graphs
+ * branch            gh-pages   -> FETCH_HEAD
+   20e70b7..65c0457  gh-pages   -> ri-covid-graphs/gh-pages
+From https://github.com/computergeek1100/ri-covid-graphs
+ * branch            gh-pages   -> FETCH_HEAD
+Already up to date.
+/home/pi/ri-covid-graphs/R/UPDATE.sh: line 11: Rscript: command not found
