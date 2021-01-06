@@ -59,7 +59,7 @@ case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1,
                                                                        "<br>Cases per 100k (last 7 days):", Last7Days_100k)))+
                         geom_line(color="blue")+
   geom_segment(x=head(stateDataCleaned$date, 1), y = 100, xend = tail(stateDataCleaned$date, 1), yend=100, color="red")+
-  geom_text(aes(x=date[116],y=100, label = "100 Cases per 100k"), color = 'red', size = 5,nudge_y=15)+
+  annotate("text", x=stateDataCleaned$date[116],y=115, label = "100 Cases per 100k", color = 'red', size = 5)+
   labs(title = paste("Latest data:", updated,
                      "\tCases per 100,000 (last 7 days):",formatC((tail(stateDataCleaned$Last7Days_100k, 1)), format = "d", big.mark = ",")),
        x="Date", y="Cases per 100,000 (Last 7 days)")
@@ -87,7 +87,7 @@ posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date
   geom_col(aes(y=percentPos))+
   geom_line(aes(y=Avg7Day_Pos),color="blue")+
   geom_segment(x=head(stateDataCleaned$date, 1), y = 5, xend = tail(stateDataCleaned$date, 1), yend=5, color="red")+
-  geom_text(aes(x=date[116],y=5, label = "5% Positive"), color = 'red', size = 5,nudge_y=0.5)+
+  annotate("text", x=stateDataCleaned$date[116],y=5.5, label = "5% Positive", color = 'red', size = 5)+
   labs(title = paste0("Latest data: ", updated,
                      " \tPercent Positive: ", tail(stateDataCleaned$percentPos, 1), "%"),
        x="Date", y="Percent Positive")
@@ -101,7 +101,7 @@ admissionGraph <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date:
   geom_col(aes(y=admissions))+
   geom_line(aes(y=Avg7Day_Adm),color='blue')+
   geom_segment(x=head(stateDataCleaned$date, 1), y = 30, xend = (tail(stateDataCleaned$date, 1) - 1), yend=30, color="red")+
-  geom_text(aes(x=date[116],y=30, label = "30 Admissions per Day (210 per week)"), color = 'red', size = 5,nudge_y=2)+
+  annotate("text", x=stateDataCleaned$date[116],y=32, label = "30 Admissions per Day (210 per week)", color = 'red', size = 5)+
   labs(title=paste("Latest data:", hospUpdated,
                    "\tHospital Admissions:", stateDataCleaned$admissions[nrow(stateDataCleaned) - 1]),
        x="Date", y="New Hospital Admissions")
