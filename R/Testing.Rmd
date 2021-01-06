@@ -66,10 +66,10 @@ remDr$navigate("https://datastudio.google.com/u/0/reporting/72a35680-e3a8-45c1-8
 ```
 
 ```{r}
-totalDose1 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[38]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
+totalDose1 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[36]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
 totalDose1 <- totalDose1$getElementText()[[1]]
 
-totalDose2 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[41]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
+totalDose2 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[39]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
 totalDose2 <- totalDose2$getElementText()[[1]]
 
 dateUpdated_vax <- remDr$findElement(using="xpath",'/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[22]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div/div')
@@ -104,7 +104,7 @@ vaxData <- data.frame(date=c("Dec 17, 2020", "Dec 18, 2020", "Dec 21, 2020", "De
 
 ```{r}
 remDr$close()
-remDr$errorDetails()
+# remDr$errorDetails()
 rD$server$stop()
 ```
 
