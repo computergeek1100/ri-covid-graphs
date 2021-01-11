@@ -1,7 +1,7 @@
 
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-   d637ac9..e8025be  gh-pages   -> ri-covid-graphs/gh-pages
+   e8025be..7a502f1  gh-pages   -> ri-covid-graphs/gh-pages
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
 Already up to date.
@@ -39,7 +39,3 @@ Reading from "COVID-19 Rhode Island Data"
 Range "'Trends'"
 Error: Graphs already up to date
 Execution halted
-[gh-pages 2cfe76c] Graph update
- 1 file changed, 40 insertions(+)
-To https://github.com/computergeek1100/ri-covid-graphs.git
-   e8025be..2cfe76c  gh-pages -> gh-pages
