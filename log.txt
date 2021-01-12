@@ -1,7 +1,7 @@
 
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-   f704edb..31f9dcb  gh-pages   -> ri-covid-graphs/gh-pages
+   31f9dcb..d1e40f7  gh-pages   -> ri-covid-graphs/gh-pages
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
 Already up to date.
@@ -37,5 +37,5 @@ The following objects are masked from ‘package:base’:
 
 Reading from "COVID-19 Rhode Island Data"
 Range "'Trends'"
-Error: No Cairo or bitmap device is available. Such a graphics device is required to convert sizes correctly in ggplotly().)
+Error: Graphs already up to date
 Execution halted
