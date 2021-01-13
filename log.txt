@@ -1,10 +1,13 @@
 
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-   5c8ced0..0e241ad  gh-pages   -> ri-covid-graphs/gh-pages
+   0e241ad..d1375c7  gh-pages   -> ri-covid-graphs/gh-pages
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-Already up to date.
+Updating 0889db0..d1375c7
+Fast-forward
+ R/Testing.Rmd | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
 ✔ ggplot2 3.3.3     ✔ purrr   0.3.4
 ✔ tibble  3.0.4     ✔ dplyr   1.0.2
@@ -37,5 +40,5 @@ The following objects are masked from ‘package:base’:
 
 Reading from "COVID-19 Rhode Island Data"
 Range "'Trends'"
-Error: No Cairo or bitmap device is available. Such a graphics device is required to convert sizes correctly in ggplotly().)
+Error: Graphs already up to date
 Execution halted
