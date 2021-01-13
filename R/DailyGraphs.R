@@ -14,7 +14,6 @@ stateDataPrev <- readRDS("prev/prevState.rds")
 if(identical(stateDataPrev,stateData)){
   stop("Graphs already up to date")
 }else {
-saveRDS(stateData, "prev/prevState.rds")
 stateDataCleaned <- stateData%>%
   select(date=1,posTest=2, negTest=5,tests=7,cases=9,admissions=15,discharges=17,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
   filter(row_number() >= 11)%>%
@@ -164,4 +163,6 @@ htmlwidgets::saveWidget(admissionGraph,file="../graphs/admissions.html",selfcont
 htmlwidgets::saveWidget(hospGraph,file="../graphs/hosp.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyhosp')
 htmlwidgets::saveWidget(ICUGraph,file="../graphs/ICU.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyicu')
 htmlwidgets::saveWidget(dailyDeathGraph,file="../graphs/deaths.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailydeaths')
+
+saveRDS(stateData, "prev/prevState.rds")
 }
