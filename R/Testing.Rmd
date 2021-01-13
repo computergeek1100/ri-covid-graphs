@@ -60,7 +60,7 @@ rD <- RSelenium::rsDriver(
 )
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 remDr <- rD$client
 remDr$open()
 remDr$navigate("https://datastudio.google.com/u/0/reporting/72a35680-e3a8-45c1-8389-2e2f0dbad08c/page/3ztgB")
@@ -97,13 +97,13 @@ vaxData_GRAPH <- vaxDataCleaned%>%
 
 ```{r}
 ggplot(vaxData_GRAPH, aes(date, number, fill=dose))+
-  geom_col(position='dodge')+
+  geom_col(position='dodge', padding = 5)+
   labs(title="People vaccinated per day (First Dose Only)\nMondays include weekend data")
 ```
 
 ```{r}
-vaxData <- vaxData[-c(13), ] # remove rows added during testing
- 8vaxDataCleaned <- vaxDataCleaned[-c(5), ] # remove rows added during testing
+vaxData <- vaxData[-c(17), ] # remove rows added during testing
+vaxDataCleaned <- vaxDataCleaned[-c(5), ] # remove rows added during testing
 
 ```
 
