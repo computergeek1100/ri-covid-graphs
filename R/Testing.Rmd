@@ -11,6 +11,7 @@ library(tidyverse)
 library(zoo)
 library(rvest)
 library(RSelenium)
+library(padr)
 ```
 
 ## Graph of daily tests, shaded by pos/neg
@@ -66,7 +67,7 @@ remDr$navigate("https://datastudio.google.com/u/0/reporting/72a35680-e3a8-45c1-8
 ```
 
 ```{r}
-totalDose1 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[36]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
+totalDose1 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[38]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
 totalDose1 <- totalDose1$getElementText()[[1]]
 
 totalDose2 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[39]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
@@ -84,17 +85,25 @@ vaxDataCleaned$date <- as.Date(vaxDataCleaned$date, format="%b %d, %Y")
 vaxDataCleaned$totalDose1 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose1))
 vaxDataCleaned$totalDose2 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose2))
 vaxDataCleaned <- vaxDataCleaned %>% 
-  mutate(dose1PriorDay = totalDose1 - lag(totalDose1),
-         dose2PriorDay = totalDose2 - lag(totalDose2))
+  mutate(totalDoses = totalDose1+totalDose2,
+         dose1PriorDay = totalDose1 - lag(totalDose1),
+         dose2PriorDay = totalDose2 - lag(totalDose2),
+         totalDosesPriorDay = totalDoses - lag(totalDoses))
+
+vaxData_GRAPH <- vaxDataCleaned%>%
+  select(1,5,6,7)%>%
+  pivot_longer(c(2:4), names_to = "dose", values_to = "number")
 ```
 
 ```{r}
-ggplot(vaxDataCleaned, aes(date, dose1PriorDay))+geom_col()+labs(title="People vaccinated per day (First Dose Only)\nMondays include weekend data")
+ggplot(vaxData_GRAPH, aes(date, number, fill=dose))+
+  geom_col(position='dodge')+
+  labs(title="People vaccinated per day (First Dose Only)\nMondays include weekend data")
 ```
 
 ```{r}
-vaxData <- vaxData[-c(5), ] # remove rows added during testing
-vaxDataCleaned <- vaxDataCleaned[-c(5), ] # remove rows added during testing
+vaxData <- vaxData[-c(13), ] # remove rows added during testing
+ 8vaxDataCleaned <- vaxDataCleaned[-c(5), ] # remove rows added during testing
 
 ```
 
