@@ -1,13 +1,10 @@
 
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-   d85abf7..ee9765a  gh-pages   -> ri-covid-graphs/gh-pages
+   ee9765a..2feeb03  gh-pages   -> ri-covid-graphs/gh-pages
 From https://github.com/computergeek1100/ri-covid-graphs
  * branch            gh-pages   -> FETCH_HEAD
-Updating 12a2814..ee9765a
-Fast-forward
- R/Testing.Rmd | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Already up to date.
 ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
 ✔ ggplot2 3.3.3     ✔ purrr   0.3.4
 ✔ tibble  3.0.4     ✔ dplyr   1.0.2
