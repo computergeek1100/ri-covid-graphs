@@ -47,3 +47,16 @@ Warning messages:
 7: Ignoring unknown aesthetics: text 
 8: Removed 1 rows containing missing values (position_stack). 
 9: Removed 1 rows containing missing values (position_stack). 
+[gh-pages 8eb1835] Graph update
+ 10 files changed, 196 insertions(+), 192 deletions(-)
+ rewrite R/prev/prevState.rds (99%)
+ rewrite graphs/ICU.html (82%)
+ rewrite graphs/admissions.html (94%)
+ rewrite graphs/cases.html (99%)
+ rewrite graphs/cases100k.html (92%)
+ rewrite graphs/deaths.html (98%)
+ rewrite graphs/hosp.html (97%)
+ rewrite graphs/pos.html (95%)
+ rewrite graphs/tests.html (97%)
+To https://github.com/computergeek1100/ri-covid-graphs.git
+   196428d..8eb1835  gh-pages -> gh-pages
