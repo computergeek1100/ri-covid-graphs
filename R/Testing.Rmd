@@ -10,6 +10,7 @@ output: html_document
 library(tidyverse)
 library(zoo)
 library(rvest)
+library(plotly)
 library(RSelenium)
 library(padr)
 ```
@@ -48,7 +49,7 @@ ggplot(PercentPosMethods, aes(date, percentPos, color=method))+
 ggplot(admissionsData, aes(x=date))+geom_col(aes(y=admissions))+geom_col(aes(y=negDis))+geom_line(aes(y=net))
 ```
 
-##Web Scraping (Vaccination Data)
+## Web Scraping (Vaccination Data)
 ```{r message=FALSE, warning=FALSE}
 rD <- RSelenium::rsDriver(
   browser = "firefox",
@@ -116,4 +117,5 @@ remDr$close()
 # remDr$errorDetails()
 rD$server$stop()
 ```
+
 
