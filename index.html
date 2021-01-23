@@ -52,6 +52,9 @@
       <li onclick="document.getElementById('iframe-deaths').src += '';">
         <a href="#DailyDeaths">Daily Deaths</a>
       </li>
+      <li onclick="document.getElementById('iframe-vax').src += '';">
+        <a href="#vax">Vaccine Distribution (WIP)</a>
+      </li>
     </ul>
     <div id="DailyCases" class="tab active">
       <iframe id='iframe-cases' src="graphs/cases.html" height='650' width='100%'></iframe>
@@ -84,6 +87,10 @@
     <div id="100k" class="tab">
       <iframe id='iframe-100k' src="graphs/cases100k.html" height='650' width='100%'></iframe>
       <p><em><center>Based on 2019 population estimate (census.gov, population: 1,059,361)</center></em></p>
+    </div>
+    <div id="vax" class="tab">
+      <iframe id='iframe-vax' src="graphs/vaccinations.html" height='650' width='100%'></iframe>
+      <p><em><center>This section is still a work-in-progress. Data is complete and accurate but presentation is not finished.</center></em></p>
     </div>
   </div>
   <center>
