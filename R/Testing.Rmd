@@ -12,8 +12,6 @@ library(zoo)
 library(rvest)
 library(plotly)
 library(RSelenium)
-library(padr)
-library(bdscale)
 ```
 
 ## Graph of daily tests, shaded by pos/neg
@@ -65,17 +63,17 @@ rD <- RSelenium::rsDriver(
 ```{r message=FALSE, warning=FALSE}
 remDr <- rD$client
 remDr$open()
-remDr$navigate("https://datastudio.google.com/u/0/reporting/72a35680-e3a8-45c1-8389-2e2f0dbad08c/page/3ztgB")
+remDr$navigate("https://datastudio.google.com/u/0/reporting/f95ea2dd-e77a-45dc-9735-f60e8581ff32/page/o9ivB")
 ```
 
 ```{r}
-totalDose1 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[37]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
+totalDose1 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[3]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div[1]/div[2]')
 totalDose1 <- totalDose1$getElementText()[[1]]
 
-totalDose2 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[38]/canvas-component/div/div/div[1]/div/div/kpimetric/div/div[2]')
+totalDose2 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[3]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div[2]/div[2]')
 totalDose2 <- totalDose2$getElementText()[[1]]
 
-dateUpdated_vax <- remDr$findElement(using="xpath",'/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[22]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div/div')
+dateUpdated_vax <- remDr$findElement(using="xpath",'/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[4]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div/div[2]')
 dateUpdated_vax <- dateUpdated_vax$getElementText()[[1]]
 
 vaxVector <- c(dateUpdated_vax, totalDose1, totalDose2)
