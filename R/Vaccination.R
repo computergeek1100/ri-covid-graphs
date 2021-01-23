@@ -41,12 +41,17 @@ if(all(vectorTest==as.character(tail(vaxData,1)))){
            totalDosesPriorDay = totalDoses - lag(totalDoses))%>%
     pivot_longer(c(2:3), names_to = "dose", values_to = "number")
   vaxDataCleaned <- vaxDataCleaned[-c(1,2),]
-  vaxGraph <- ggplot(vaxDataCleaned, aes(date, number, fill=dose))+
+  vaxGraph <- ggplot(vaxDataCleaned, aes(date, number, fill=as.factor(dose)))+
     geom_col(position=position_stack(reverse=TRUE))+
     geom_smooth(aes(date, totalDoses), se=FALSE)+
     labs(title=paste0("Latest Data: ", dateUpdated_vax,
                       "<sup>\nFirst Dose: ", "+", formatC((tail(vaxDataCleaned$dose1PriorDay, 1)), format = "d", big.mark = ","), " (", totalDose1, " total)",
                       "\t\t\tSecond Dose: ", "+", formatC((tail(vaxDataCleaned$dose2PriorDay, 1)), format = "d", big.mark = ","), " (", totalDose2, " total)"),
-         margin = 30, x = "Date", y = "Total Doses Administered")
-  ggplotly(vaxGraph)
+         margin = 30, x = "Date", y = "Total Doses Administered")+
+    scale_fill_brewer(name="Dose", labels = c("Dose 1", "Dose 2"), palette = "Set1")
+  ggplotly(vaxGraphtooltip="text")%>%
+    config(displayModeBar=FALSE)
+  
+  htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
+  
 }
