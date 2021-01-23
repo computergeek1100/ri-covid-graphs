@@ -9,7 +9,7 @@ gs4_deauth()
 ICUcolors <- c("ICU" = "#ff8066", "Ventilator" = "#6685ff")
 
 stateData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Trends")
-stateDataPrev <- readRDS("prev/prevState.rds") 
+stateDataPrev <- readRDS("data/prevState.rds") 
 
 if(identical(stateDataPrev,stateData)){
   stop("Graphs already up to date")
@@ -164,5 +164,5 @@ htmlwidgets::saveWidget(hospGraph,file="../graphs/hosp.html",selfcontained=FALSE
 htmlwidgets::saveWidget(ICUGraph,file="../graphs/ICU.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyicu')
 htmlwidgets::saveWidget(dailyDeathGraph,file="../graphs/deaths.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailydeaths')
 
-saveRDS(stateData, "prev/prevState.rds")
+saveRDS(stateData, "data/prevState.rds")
 }
