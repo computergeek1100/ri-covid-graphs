@@ -93,7 +93,7 @@ vaxDataCleaned <- vaxDataCleaned %>%
          totalDosesPriorDay = totalDoses - lag(totalDoses))
 
 vaxData_GRAPH <- vaxDataCleaned%>%
-  select(1,3,2)%>%
+  select(1,3,2,4)%>%
   pivot_longer(c(2:3), names_to = "dose", values_to = "number")
 vaxData_GRAPH <- vaxData_GRAPH[-c(1,2),]
 ```
@@ -101,7 +101,7 @@ vaxData_GRAPH <- vaxData_GRAPH[-c(1,2),]
 ```{r}
 vaxGraph <- ggplot(vaxData_GRAPH, aes(date, number, fill=dose))+
   geom_col(position=position_stack(reverse=TRUE))+
-  geom_smooth(se=FALSE)+
+  geom_smooth(aes(date, totalDoses), se=FALSE)+
   labs(title="Total Vaccinated", x = "Date", y = "Total Doses Administered")
 ggplotly(vaxGraph)
 ```
@@ -117,4 +117,13 @@ remDr$close()
 rD$server$stop()
 ```
 
+```{r}
+vectorTest <- c("Jan 22, 2021", "52,925", "13,145")
+lastRow <- as.character(tail(vaxData,1))
+if(all(vectorTest==lastRow)){
+  stop("Latest data already scraped")
+}else {
+  print("Test")
+}
+```
 
