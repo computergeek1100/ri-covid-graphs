@@ -1,6 +1,7 @@
 library(tidyverse)
 library(rvest)
 library(plotly)
+library(zoo)
 library(htmlwidgets)
 library(RSelenium)
 
@@ -39,19 +40,20 @@ if(all(vectorTest==as.character(tail(vaxData,1)))){
     mutate(totalDoses = totalDose1+totalDose2,
            dose1PriorDay = totalDose1 - lag(totalDose1),
            dose2PriorDay = totalDose2 - lag(totalDose2),
-           totalDosesPriorDay = totalDoses - lag(totalDoses))%>%
-    pivot_longer(c(2:3), names_to = "dose", values_to = "number")
-  vaxDataCleaned <- vaxDataCleaned[-c(1,2),]
-  vaxGraph <- ggplot(vaxDataCleaned, aes(date, number, fill=as.factor(dose)))+
-    geom_col(position=position_stack(reverse=TRUE))+
-    geom_smooth(aes(date, totalDoses), se=FALSE)+
+           totalDosesPriorDay = totalDoses - lag(totalDoses))
+  vaxData_GRAPH <- vaxDataCleaned%>%
+    pivot_longer(c(2:7), names_to = "dose", values_to = "number")
+  vaxData_GRAPH <- vaxData_GRAPH[-c(1,2),]
+  vaxGraph <- ggplot(vaxData_GRAPH, aes(date, number, fill=as.factor(dose)))+
+    geom_col(data=subset(vaxData_GRAPH, dose=="totalDose1" | dose=="totalDose2"), position=position_stack(reverse=T))+
     labs(title=paste0("Latest Data: ", dateUpdated_vax,
                       "<sup>\nFirst Dose: ", "+", formatC((tail(vaxDataCleaned$dose1PriorDay, 1)), format = "d", big.mark = ","), " (", totalDose1, " total)",
                       "\t\t\tSecond Dose: ", "+", formatC((tail(vaxDataCleaned$dose2PriorDay, 1)), format = "d", big.mark = ","), " (", totalDose2, " total)"),
          margin = 30, x = "Date", y = "Total Doses Administered")+
-    scale_fill_brewer(name="Dose", labels = c("Dose 1", "Dose 2"), palette = "Set1")
-  vaxGraph <- ggplotly(vaxGraphtooltip="text")%>%
-    config(displayModeBar=FALSE)
+    scale_fill_brewer(name="Dose", palette = "Set1")
+  ggplotly(vaxGraph,tooltip="text", dynamicTicks=TRUE, originalData=FALSE)%>%
+    config(displayModeBar=FALSE)%>%
+    layout(yaxis=list(rangemode="tozero"))
   
   htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
 }
