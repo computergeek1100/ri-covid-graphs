@@ -54,9 +54,11 @@ if(all(vectorTest==as.character(tail(vaxData,1)))){
                       "\t\t\tSecond Dose: ", "+", formatC((tail(vaxDataCleaned$dose2PriorDay, 1)), format = "d", big.mark = ","), " (", totalDose2, " total)"),
          margin = 30, x = "Date", y = "Total Doses Administered")+
     scale_fill_brewer(name="Dose", palette = "Set1")
-  vaxGraph <- ggplotly(vaxGraph,tooltip="text", dynamicTicks=TRUE, originalData=FALSE)%>%
+  vaxGraph <- ggplotly(vaxGraph, dynamicTicks=TRUE, originalData=FALSE)%>%
     config(displayModeBar=FALSE)%>%
     layout(yaxis=list(rangemode="tozero"))
+  
+  vaxGraph
 
   htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
 }
