@@ -1,6 +1,7 @@
 library(tidyverse)
 library(rvest)
 library(plotly)
+library(htmlwidgets)
 library(RSelenium)
 
 colorList <- c("ICU" = "#ff8066", "Ventilator" = "#6685ff")
@@ -49,9 +50,8 @@ if(all(vectorTest==as.character(tail(vaxData,1)))){
                       "\t\t\tSecond Dose: ", "+", formatC((tail(vaxDataCleaned$dose2PriorDay, 1)), format = "d", big.mark = ","), " (", totalDose2, " total)"),
          margin = 30, x = "Date", y = "Total Doses Administered")+
     scale_fill_brewer(name="Dose", labels = c("Dose 1", "Dose 2"), palette = "Set1")
-  ggplotly(vaxGraphtooltip="text")%>%
+  vaxGraph <- ggplotly(vaxGraphtooltip="text")%>%
     config(displayModeBar=FALSE)
   
   htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
-  
 }
