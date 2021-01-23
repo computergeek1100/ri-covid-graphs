@@ -25,6 +25,9 @@ totalDose2 <- totalDose2$getElementText()[[1]]
 dateUpdated_vax <- remDr$findElement(using="xpath",'/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[4]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div/div[2]')
 dateUpdated_vax <- dateUpdated_vax$getElementText()[[1]]
 
+remDr$close()
+rD$server$stop()
+
 vaxVector <- c(dateUpdated_vax, totalDose1, totalDose2)
 
 if(all(vectorTest==as.character(tail(vaxData,1)))){
@@ -51,9 +54,9 @@ if(all(vectorTest==as.character(tail(vaxData,1)))){
                       "\t\t\tSecond Dose: ", "+", formatC((tail(vaxDataCleaned$dose2PriorDay, 1)), format = "d", big.mark = ","), " (", totalDose2, " total)"),
          margin = 30, x = "Date", y = "Total Doses Administered")+
     scale_fill_brewer(name="Dose", palette = "Set1")
-  ggplotly(vaxGraph,tooltip="text", dynamicTicks=TRUE, originalData=FALSE)%>%
+  vaxGraph <- ggplotly(vaxGraph,tooltip="text", dynamicTicks=TRUE, originalData=FALSE)%>%
     config(displayModeBar=FALSE)%>%
     layout(yaxis=list(rangemode="tozero"))
-  
+
   htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
 }
