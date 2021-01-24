@@ -1,4 +1,5 @@
 import csv
+import os
 from sys import platform
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -7,14 +8,14 @@ DRIVER_PATH = "/usr/bin/geckodriver"
 
 if platform == "darwin":
     DRIVER_PATH = "/usr/local/bin/geckodriver"
-    
+
 XPATH_PREFIX = "/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/"
 
 options = Options()
 options.headless = True
 
 driver = webdriver.Firefox(
-    options=options, executable_path=DRIVER_PATH)
+    options=options, executable_path=DRIVER_PATH, service_log_path=os.path.devnull)
 driver.implicitly_wait(20)
 
 driver.get(
