@@ -35,3 +35,27 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1611510847762	Marionette	INFO	Listening on port 49732
 1611510847807	Marionette	WARN	TLS certificate errors will be ignored for this session
 1611510853313	Marionette	INFO	Stopped listening on port 49732
+1611513543381	geckodriver	INFO	Listening on 127.0.0.1:52150
+1611513543397	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/h8/myv0fgyj4qzd441rqqt90ydr0000gp/T/rust_mozprofilekGttCj"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611513546173	Marionette	INFO	Listening on port 52155
+1611513546278	Marionette	WARN	TLS certificate errors will be ignored for this session
+1611513561957	geckodriver	INFO	Listening on 127.0.0.1:52282
+1611513561980	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/h8/myv0fgyj4qzd441rqqt90ydr0000gp/T/rust_mozprofileCyPY79"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611513564767	Marionette	INFO	Listening on port 52287
+1611513564860	Marionette	WARN	TLS certificate errors will be ignored for this session
+1611513568678	Marionette	INFO	Stopped listening on port 52287
+IPDL protocol error: Handler returned error code!
+
+###!!! [Parent][DispatchAsyncMessage] Error: PMessagePort::Msg_PostMessages Processing error: message was deserialized, but the handler returned false (indicating failure)
+
+1611514593248	geckodriver	INFO	Listening on 127.0.0.1:53372
+1611514593263	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/h8/myv0fgyj4qzd441rqqt90ydr0000gp/T/rust_mozprofileNdI65G"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611514596241	Marionette	INFO	Listening on port 53377
+1611514596276	Marionette	WARN	TLS certificate errors will be ignored for this session
+1611514600328	Marionette	INFO	Stopped listening on port 53377
