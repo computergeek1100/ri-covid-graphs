@@ -13,7 +13,7 @@ vaxData <- readRDS("data/vaxData.rds")
 if(Sys.info()['sysname'] == "Darwin"){
   system('/usr/local/bin/python scrape.py')
 }else if(Sys.info()['sysname'] == "Linux"){
-  system("usr/bin/python scrape.py")
+  system("/usr/bin/python scrape.py")
 }
 
 vaxVector <- as.character(read.csv("tmp.csv", header=FALSE))
