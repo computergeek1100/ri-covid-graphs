@@ -3,11 +3,11 @@ from sys import platform
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
+DRIVER_PATH = "/usr/bin/geckodriver"
+
 if platform == "darwin":
     DRIVER_PATH = "/usr/local/bin/geckodriver"
-elif platform == "linux":
-    DRIVER_PATH = "/usr/bin/geckodriver"
-
+    
 XPATH_PREFIX = "/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/"
 
 options = Options()

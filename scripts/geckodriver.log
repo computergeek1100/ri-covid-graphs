@@ -59,3 +59,8 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1611514596241	Marionette	INFO	Listening on port 53377
 1611514596276	Marionette	WARN	TLS certificate errors will be ignored for this session
 1611514600328	Marionette	INFO	Stopped listening on port 53377
+1611514765362	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.LLzB2l42KKVF"
+*** You are running in headless mode.
+1611514775236	Marionette	INFO	Listening on port 39917
+1611514776002	Marionette	WARN	TLS certificate errors will be ignored for this session
+1611514794278	Marionette	INFO	Stopped listening on port 39917
