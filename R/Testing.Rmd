@@ -11,7 +11,7 @@ library(tidyverse)
 library(zoo)
 library(rvest)
 library(plotly)
-library(RSelenium)
+library(htmlunit)
 ```
 
 ## Graph of daily tests, shaded by pos/neg
@@ -123,5 +123,19 @@ if(all(vectorTest==lastRow)){
 }else {
   print("Test")
 }
+```
+
+## Scraping test using HtmlUnit NOT WORKING
+```{r}
+wc <- web_client(emulate="chrome")
+wc%>%
+  wc_go("https://datastudio.google.com/u/0/reporting/f95ea2dd-e77a-45dc-9735-f60e8581ff32/page/o9ivB")
+
+wc%>%
+  wc_html_nodes("component")%>%
+  head(10)
+pg <- hu_read_html("https://datastudio.google.com/u/0/reporting/f95ea2dd-e77a-45dc-9735-f60e8581ff32/page/o9ivB")
+pg <- html_nodes(pg)
+pg
 ```
 
