@@ -8,29 +8,19 @@ library(RSelenium)
 colorList <- c("ICU" = "#ff8066", "Ventilator" = "#6685ff")
 
 vaxData <- readRDS("data/vaxData.rds")
-rD <- RSelenium::rsDriver(browser = "firefox",
-                          extraCapabilities = list("moz:firefoxOptions" = list(
-                            args = list('-p webscrape','--headless'))))
-remDr <- rD$client
-remDr$open()
-remDr$setTimeout(type = "implicit", milliseconds = 5000)
-remDr$navigate("https://datastudio.google.com/u/0/reporting/f95ea2dd-e77a-45dc-9735-f60e8581ff32/page/o9ivB")
 
-totalDose1 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[3]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div[1]/div[2]')
-totalDose1 <- totalDose1$getElementText()[[1]]
+# change python path for macOS (Darwin) or Raspbian (Linux)
+if(Sys.info()['sysname'] == "Darwin"){
+  system('/usr/local/bin/python scrape.py')
+}else if(Sys.info()['sysname'] == "Linux"){
+  system("usr/bin/python scrape.py")
+}
 
-totalDose2 <- remDr$findElement(using='xpath','/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[3]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div[2]/div[2]')
-totalDose2 <- totalDose2$getElementText()[[1]]
+vaxVector <- as.character(read.csv("tmp.csv", header=FALSE))
 
-dateUpdated_vax <- remDr$findElement(using="xpath",'/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[4]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div/div[2]')
-dateUpdated_vax <- dateUpdated_vax$getElementText()[[1]]
+system("rm tmp.csv")
 
-remDr$close()
-rD$server$stop()
-
-vaxVector <- c(dateUpdated_vax, totalDose1, totalDose2)
-
-if(all(vectorTest==as.character(tail(vaxData,1)))){
+if(all(vaxVector==as.character(tail(vaxData,1)))){
   stop("Latest data already scraped")
 }else {
   vaxData <- rbind(vaxData, vaxVector)
