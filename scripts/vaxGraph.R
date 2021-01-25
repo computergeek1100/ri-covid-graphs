@@ -1,9 +1,6 @@
 library(tidyverse)
-library(rvest)
 library(plotly)
-library(zoo)
 library(htmlwidgets)
-library(RSelenium)
 
 colorList <- c("ICU" = "#ff8066", "Ventilator" = "#6685ff")
 
@@ -26,7 +23,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){
   vaxData <- rbind(vaxData, vaxVector)
   saveRDS(vaxData, "data/vaxData.rds")
   vaxDataCleaned <- vaxData
-  vaxDataCleaned$date <- as.Date(vaxDataCleaned$date, format="%b %d, %Y")-1
+  vaxDataCleaned$date <- as.Date(vaxDataCleaned$date, format="%b %d, %Y")
   vaxDataCleaned$totalDose1 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose1))
   vaxDataCleaned$totalDose2 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose2))
   vaxDataCleaned <- vaxDataCleaned %>% 
@@ -39,9 +36,11 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){
   vaxData_GRAPH <- vaxData_GRAPH[-c(1,2),]
   vaxGraph <- ggplot(vaxData_GRAPH, aes(date, number, fill=as.factor(dose)))+
     geom_col(data=subset(vaxData_GRAPH, dose=="totalDose1" | dose=="totalDose2"), position=position_stack(reverse=T))+
-    labs(title=paste0("Latest Data: ", format(tail(vaxDataCleaned$date, 1), "%b %d, %Y"),
-                      "<sup>\nFirst Dose: ", "+", formatC((tail(vaxDataCleaned$dose1PriorDay, 1)), format = "d", big.mark = ","), " (", tail(vaxDataCleaned$totalDose1, 1), " total)",
-                      "\t\t\tSecond Dose: ", "+", formatC((tail(vaxDataCleaned$dose2PriorDay, 1)), format = "d", big.mark = ","), " (", tail(vaxDataCleaned$totalDose2, 1), " total)"),
+    labs(title=paste0("Last Updated: ", format(tail(vaxDataCleaned$date, 1), "%b %d, %Y"),
+                      "<sup>\nFirst Dose: ", "+", formatC((tail(vaxDataCleaned$dose1PriorDay, 1)), format = "d", big.mark = ","),
+                      " (", formatC((tail(vaxDataCleaned$totalDose1, 1)), format = "d", big.mark = ","), " total)",
+                      "\t\t\tSecond Dose: ", "+", formatC((tail(vaxDataCleaned$dose2PriorDay, 1)), format = "d", big.mark = ","),
+                      " (", formatC((tail(vaxDataCleaned$totalDose2, 1)), format = "d", big.mark = ","), " total)"),
          margin = 30, x = "Date", y = "Total Doses Administered")+
     scale_fill_brewer(name="Dose", palette = "Set1")
   
