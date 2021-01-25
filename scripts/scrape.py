@@ -26,8 +26,8 @@ dose1 = driver.find_element_by_xpath(
 dose2 = driver.find_element_by_xpath(
     "/html/body/app-bootstrap/ng2-bootstrap/bootstrap/div/div/div/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/lego-report/lego-canvas-container/div/file-drop-zone/span/content-section/div[3]/canvas-component/div/div/div[1]/div/div/lego-table/div/div[3]/div[2]/div[2]").text
 
-with open("tmp.csv", mode="w") as tmpCSV:
-    wrt = csv.writer(tmpCSV)
+with open("data/tmpVax.csv", mode="w") as tmp:
+    wrt = csv.writer(tmp)
     wrt.writerow([date, dose1, dose2])
 
 driver.quit()
