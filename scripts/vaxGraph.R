@@ -4,23 +4,23 @@ library(htmlwidgets)
 
 vaxData <- readRDS("data/vaxData.rds")
 
-# change python path for macOS (Darwin) or Raspbian (Linux)
-if(Sys.info()['sysname'] == "Darwin"){
+# Change python path depending on OS
+if(Sys.info()['sysname'] == "Darwin"){ # Mac
   system('/usr/local/bin/python scrape.py')
-}else if(Sys.info()['sysname'] == "Linux"){
+}else if(Sys.info()['sysname'] == "Linux"){ # Raspberry Pi Server
   system("/usr/bin/python scrape.py")
 }
 
 vaxVector <- as.character(read.csv("data/tmpVax.csv", header=FALSE))
 
-system("rm data/tmpVax.csv")
+system("rm data/tmpVax.csv") # Remove tmp file
 
-if(all(vaxVector==as.character(tail(vaxData,1)))){
+if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
   stop("Latest data already scraped")
 }else {
   vaxData <- rbind(vaxData, vaxVector)
-  saveRDS(vaxData, "data/vaxData.rds")
-  vaxDataCleaned <- vaxData
+  saveRDS(vaxData, "data/vaxData.rds") # Save new data file
+  vaxDataCleaned <- vaxData # Process/clean data
   vaxDataCleaned$date <- as.Date(vaxDataCleaned$date, format="%b %d, %Y")
   vaxDataCleaned$totalDose1 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose1))
   vaxDataCleaned$totalDose2 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose2))
