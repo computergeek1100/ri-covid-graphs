@@ -13,9 +13,9 @@ if(Sys.info()['sysname'] == "Darwin"){
   system("/usr/bin/python scrape.py")
 }
 
-vaxVector <- as.character(read.csv("tmp.csv", header=FALSE))
+vaxVector <- as.character(read.csv("data/tmpVax.csv", header=FALSE))
 
-system("rm tmp.csv")
+system("rm data/tmpVax.csv")
 
 if(all(vaxVector==as.character(tail(vaxData,1)))){
   stop("Latest data already scraped")
@@ -26,7 +26,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){
   vaxDataCleaned$date <- as.Date(vaxDataCleaned$date, format="%b %d, %Y")
   vaxDataCleaned$totalDose1 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose1))
   vaxDataCleaned$totalDose2 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose2))
-  vaxDataCleaned <- vaxDataCleaned %>% 
+  vaxDataCleaned <- vaxDataCleaned %>%
     mutate(totalDoses = totalDose1+totalDose2,
            dose1PriorDay = totalDose1 - lag(totalDose1),
            dose2PriorDay = totalDose2 - lag(totalDose2),
@@ -43,12 +43,10 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){
                       " (", formatC((tail(vaxDataCleaned$totalDose2, 1)), format = "d", big.mark = ","), " total)"),
          margin = 30, x = "Date", y = "Total Doses Administered")+
     scale_fill_brewer(name="Dose", palette = "Set1")
-  
+
   vaxGraph <- ggplotly(vaxGraph, dynamicTicks=TRUE, originalData=FALSE)%>%
     config(displayModeBar=FALSE)%>%
     layout(yaxis=list(rangemode="tozero"))
-  
-  vaxGraph
 
   htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
 }
