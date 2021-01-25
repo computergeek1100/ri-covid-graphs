@@ -1,10 +1,11 @@
 import csv
-import os
+from os import path
 from sys import platform
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 DRIVER_PATH = "/usr/bin/geckodriver"
+LOG_PATH = path.devnull
 
 if platform == "darwin":
     DRIVER_PATH = "/usr/local/bin/geckodriver"
@@ -13,7 +14,7 @@ options = Options()
 options.headless = True
 
 driver = webdriver.Firefox(
-    options=options, executable_path=DRIVER_PATH, service_log_path=os.path.devnull)
+    options=options, executable_path=DRIVER_PATH, service_log_path=LOG_PATH)
 driver.implicitly_wait(20)
 
 driver.get(
