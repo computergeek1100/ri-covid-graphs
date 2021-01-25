@@ -20,7 +20,7 @@
     </h1>
     <p>RIDOH updates data Monday through Friday in the early afternoon.
       <br>
-      "Latest Data" will have a two-day lag for hospitalization data and a one-day lag for all other data.
+      All data is presented with a one-day lag unless otherwise noted at the bottom of a tab.
       <br>
       Data from Saturday and Sunday is made available by RIDOH on Monday.
       <!--<br><br><em>NOTES</em>-->
@@ -70,10 +70,16 @@
 
     <div id="DailyHosp" class="tab">
       <iframe id='iframe-hosp' src="graphs/hosp.html" height='650' width='100%'></iframe>
+      <p><b>
+          <center>Hospitalization data is presented with a two-day lag.</center>
+        </b></p>
     </div>
 
     <div id="DailyICU" class="tab">
-        <iframe id="iframe-ICU" src="graphs/ICU.html" height='650' width='100%'></iframe>
+      <iframe id="iframe-ICU" src="graphs/ICU.html" height='650' width='100%'></iframe>
+      <p><b>
+          <center>Hospitalization data is presented with a two-day lag.</center>
+        </b></p>
     </div>
 
     <div id="DailyDeaths" class="tab">
@@ -82,19 +88,29 @@
 
     <div id="Admissions" class="tab">
       <iframe id='iframe-admissions' src="graphs/admissions.html" height='650' width='100%'></iframe>
+      <p><b>
+          <center>Hospitalization data is presented with a two-day lag.</center>
+        </b></p>
     </div>
 
     <div id="100k" class="tab">
       <iframe id='iframe-100k' src="graphs/cases100k.html" height='650' width='100%'></iframe>
-      <p><em><center>Based on 2019 population estimate (census.gov, population: 1,059,361)</center></em></p>
+      <p><em>
+          <center>Based on 2019 population estimate (census.gov, population: 1,059,361)</center>
+        </em></p>
     </div>
     <div id="vax" class="tab">
       <iframe id='iframe-vax' src="graphs/vaccinations.html" height='650' width='100%'></iframe>
-      <p><em><center>This section is still a work-in-progress. Data is complete and accurate but presentation is not finished.</center></em></p>
+      <p><b>
+          <center>Vaccination data is correct <em>as of</em> the date listed.<br>
+            RIDOH is unclear regarding exact dates of administration so dates only refer to when numbers were updated.<br>+<em>x</em> refers to the doses added since previous update.<br><br>
+        </b>
+        <em>NOTE: This section is still a work-in-progress. Data is accurate but presentation is unfinished.</center></em>
+      </p>
     </div>
   </div>
   <center>
-    <p>Site icon designed by <a href="https://openmoji.org/">OpenMoji</a> – the open-source emoji and icon project. License:
+    <p>Site icon from <a href="https://openmoji.org/">OpenMoji</a> – the open-source emoji and icon project. License:
       <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
       <br><br>
       Graphs created with <a href="https://plotly.com/graphing-libraries/">plotly</a>.
