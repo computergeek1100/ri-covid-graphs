@@ -1,19 +1,15 @@
 #!/bin/bash
 
-echo > /home/pi/ri-covid-graphs/log_daily.txt
+cd
 
-cd /home/pi/ri-covid-graphs/
+cd ri-covid-graphs/scripts
 
-git fetch ri-covid-graphs gh-pages
+echo > log_daily.txt
 
 git pull ri-covid-graphs gh-pages
 
-cd scripts
-
 Rscript dailyGraphs.R
 
-cd ../
-
-git commit -a -m "Graph update"
+git commit -a -m "Daily graph update"
 
 git push

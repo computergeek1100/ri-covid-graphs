@@ -1,19 +1,15 @@
 #!/bin/bash
 
-echo > /home/pi/ri-covid-graphs/log_vax.txt
+cd
 
-cd /home/pi/ri-covid-graphs/
+cd ri-covid-graphs/scripts
 
-git fetch ri-covid-graphs gh-pages
+echo > log_vax.txt
 
 git pull ri-covid-graphs gh-pages
 
-cd scripts
-
 Rscript vaxGraph.R
 
-cd ../
-
-git commit -a -m "Graph update"
+git commit -a -m "Vaccine graph update"
 
 git push
