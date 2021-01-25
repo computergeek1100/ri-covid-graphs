@@ -33,7 +33,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){
            totalDosesPriorDay = totalDoses - lag(totalDoses))
   vaxData_GRAPH <- vaxDataCleaned%>%
     pivot_longer(c(2:7), names_to = "dose", values_to = "number")
-  vaxData_GRAPH <- vaxData_GRAPH[-c(1,2),]
+  vaxData_GRAPH <- vaxData_GRAPH[-c(1:6),]
   vaxGraph <- ggplot(vaxData_GRAPH, aes(date, number, fill=as.factor(dose)))+
     geom_col(data=subset(vaxData_GRAPH, dose=="totalDose1" | dose=="totalDose2"), position=position_stack(reverse=T))+
     labs(title=paste0("Last Updated: ", format(tail(vaxDataCleaned$date, 1), "%b %d, %Y"),
