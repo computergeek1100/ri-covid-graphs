@@ -2,8 +2,6 @@ library(tidyverse)
 library(plotly)
 library(htmlwidgets)
 
-colorList <- c("ICU" = "#ff8066", "Ventilator" = "#6685ff")
-
 vaxData <- readRDS("data/vaxData.rds")
 
 # change python path for macOS (Darwin) or Raspbian (Linux)
