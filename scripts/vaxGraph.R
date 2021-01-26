@@ -1,6 +1,7 @@
 library(tidyverse)
 library(plotly)
 library(htmlwidgets)
+library(zoo)
 
 vaxData <- readRDS("data/vaxData.rds")
 
@@ -30,8 +31,9 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
            dose2PriorDay = totalDose2 - lag(totalDose2),
            totalDosesPriorDay = totalDoses - lag(totalDoses))
   vaxData_GRAPH <- vaxDataCleaned%>%
-    pivot_longer(c(2:7), names_to = "dose", values_to = "number")
-  vaxData_GRAPH <- vaxData_GRAPH[-c(1:6),]
+    select(1:3)%>%
+    pivot_longer(c(2:3), names_to = "dose", values_to = "number")
+  vaxData_GRAPH <- vaxData_GRAPH[-c(1:2),]
   vaxGraph <- ggplot(vaxData_GRAPH, aes(date, number, fill=as.factor(dose), text = paste0("Date: ", date,
                                                                                           "\nDose: ", as.factor(dose),
                                                                                           "\nTotal Administered: ", number)))+
@@ -44,6 +46,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
          margin = 30, x = "Date", y = "Total Doses Administered")+
     scale_fill_brewer(name="Dose", palette = "Set1")
 
+  
   vaxGraph <- ggplotly(vaxGraph, tooltip = "text", dynamicTicks=TRUE, originalData=FALSE)%>%
     config(displayModeBar=FALSE)%>%
     layout(yaxis=list(rangemode="tozero"))
