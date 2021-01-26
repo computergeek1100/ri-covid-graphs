@@ -35,8 +35,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
     pivot_longer(c(2:3), names_to = "dose", values_to = "number")
   vaxData_GRAPH <- vaxData_GRAPH[-c(1:2),]
   vaxGraph <- ggplot(vaxData_GRAPH, aes(date, number, fill=as.factor(dose), text = paste0("Date: ", date,
-                                                                                          "\nDose: ", as.factor(dose),
-                                                                                          "\nTotal Administered: ", number)))+
+                                                                                          "\n", as.factor(dose), ": ", formatC(number, format = "d", big.mark = ","))))+
     geom_col(data=subset(vaxData_GRAPH, dose=="totalDose1" | dose=="totalDose2"), position=position_stack(reverse=T))+
     labs(title=paste0("Last Updated: ", format(tail(vaxDataCleaned$date, 1), "%b %d, %Y"),
                       "<sup>\nFirst Dose: ", "+", formatC((tail(vaxDataCleaned$dose1PriorDay, 1)), format = "d", big.mark = ","),
@@ -55,3 +54,4 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
 
   htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
 }
+
