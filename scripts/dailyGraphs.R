@@ -48,7 +48,7 @@ caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", 
   geom_col(aes(y=cases))+
   geom_line(aes(y=Avg7Day_Cases), color="blue")+
   labs(title = paste("Latest Data:", updated,
-                     "\tNew Positive Cases:", formatC((tail(stateDataCleaned$cases, 1)), format = "d", big.mark = ",")),
+                     "\n<sup>New Positive Cases:", formatC((tail(stateDataCleaned$cases, 1)), format = "d", big.mark = ",")),
        x="Date", y = "New Positive Cases")
 caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
   config(displayModeBar=FALSE)%>%
@@ -60,7 +60,7 @@ case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1,
   geom_segment(x=head(stateDataCleaned$date, 1), y = 100, xend = tail(stateDataCleaned$date, 1), yend=100, color="red")+
   annotate("text", x=stateDataCleaned$date[146],y=115, label = "100 Cases per 100k", color = 'red', size = 5)+
   labs(title = paste("Latest Data:", updated,
-                     "\tCases per 100,000 (Last 7 Days):",formatC((tail(stateDataCleaned$Last7Days_100k, 1)), format = "d", big.mark = ",")),
+                     "\n<sup>Cases per 100,000 (Last 7 Days):",formatC((tail(stateDataCleaned$Last7Days_100k, 1)), format = "d", big.mark = ",")),
        x="Date", y="Cases per 100,000 (Last 7 Days)")
 case100kGraph <- ggplotly(case100kGraph,tooltip="text",dynamicTicks=TRUE,originalData=FALSE)%>%
   config(displayModeBar=FALSE)%>%
@@ -74,7 +74,7 @@ testGraph <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
                                             "<br>Total Tests: ", total,
                                             "<br>7-Day Average: ", Avg7Day_Tests)),color="blue")+
 labs(title = paste("Latest Data:", updated,
-                     "\tTests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
+                     "\n<sup>Tests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
        x="Date", y="Tests Performed")
 testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
   config(displayModeBar=FALSE)%>%
@@ -88,7 +88,7 @@ posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date
   geom_segment(x=head(stateDataCleaned$date, 1), y = 5, xend = tail(stateDataCleaned$date, 1), yend=5, color="red")+
   annotate("text", x=stateDataCleaned$date[146],y=5.5, label = "5% Positive", color = 'red', size = 5)+
   labs(title = paste0("Latest Data: ", updated,
-                     " \tPercent Positive: ", tail(stateDataCleaned$percentPos, 1), "%"),
+                     " \n<sup>Percent Positive: ", tail(stateDataCleaned$percentPos, 1), "%"),
        x="Date", y="Percent Positive")
 posGraph <- ggplotly(posGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
   config(displayModeBar=FALSE)%>%
@@ -102,12 +102,11 @@ admissionGraph <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date:
   geom_segment(x=head(stateDataCleaned$date, 1), y = 30, xend = (tail(stateDataCleaned$date, 1) - 1), yend=30, color="red")+
   annotate("text", x=stateDataCleaned$date[146],y=32, label = "30 Admissions per Day (210 per Week)", color = 'red', size = 5)+
   labs(title=paste("Latest Data:", hospUpdated,
-                   "\tHospital Admissions:", stateDataCleaned$admissions[nrow(stateDataCleaned) - 1]),
+                   "\n<sup>Hospital Admissions:", stateDataCleaned$admissions[nrow(stateDataCleaned) - 1]),
        x="Date", y="Hospital Admissions")
 admissionGraph <- ggplotly(admissionGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
   config(displayModeBar=FALSE)%>%
   layout(yaxis=list(rangemode="tozero"))
-
 
 hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                    "<br>Hospitalized: ", currentHosp,
@@ -115,7 +114,7 @@ hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", dat
   geom_col(aes(y=currentHosp))+
   geom_line(aes(y=Avg7Day_Hosp),color='blue')+
   labs(title = paste("Latest Data:", hospUpdated,
-                     "\tHospitalized:", stateDataCleaned$currentHosp[nrow(stateDataCleaned) - 1]),
+                     "\n<sup>Hospitalized:", stateDataCleaned$currentHosp[nrow(stateDataCleaned) - 1]),
        x="Date", y="Hospitalized")
 hospGraph <- ggplotly(hospGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
   config(displayModeBar=FALSE)%>%
@@ -136,7 +135,7 @@ ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
                                            "<br>7-Day Average: ", Avg7Day_Vent)),color='blue')+
   scale_fill_manual(name="Legend", labels = c("ICU", "Ventilator"),values = ICUcolors)+
   labs(title = paste("Latest Data:", hospUpdated,
-                     "\tICU:", stateDataCleaned$ICU[nrow(stateDataCleaned) - 1],
+                     "\n<sup>ICU:", stateDataCleaned$ICU[nrow(stateDataCleaned) - 1],
                      "\tVentilator:", stateDataCleaned$vent[nrow(stateDataCleaned) - 1]),
        x="Date", y="ICU/Ventilator")
 ICUGraph <- ggplotly(ICUGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
@@ -149,7 +148,7 @@ dailyDeathGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: 
   geom_col(aes(y=dailyDeaths))+
   geom_line(aes(y=Avg7Day_Deaths),color="blue")+
   labs(title = paste("Latest Data:", updated,
-                     "\tDeaths Reported:", tail(stateDataCleaned$dailyDeaths, 1)),
+                     "\n<sup>Deaths Reported:", tail(stateDataCleaned$dailyDeaths, 1)),
        x="Date", y="Deaths Reported")
 dailyDeathGraph <- ggplotly(dailyDeathGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
   config(displayModeBar=FALSE)%>%
