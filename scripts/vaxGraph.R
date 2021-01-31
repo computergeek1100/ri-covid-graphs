@@ -34,7 +34,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
     pivot_longer(c(2:3), names_to = "dose", values_to = "number")
   vaxData_GRAPH <- vaxData_GRAPH[-c(1:2),]
   vaxGraph <- ggplot(vaxData_GRAPH, aes(date, number, fill=as.factor(dose), text = paste0("Date: ", date,
-                                                                                          "\n", c("First Dose", "Fully Vaccinated"), ": ", formatC(number, format = "d", big.mark = ","))))+
+                                                                                          "\n", c("First Dose Only", "Fully Vaccinated"), ": ", formatC(number, format = "d", big.mark = ","))))+
     geom_col(position=position_stack(reverse=F))+
     labs(title=paste0("Last Updated: ", format(tail(vaxDataCleaned$date, 1), "%b %d, %Y"),
                       "<sup>\nFirst Dose Only: ", formatC((tail(vaxDataCleaned$dose1Only, 1)), format = "d", big.mark = ","),
