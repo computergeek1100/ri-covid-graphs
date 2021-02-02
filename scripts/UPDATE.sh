@@ -14,7 +14,9 @@ Rscript vaxGraph.R
 
 cd ../graphs/plotlyJS/plotly-htmlwidgets-css-1.57.1
 
-if [diff plotly-css-BACKUP.css plotly-htmlwidgets.css]
+cmp plotly-css-BACKUP.css plotly-htmlwidgets.css
+status = $?
+if [$status != 0]
 then
 cp plotly-css-BACKUP.css plotly-htmlwidgets.css
 fi
