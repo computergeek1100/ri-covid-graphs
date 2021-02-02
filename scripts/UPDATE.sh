@@ -12,11 +12,11 @@ Rscript dailyGraphs.R
 
 Rscript vaxGraph.R
 
-cd ../graphs/plotlyJS/
+cd ../graphs/plotlyJS/plotly-htmlwidgets-css-1.57.1
 
 cp plotly-css-BACKUP.css plotly-htmlwidgets.css
 
-cd ../../
+cd ../../../
 git commit -a -m "Daily graph update"
 
 git push
