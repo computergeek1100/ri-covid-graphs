@@ -4,7 +4,7 @@ cd
 
 cd ri-covid-graphs/scripts
 
-echo > sh-log.txt
+echo > log.txt
 
 git pull ri-covid-graphs gh-pages
 
