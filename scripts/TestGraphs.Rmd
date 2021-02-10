@@ -141,3 +141,10 @@ vaxData2 <- vaxData2%>%mutate(
   avg7DayDose2 = round(rollmean(dose2PriorDay, 7, na.pad = TRUE, align = "right"), 0))
 ```
 
+```{r}
+ggplot(vaxData2, aes(date, avg7DayTotalDoses))+
+  geom_line()+
+  geom_smooth(se=FALSE)+
+  labs(x="Date", y="Doses per Day (7-day average)")
+```
+
