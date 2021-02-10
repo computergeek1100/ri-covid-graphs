@@ -125,3 +125,19 @@ if(all(vectorTest==lastRow)){
 
 
 
+```{r}
+vaxData2 <- vaxDataCleaned%>%
+  mutate(dose1PriorDay = totalDose1 - lag(totalDose1),
+         dose2PriorDay = totalDose2 - lag(totalDose2))%>%
+  padr::pad()
+
+vaxData2$totalDosesPriorDay[is.na(vaxData2$totalDosesPriorDay)] <- 0
+vaxData2$dose1PriorDay[is.na(vaxData2$dose1PriorDay)] <- 0
+vaxData2$dose2PriorDay[is.na(vaxData2$dose2PriorDay)] <- 0
+
+vaxData2 <- vaxData2%>%mutate(
+  avg7DayTotalDoses = round(rollmean(totalDosesPriorDay, 7, na.pad = TRUE, align="right"), 0),
+  avg7DayDose1 = round(rollmean(dose1PriorDay, 7, na.pad = TRUE, align = "right"), 0),
+  avg7DayDose2 = round(rollmean(dose2PriorDay, 7, na.pad = TRUE, align = "right"), 0))
+```
+
