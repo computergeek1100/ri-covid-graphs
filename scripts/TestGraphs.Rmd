@@ -148,7 +148,7 @@ ggplot(vaxData2, aes(date, totalDoses))+
   geom_point()+
   geom_line()+
   geom_smooth(formula=y~poly(x, 2), method="lm", se=FALSE)+
-  labs(x="Date", y="Doses per Day (7-day average)")
+  labs(x="Date", y="Total Doses Distributed")
 ```
 ```{r}
 vaxRate_D1POLY <- lm(totalDose1~poly(numDaysD1,2, raw=TRUE), vaxData2)
@@ -157,20 +157,28 @@ vaxRate_D1POLY
 vaxRate_D2POLY <- lm(totalDose2~poly(numDaysD2,2, raw=TRUE), vaxData2)
 vaxRate_D2POLY
 
-vaxRate_POLY <- lm(totalDoses~poly(numDaysD1,2, raw=TRUE), vaxData2)
+vaxRate_POLY <- lm(totalDoses~poly(numDaysD1,2, raw=TRUE), vaxDataCLEANED_2)
 vaxRate_POLY
 
-orvaxRate_LOESS <- loess(avg7DayTotalDoses~numDays, vaxData2)
+vaxRate_LOESS <- loess(avg7DayTotalDoses~numDaysD1, vaxData2)
 vaxRate_LOESS
 ```
 
-$rate = 834.89 + 54.65*numDays$
+$$
+R_1 = 9.39d^2 + 1168.12d + 956.02\\
+R_2 = 17.53d^2 + 373.29d + 1321.84\\
+R_t = 9.12d^2 + 1879.57d - 6527.58
+$$
 
+
+## Save average vaccination rate as CSV
 ```{r}
 vaxDataReddit <- vaxDataCleaned%>%
   select(date, totalDoses, totalDosesPriorDay)%>%
   padr::pad()
 vaxDataReddit$totalDosesPriorDay[is.na(vaxDataReddit$totalDosesPriorDay)] <- 0
 vaxDataReddit <- vaxDataReddit%>%mutate(avg7day = round(rollmean(totalDosesPriorDay, 7, na.pad=TRUE, align='right'),0))
+
+write.csv(vaxDataReddit, "../graphs/reddit/vaxData_avg.csv")
 ```
 
