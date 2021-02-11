@@ -136,7 +136,7 @@ ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
   scale_fill_manual(name="Legend", labels = c("ICU", "Ventilator"),values = ICUcolors)+
   labs(title = paste("Latest Data:", hospUpdated,
                      "\n<sup>ICU:", stateDataCleaned$ICU[nrow(stateDataCleaned) - 1],
-                     "\t|\tVentilator:", stateDataCleaned$vent[nrow(stateDataCleaned) - 1]),
+                     "  |   Ventilator:", stateDataCleaned$vent[nrow(stateDataCleaned) - 1]),
        x="Date", y="ICU/Ventilator")
 ICUGraph <- ggplotly(ICUGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
   config(displayModeBar=FALSE)%>%
