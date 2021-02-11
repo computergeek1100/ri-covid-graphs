@@ -38,8 +38,8 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
     geom_col(position=position_stack(reverse=F))+
     labs(title=paste0("Last Updated: ", format(tail(vaxDataCleaned$date, 1), "%b %d, %Y"),
                       "<sup>\nFirst Dose Only: ", formatC((tail(vaxDataCleaned$dose1Only, 1)), format = "d", big.mark = ","),
-                      "\t\t\tFully Vaccinated: ", formatC((tail(vaxDataCleaned$totalDose2, 1)), format = "d", big.mark = ","),
-                      "\t\t\tDoses Administered Since Last Update: ", formatC(tail(vaxDataCleaned$totalDosesPriorDay, 1), format = "d", big.mark = ",")),
+                      "\t|\tFully Vaccinated: ", formatC((tail(vaxDataCleaned$totalDose2, 1)), format = "d", big.mark = ","),
+                      "\t|\tDoses Since Last Update: +", formatC(tail(vaxDataCleaned$totalDosesPriorDay, 1), format = "d", big.mark = ",")),
          margin = 30, x = "Date", y = "People Vaccinated")+
     scale_fill_brewer(name="Dose", palette="Set1")
 
@@ -50,7 +50,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
   vaxGraph$x$data[[1]]$name <- "First Dose Only"
   vaxGraph$x$data[[2]]$name <- "Fully Vaccinated"
   
-  # vaxGraph # preview graph - comment out if unnecessary
+  vaxGraph # preview graph - comment out if unnecessary
 
   htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
 }
