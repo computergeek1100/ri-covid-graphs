@@ -166,4 +166,11 @@ vaxRate_LOESS
 
 $rate = 834.89 + 54.65*numDays$
 
-$totalDoses = rate * numDays\\= 834.89 + 54.65(days)^2$
+```{r}
+vaxDataReddit <- vaxDataCleaned%>%
+  select(date, totalDoses, totalDosesPriorDay)%>%
+  padr::pad()
+vaxDataReddit$totalDosesPriorDay[is.na(vaxDataReddit$totalDosesPriorDay)] <- 0
+vaxDataReddit <- vaxDataReddit%>%mutate(avg7day = round(rollmean(totalDosesPriorDay, 7, na.pad=TRUE, align='right'),0))
+```
+
