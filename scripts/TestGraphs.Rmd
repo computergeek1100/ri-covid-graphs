@@ -124,7 +124,7 @@ if(all(vectorTest==lastRow)){
 ```
 
 
-
+## Vaccination Rate Over Time
 ```{r}
 vaxData2 <- vaxDataCleaned%>%
   mutate(dose1PriorDay = totalDose1 - lag(totalDose1),
@@ -138,14 +138,32 @@ vaxData2$dose2PriorDay[is.na(vaxData2$dose2PriorDay)] <- 0
 vaxData2 <- vaxData2%>%mutate(
   avg7DayTotalDoses = round(rollmean(totalDosesPriorDay, 7, na.pad = TRUE, align="right"), 0),
   avg7DayDose1 = round(rollmean(dose1PriorDay, 7, na.pad = TRUE, align = "right"), 0),
-  avg7DayDose2 = round(rollmean(dose2PriorDay, 7, na.pad = TRUE, align = "right"), 0))
+  avg7DayDose2 = round(rollmean(dose2PriorDay, 7, na.pad = TRUE, align = "right"), 0),
+  numDaysD1 = (1:nrow(vaxData2)) - 2, # days since 1st vaccine administered
+  numDaysD2 = (1:nrow(vaxData2)) - 19)
 ```
 
 ```{r}
-ggplot(vaxData2, aes(date, avg7DayTotalDoses))+
+ggplot(vaxData2, aes(date, totalDoses))+
   geom_point()+
   geom_line()+
-  geom_smooth(se=FALSE)+
+  geom_smooth(formula=y~poly(x, 2), method="lm", se=FALSE)+
   labs(x="Date", y="Doses per Day (7-day average)")
 ```
+```{r}
+vaxRate_D1POLY <- lm(totalDose1~poly(numDaysD1,2, raw=TRUE), vaxData2)
+vaxRate_D1POLY
 
+vaxRate_D2POLY <- lm(totalDose2~poly(numDaysD2,2, raw=TRUE), vaxData2)
+vaxRate_D2POLY
+
+vaxRate_POLY <- lm(totalDoses~poly(numDaysD1,2, raw=TRUE), vaxData2)
+vaxRate_POLY
+
+orvaxRate_LOESS <- loess(avg7DayTotalDoses~numDays, vaxData2)
+vaxRate_LOESS
+```
+
+$rate = 834.89 + 54.65*numDays$
+
+$totalDoses = rate * numDays\\= 834.89 + 54.65(days)^2$
