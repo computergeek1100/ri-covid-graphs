@@ -182,3 +182,11 @@ vaxDataReddit <- vaxDataReddit%>%mutate(avg7day = round(rollmean(totalDosesPrior
 write.csv(vaxDataReddit, "../graphs/reddit/vaxData_avg.csv")
 ```
 
+
+## DEFAULT FUNCTION TESTING
+```{r}
+ggplotly.default <- function(x,tooltip="text",dynamicTicks=TRUE,originalData=FALSE) {
+  plotly::ggplotly.default(x, tooltip, dynamicTicks, originalData)
+}
+```
+
