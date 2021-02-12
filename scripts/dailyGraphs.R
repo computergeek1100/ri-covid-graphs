@@ -4,7 +4,8 @@ library(zoo)
 library(htmlwidgets)
 library(googlesheets4)
 
-# Default functions & color palette
+# Default functions
+
 ggArgs <- function(gg) {
   return(ggplotly(gg, tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
            config(displayModeBar=FALSE)%>%
