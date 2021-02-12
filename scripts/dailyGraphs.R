@@ -4,12 +4,27 @@ library(zoo)
 library(htmlwidgets)
 library(googlesheets4)
 
-gs4_deauth()
+# Default functions & color palette
+ggArgs <- function(gg) {
+  return(ggplotly(gg, tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+           config(displayModeBar=FALSE)%>%
+           layout(yaxis=list(rangemode="tozero")))
+}
+
+widgetArgs <- function(plt){
+  saveWidget(plt, file=paste0("../graphs/",deparse(substitute(plt)),".html"),
+             selfcontained=FALSE, libdir="../graphs/plotlyJS", title=deparse(substitute(plt)))
+}
 
 ICUcolors <- c("ICU" = "#ff8066", "Ventilator" = "#6685ff")
 
+# Read data
+
+gs4_deauth()
 stateData <- read_sheet("https://docs.google.com/spreadsheets/d/1c2QrNMz8pIbYEKzMJL7Uh2dtThOJa2j1sSMwiDo5Gz4/edit#gid=1592746937", sheet = "Trends")
 prevState <- readRDS("data/prevState.rds") 
+
+# Process and create graphs
 
 if(identical(prevState,stateData)){
   stop("Graphs already up to date")
@@ -31,42 +46,31 @@ stateDataCleaned <- stateData%>%
 testData <- stateDataCleaned%>%
   select(date,Positive=posTest,Negative=negTest,Avg7Day_Tests,total=tests)%>%
   pivot_longer(c(Positive,Negative), names_to="Result",values_to="numTests")
-
-admissionsData <- stateDataCleaned%>%
-  select(date,admissions,discharges)%>%
-  mutate(negDis = -1 * discharges,
-         net = admissions-discharges)
          
-updated <- tail(stateDataCleaned$date, 1) # get last row of data frame for most recent data
-updated <- format(updated, "%B %d, %Y")
-hospUpdated <- stateDataCleaned$date[nrow(stateDataCleaned) - 1]
-hospUpdated <- format(hospUpdated, "%B %d, %Y") # get second-to-last row as hospitalizations are a day behind
+updated <- format(tail(stateDataCleaned$date, 1), "%B %d, %Y")
+hospUpdated <- format(stateDataCleaned$date[nrow(stateDataCleaned) - 1], "%B %d, %Y")
 
-caseGraph <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", date,
-                                                     "<br>Cases: ", cases,
-                                                     "<br>7-Day Average: ", Avg7Day_Cases)))+
+cases <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", date,
+                                                                      "<br>Cases: ", cases,
+                                                                      "<br>7-Day Average: ", Avg7Day_Cases)))+
   geom_col(aes(y=cases))+
   geom_line(aes(y=Avg7Day_Cases), color="blue")+
   labs(title = paste("Latest Data:", updated,
                      "\n<sup>New Positive Cases:", formatC((tail(stateDataCleaned$cases, 1)), format = "d", big.mark = ",")),
        x="Date", y = "New Positive Cases")
-caseGraph <- ggplotly(caseGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
-  config(displayModeBar=FALSE)%>%
-  layout(yaxis = list(rangemode="tozero"))
+cases <- ggArgs(cases)
 
-case100kGraph <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date:", date,
+cases100k <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date:", date,
                                                                        "<br>Cases per 100k (Last 7 Days):", Last7Days_100k)))+
-                        geom_line(color="blue")+
+  geom_line(color="blue")+
   geom_segment(x=head(stateDataCleaned$date, 1), y = 100, xend = tail(stateDataCleaned$date, 1), yend=100, color="red")+
   annotate("text", x=stateDataCleaned$date[146],y=115, label = "100 Cases per 100k", color = 'red', size = 5)+
   labs(title = paste("Latest Data:", updated,
                      "\n<sup>Cases per 100,000 (Last 7 Days):",formatC((tail(stateDataCleaned$Last7Days_100k, 1)), format = "d", big.mark = ",")),
        x="Date", y="Cases per 100,000 (Last 7 Days)")
-case100kGraph <- ggplotly(case100kGraph,tooltip="text",dynamicTicks=TRUE,originalData=FALSE)%>%
-  config(displayModeBar=FALSE)%>%
-  layout(yaxis=list(rangemode="tozero"))
+cases100k <- ggArgs(cases100k)
 
-testGraph <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
+tests <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
   geom_col()+
   geom_line(aes(y=Avg7Day_Tests, text=paste("Date: ", date,
                                             "<br>Positive Tests: ", numTests,
@@ -76,11 +80,9 @@ testGraph <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
 labs(title = paste("Latest Data:", updated,
                      "\n<sup>Tests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
        x="Date", y="Tests Performed")
-testGraph <- ggplotly(testGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
-  config(displayModeBar=FALSE)%>%
-  layout(yaxis=list(rangemode="tozero"))
+tests <- ggArgs(tests)
 
-posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
+pos <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                   "<br>Percent Pos.: ", percentPos,
                                                                   "<br>7-Day Average: ", Avg7Day_Pos)))+
   geom_col(aes(y=percentPos))+
@@ -90,11 +92,9 @@ posGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date
   labs(title = paste0("Latest Data: ", updated,
                      " \n<sup>Percent Positive: ", tail(stateDataCleaned$percentPos, 1), "%"),
        x="Date", y="Percent Positive")
-posGraph <- ggplotly(posGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
-  config(displayModeBar=FALSE)%>%
-  layout(yaxis=list(rangemode="tozero"))
+pos <- ggArgs(pos)
 
-admissionGraph <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date: ", date,
+admissions <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date: ", date,
                                                                                    "<br>Admissions: ", admissions,
                                                                                    "<br>7-Day Average: ", Avg7Day_Adm)))+
   geom_col(aes(y=admissions))+
@@ -104,11 +104,9 @@ admissionGraph <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date:
   labs(title=paste("Latest Data:", hospUpdated,
                    "\n<sup>Hospital Admissions:", stateDataCleaned$admissions[nrow(stateDataCleaned) - 1]),
        x="Date", y="Hospital Admissions")
-admissionGraph <- ggplotly(admissionGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
-  config(displayModeBar=FALSE)%>%
-  layout(yaxis=list(rangemode="tozero"))
+admissions <- ggArgs(admissions)
 
-hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
+hosp <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                    "<br>Hospitalized: ", currentHosp,
                                                                    "<br>7-Day Average: ", Avg7Day_Hosp)))+
   geom_col(aes(y=currentHosp))+
@@ -116,11 +114,9 @@ hospGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", dat
   labs(title = paste("Latest Data:", hospUpdated,
                      "\n<sup>Hospitalized:", stateDataCleaned$currentHosp[nrow(stateDataCleaned) - 1]),
        x="Date", y="Hospitalized")
-hospGraph <- ggplotly(hospGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
-  config(displayModeBar=FALSE)%>%
-  layout(yaxis=list(rangemode="tozero"))
+hosp <- ggArgs(hosp)
 
-ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
+ICU <- ggplot(stateDataCleaned,aes(x=date,group=1))+
   geom_col(aes(y=ICU,fill="ICU", text=paste("Date: ", date,
                                             "<br>ICU: ", ICU,
                                             "<br>7-Day Average: ", Avg7Day_ICU)),color='red')+
@@ -138,11 +134,9 @@ ICUGraph <- ggplot(stateDataCleaned,aes(x=date,group=1))+
                      "\n<sup>ICU:", stateDataCleaned$ICU[nrow(stateDataCleaned) - 1],
                      "  |   Ventilator:", stateDataCleaned$vent[nrow(stateDataCleaned) - 1]),
        x="Date", y="ICU/Ventilator")
-ICUGraph <- ggplotly(ICUGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
-  config(displayModeBar=FALSE)%>%
-  layout(yaxis=list(rangemode="tozero"))
+ICU <- ggArgs(ICU)
 
-dailyDeathGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
+deaths <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                           "<br>Deaths Reported: ", dailyDeaths,
                                                                           "<br>7-Day Average: ", Avg7Day_Deaths)))+
   geom_col(aes(y=dailyDeaths))+
@@ -150,18 +144,16 @@ dailyDeathGraph <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: 
   labs(title = paste("Latest Data:", updated,
                      "\n<sup>Deaths Reported:", tail(stateDataCleaned$dailyDeaths, 1)),
        x="Date", y="Deaths Reported")
-dailyDeathGraph <- ggplotly(dailyDeathGraph,tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
-  config(displayModeBar=FALSE)%>%
-  layout(yaxis=list(rangemode="tozero"))
+deaths <- ggArgs(deaths)
 
-htmlwidgets::saveWidget(caseGraph, file="../graphs/cases.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailycases')
-htmlwidgets::saveWidget(case100kGraph, file="../graphs/cases100k.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='cases100k')
-htmlwidgets::saveWidget(testGraph, file="../graphs/tests.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailytests')
-htmlwidgets::saveWidget(posGraph,file="../graphs/pos.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailypos')
-htmlwidgets::saveWidget(admissionGraph,file="../graphs/admissions.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='admissions')
-htmlwidgets::saveWidget(hospGraph,file="../graphs/hosp.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyhosp')
-htmlwidgets::saveWidget(ICUGraph,file="../graphs/ICU.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailyicu')
-htmlwidgets::saveWidget(dailyDeathGraph,file="../graphs/deaths.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='dailydeaths')
+widgetArgs(cases)
+widgetArgs(cases100k)
+widgetArgs(tests)
+widgetArgs(pos)
+widgetArgs(admissions)
+widgetArgs(hosp)
+widgetArgs(ICU)
+widgetArgs(deaths)
 
 saveRDS(stateData, "data/prevState.rds")
 }
