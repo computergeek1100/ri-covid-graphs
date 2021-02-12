@@ -50,7 +50,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
   vaxGraph$x$data[[1]]$name <- "First Dose Only"
   vaxGraph$x$data[[2]]$name <- "Fully Vaccinated"
   
-  vaxGraph # preview graph - comment out if unnecessary
+  # vaxGraph # preview graph - comment out if unnecessary
 
   htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
 }
