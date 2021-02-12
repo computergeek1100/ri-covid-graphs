@@ -4,7 +4,7 @@ library(zoo)
 library(htmlwidgets)
 library(googlesheets4)
 
-# Default functions
+# Custom functions
 
 ggArgs <- function(gg) {
   return(ggplotly(gg, tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
@@ -15,6 +15,11 @@ ggArgs <- function(gg) {
 widgetArgs <- function(plt){
   saveWidget(plt, file=paste0("../graphs/",deparse(substitute(plt)),".html"),
              selfcontained=FALSE, libdir="../graphs/plotlyJS", title=deparse(substitute(plt)))
+}
+
+thresholdText <- function(plt, desc, linePos, textPos){
+  plt+geom_segment(x=head(stateDataCleaned$date, 1), y = linePos, xend = tail(stateDataCleaned$date, 1), yend=linePos, color="red")+
+    annotate("text", x=stateDataCleaned$date[round(nrow(stateDataCleaned)/2, 0)],y=textPos, label=desc, color = 'red', size = 5)
 }
 
 # Read data
@@ -66,12 +71,11 @@ cases <- ggArgs(cases)
 cases100k <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date:", date,
                                                                        "<br>Cases per 100k (Last 7 Days):", Last7Days_100k)))+
   geom_line(color="blue")+
-  geom_segment(x=head(stateDataCleaned$date, 1), y = 100, xend = tail(stateDataCleaned$date, 1), yend=100, color="red")+
-  annotate("text", x=stateDataCleaned$date[146],y=115, label = "100 Cases per 100k", color = 'red', size = 5)+
   labs(title = paste("Latest Data:", updated,
                      "\n<sup>Cases per 100,000 (Last 7 Days):",formatC((tail(stateDataCleaned$Last7Days_100k, 1)), format = "d", big.mark = ",")),
        x="Date", y="Cases per 100,000 (Last 7 Days)")
-cases100k <- ggArgs(cases100k)
+cases100k <- thresholdText(cases100k, "100 Cases per 100k", 100, 115)%>%
+  ggArgs()
 
 tests <- ggplot(testData, aes(date, numTests, fill=result, group=1))+
   geom_col(aes(text=paste0("Date: ", date,
@@ -92,24 +96,22 @@ pos <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                   "<br>7-Day Average: ", Avg7Day_Pos)))+
   geom_col(aes(y=percentPos))+
   geom_line(aes(y=Avg7Day_Pos),color="blue")+
-  geom_segment(x=head(stateDataCleaned$date, 1), y = 5, xend = tail(stateDataCleaned$date, 1), yend=5, color="red")+
-  annotate("text", x=stateDataCleaned$date[146],y=5.5, label = "5% Positive", color = 'red', size = 5)+
   labs(title = paste0("Latest Data: ", updated,
                      " \n<sup>Percent Positive: ", tail(stateDataCleaned$percentPos, 1), "%"),
        x="Date", y="Percent Positive")
-pos <- ggArgs(pos)
+pos <- thresholdText(pos, "5% Positive", 5, 5.5)%>%
+  ggArgs()
 
 admissions <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date: ", date,
                                                                                    "<br>Admissions: ", admissions,
                                                                                    "<br>7-Day Average: ", Avg7Day_Adm)))+
   geom_col(aes(y=admissions))+
   geom_line(aes(y=Avg7Day_Adm),color='blue')+
-  geom_segment(x=head(stateDataCleaned$date, 1), y = 30, xend = (tail(stateDataCleaned$date, 1) - 1), yend=30, color="red")+
-  annotate("text", x=stateDataCleaned$date[146],y=32, label = "30 Admissions per Day (210 per Week)", color = 'red', size = 5)+
   labs(title=paste("Latest Data:", hospUpdated,
                    "\n<sup>Hospital Admissions:", stateDataCleaned$admissions[nrow(stateDataCleaned) - 1]),
        x="Date", y="Hospital Admissions")
-admissions <- ggArgs(admissions)
+admissions <- thresholdText(admissions, "30 Admissions per Day (210 per Week)", 30, 32)%>%
+  ggArgs()
 
 hosp <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                    "<br>Hospitalized: ", currentHosp,

@@ -184,7 +184,7 @@ write.csv(vaxDataReddit, "../graphs/reddit/vaxData_avg.csv")
 ```
 
 
-## DEFAULT FUNCTIONS
+## CUSTOM FUNCTIONS
 ```{r}
 ggArgs <- function(gg) {
   return(ggplotly(gg, tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
@@ -194,6 +194,11 @@ ggArgs <- function(gg) {
 
 widgetArgs <- function(plt){
   saveWidget(plt, file=paste0("../graphs/",deparse(substitute(plt)),".html"), selfcontained=FALSE, libdir="../graphs/plotlyJS", title=deparse(substitute(plt)))
+}
+
+thresholdText <- function(plt, desc, ycor, offset){
+  plt+geom_segment(x=head(stateDataCleaned$date, 1), y = ycor, xend = tail(stateDataCleaned$date, 1), yend=ycor, color="red")+
+    annotate("text", x=stateDataCleaned$date[146],y=offset, label=desc, color = 'red', size = 5)
 }
 ```
 
