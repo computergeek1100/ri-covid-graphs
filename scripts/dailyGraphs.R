@@ -16,8 +16,6 @@ widgetArgs <- function(plt){
              selfcontained=FALSE, libdir="../graphs/plotlyJS", title=deparse(substitute(plt)))
 }
 
-ICUcolors <- c("ICU" = "#ff8066", "Ventilator" = "#6685ff")
-
 # Read data
 
 gs4_deauth()
@@ -46,6 +44,10 @@ stateDataCleaned <- stateData%>%
 testData <- stateDataCleaned%>%
   select(date,posTest,negTest,Avg7Day_Tests,total=tests)%>%
   pivot_longer(c(posTest,negTest), names_to="result",values_to="numTests")
+
+ICUData <- stateDataCleaned%>%
+  select(date, ICU, vent, Avg7Day_ICU, Avg7Day_Vent)%>%
+  pivot_longer(c("ICU", "vent"), names_to="type", values_to="patients")
          
 updated <- format(tail(stateDataCleaned$date, 1), "%B %d, %Y")
 hospUpdated <- format(stateDataCleaned$date[nrow(stateDataCleaned) - 1], "%B %d, %Y")
@@ -118,25 +120,21 @@ hosp <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
        x="Date", y="Hospitalized")
 hosp <- ggArgs(hosp)
 
-ICU <- ggplot(stateDataCleaned,aes(x=date,group=1))+
-  geom_col(aes(y=ICU,fill="ICU", text=paste("Date: ", date,
-                                            "<br>ICU: ", ICU,
-                                            "<br>7-Day Average: ", Avg7Day_ICU)),color='red')+
+ICU <- ggplot(ICUData,aes(date, patients, fill=type, group=1))+
+  geom_col(aes(text=paste0("Date: ", date,
+                           "<br>", c("ICU", "Ventilator"), ": ", patients)), position="dodge")+
   geom_line(aes(y=Avg7Day_ICU, text=paste("Date: ", date,
-                                        "<br>ICU: ", ICU,
-                                        "<br>7-Day Average: ", Avg7Day_ICU)),color='red')+
-  geom_col(aes(y=vent,fill="Ventilator", text=paste("Date: ", date,
-                                                    "<br>Ventilator: ", vent,
-                                                    "<br>7-Day Average: ", Avg7Day_Vent)),color='blue')+
+                                          "<br>7-Day Average (ICU): ", Avg7Day_ICU)), color="blue")+
   geom_line(aes(y=Avg7Day_Vent, text=paste("Date: ", date,
-                                           "<br>Ventilator: ", vent,
-                                           "<br>7-Day Average: ", Avg7Day_Vent)),color='blue')+
-  scale_fill_manual(name="Legend", labels = c("ICU", "Ventilator"),values = ICUcolors)+
+                                           "<br>7-Day Average (Ventilator): ", Avg7Day_Vent)),color='blue')+
+  scale_fill_brewer(name="Legend",palette="Set1")+
   labs(title = paste("Latest Data:", hospUpdated,
                      "\n<sup>ICU:", stateDataCleaned$ICU[nrow(stateDataCleaned) - 1],
                      "  |   Ventilator:", stateDataCleaned$vent[nrow(stateDataCleaned) - 1]),
        x="Date", y="ICU/Ventilator")
 ICU <- ggArgs(ICU)
+ICU$x$data[[1]]$name <- "ICU"
+ICU$x$data[[2]]$name <- "Ventilator"
 
 deaths <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                           "<br>Deaths Reported: ", dailyDeaths,
