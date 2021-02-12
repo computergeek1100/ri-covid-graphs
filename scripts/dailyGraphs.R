@@ -44,8 +44,8 @@ stateDataCleaned <- stateData%>%
          Avg7Day_Deaths = round((rollmean(dailyDeaths,7,na.pad=TRUE,align="right")),0))
 
 testData <- stateDataCleaned%>%
-  select(date,Positive=posTest,Negative=negTest,Avg7Day_Tests,total=tests)%>%
-  pivot_longer(c(Positive,Negative), names_to="Result",values_to="numTests")
+  select(date,posTest,negTest,Avg7Day_Tests,total=tests)%>%
+  pivot_longer(c(posTest,negTest), names_to="result",values_to="numTests")
          
 updated <- format(tail(stateDataCleaned$date, 1), "%B %d, %Y")
 hospUpdated <- format(stateDataCleaned$date[nrow(stateDataCleaned) - 1], "%B %d, %Y")
@@ -70,17 +70,19 @@ cases100k <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, tex
        x="Date", y="Cases per 100,000 (Last 7 Days)")
 cases100k <- ggArgs(cases100k)
 
-tests <- ggplot(testData, aes(date, numTests, fill=Result, group=1))+
-  geom_col()+
-  geom_line(aes(y=Avg7Day_Tests, text=paste("Date: ", date,
-                                            "<br>Positive Tests: ", numTests,
-                                            "<br>Negative Tests: ", total-numTests,
-                                            "<br>Total Tests: ", total,
-                                            "<br>7-Day Average: ", Avg7Day_Tests)),color="blue")+
-labs(title = paste("Latest Data:", updated,
+tests <- ggplot(testData, aes(date, numTests, fill=result, group=1))+
+  geom_col(aes(text=paste0("Date: ", date,
+                           "<br>", c("Positive", "Negative"), ": ", formatC(numTests, format = "d", big.mark = ","),
+                           "<br>Total Tests: ", formatC(total, format = "d", big.mark = ","))))+
+  geom_line(aes(y=Avg7Day_Tests, text=paste0("Date: ", date,
+                                             "<br>7-Day Average: ", formatC(Avg7Day_Tests, format = "d", big.mark = ","))), color="blue")+
+  labs(title = paste("Latest Data:", updated,
                      "\n<sup>Tests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
-       x="Date", y="Tests Performed")
+       x="Date", y="Tests Performed")+
+  scale_fill_brewer(name="Result", palette="Set1")
 tests <- ggArgs(tests)
+tests$x$data[[1]]$name <- "Negative"
+tests$x$data[[2]]$name <- "Positive"
 
 pos <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                   "<br>Percent Pos.: ", percentPos,
