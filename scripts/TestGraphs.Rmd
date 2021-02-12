@@ -9,6 +9,7 @@ output: html_document
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(zoo)
+library(htmlwidgets)
 library(plotly)
 ```
 
@@ -124,7 +125,7 @@ if(all(vectorTest==lastRow)){
 ```
 
 
-## Vaccination Rate Over Time
+## Model Vaccination Rate Over Time
 ```{r}
 vaxData2 <- vaxDataCleaned%>%
   mutate(dose1PriorDay = totalDose1 - lag(totalDose1),
@@ -183,14 +184,41 @@ write.csv(vaxDataReddit, "../graphs/reddit/vaxData_avg.csv")
 ```
 
 
-## DEFAULT FUNCTION TESTING
+## DEFAULT FUNCTIONS
 ```{r}
-ggplotly.default <- function(x,tooltip="text",dynamicTicks=TRUE,originalData=FALSE) {
-  plotly::ggplotly.default(x, tooltip, dynamicTicks, originalData)
+ggArgs <- function(gg) {
+  return(ggplotly(gg, tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+           config(displayModeBar=FALSE)%>%
+           layout(yaxis=list(rangemode="tozero")))
 }
 
 widgetArgs <- function(plt){
   saveWidget(plt, file=paste0("../graphs/",deparse(substitute(plt)),".html"), selfcontained=FALSE, libdir="../graphs/plotlyJS", title=deparse(substitute(plt)))
 }
+```
+
+
+## Rewrite 'daily tests' graph
+```{r}
+testData <- stateDataCleaned%>%
+  select(date,posTest,negTest,Avg7Day_Tests,total=tests)%>%
+  pivot_longer(c(posTest,negTest), names_to="result",values_to="numTests")
+
+tests <- ggplot(testData, aes(date, numTests, fill=result, group=1))+
+  geom_col(aes(text=paste0("Date: ", date,
+                           "<br>", c("Positive", "Negative"), ": ", formatC(numTests, format = "d", big.mark = ","),
+                           "<br>Total Tests: ", formatC(total, format = "d", big.mark = ","))))+
+  geom_line(aes(y=Avg7Day_Tests, text=paste0("Date: ", date,
+                                             "<br>7-Day Average: ", formatC(Avg7Day_Tests, format = "d", big.mark = ","))), color="blue")+
+  labs(title = paste("Latest Data:", updated,
+                     "\n<sup>Tests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
+       x="Date", y="Tests Performed")+
+  scale_fill_brewer(name="Result", palette="Set1")
+tests <- ggArgs(tests)
+
+tests$x$data[[1]]$name <- "Negative"
+tests$x$data[[2]]$name <- "Positive"
+
+tests
 ```
 
