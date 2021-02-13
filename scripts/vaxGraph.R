@@ -2,6 +2,7 @@ library(tidyverse)
 library(plotly)
 library(htmlwidgets)
 library(zoo)
+source("FUNCTIONS.R")
 
 vaxData <- readRDS("data/vaxData.rds")
 
@@ -33,25 +34,19 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
     select(1,4,3)%>%
     pivot_longer(c(2:3), names_to = "dose", values_to = "number")
   vaxData_GRAPH <- vaxData_GRAPH[-c(1:2),]
-  vaxGraph <- ggplot(vaxData_GRAPH, aes(date, number, fill=as.factor(dose), text = paste0("Date: ", date,
-                                                                                          "\n", c("First Dose Only", "Fully Vaccinated"), ": ", formatC(number, format = "d", big.mark = ","))))+
+  
+  vaccinations <- ggplot(vaxData_GRAPH, aes(date, number, fill=as.factor(dose),
+                                            text = paste0("Date: ", date,
+                                                          "\n", c("First Dose Only", "Fully Vaccinated"), ": ", numFormat(number))))+
     geom_col(position=position_stack(reverse=F))+
     labs(title=paste0("Last Updated: ", format(tail(vaxDataCleaned$date, 1), "%b %d, %Y"),
-                      "<sup>\nFirst Dose Only: ", formatC((tail(vaxDataCleaned$dose1Only, 1)), format = "d", big.mark = ","),
-                      "  |  Fully Vaccinated: ", formatC((tail(vaxDataCleaned$totalDose2, 1)), format = "d", big.mark = ","),
-                      "  |  Doses Since Last Update: +", formatC(tail(vaxDataCleaned$totalDosesPriorDay, 1), format = "d", big.mark = ",")),
+                      "<sup>\nFirst Dose Only: ", numFormat(tail(vaxDataCleaned$dose1Only, 1)),
+                      "  |  Fully Vaccinated: ", numFormat(tail(vaxDataCleaned$totalDose2, 1)),
+                      "  |  Doses Since Last Update: +", numFormat(tail(vaxDataCleaned$totalDosesPriorDay, 1))),
          margin = 30, x = "Date", y = "People Vaccinated")+
     scale_fill_brewer(name="Dose", palette="Set1")
-
-  vaxGraph <- ggplotly(vaxGraph, tooltip = "text", dynamicTicks=TRUE, originalData=FALSE)%>%
-    config(displayModeBar=FALSE)%>%
-    layout(yaxis=list(rangemode="tozero"))
+  vaccinations <- ggArgs(vaccinations, "First Dose Only", "Fully Vaccinated")
   
-  vaxGraph$x$data[[1]]$name <- "First Dose Only"
-  vaxGraph$x$data[[2]]$name <- "Fully Vaccinated"
-  
-  # vaxGraph # preview graph - comment out if unnecessary
-
-  htmlwidgets::saveWidget(vaxGraph, file="../graphs/vaccinations.html",selfcontained=FALSE,libdir="../graphs/plotlyJS",title='vaccinations')
+  widgetArgs(vaccinations)
 }
 
