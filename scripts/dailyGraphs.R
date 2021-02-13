@@ -6,10 +6,15 @@ library(googlesheets4)
 
 # Custom functions
 
-ggArgs <- function(gg) {
-  return(ggplotly(gg, tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
-           config(displayModeBar=FALSE)%>%
-           layout(yaxis=list(rangemode="tozero")))
+ggArgs <- function(gg, lab1 = NULL, lab2 = NULL){
+  plt <- ggplotly(gg, tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
+    config(displayModeBar=FALSE)%>%
+    layout(yaxis=list(rangemode="tozero"))
+  if(!is.null(lab1) & !is.null(lab2)){
+    plt$x$data[[1]]$name <- lab1
+    plt$x$data[[2]]$name <- lab2
+  }
+  return(plt)
 }
 
 widgetArgs <- function(plt){
@@ -20,6 +25,10 @@ widgetArgs <- function(plt){
 thresholdText <- function(plt, desc, linePos, textPos){
   plt+geom_segment(x=head(stateDataCleaned$date, 1), y = linePos, xend = tail(stateDataCleaned$date, 1), yend=linePos, color="red")+
     annotate("text", x=stateDataCleaned$date[round(nrow(stateDataCleaned)/2, 0)],y=textPos, label=desc, color = 'red', size = 5)
+}
+
+numFormat <- function(num){
+  return(formatC((num), format = "d", big.mark = ","))
 }
 
 # Read data
@@ -59,37 +68,36 @@ updated <- format(tail(stateDataCleaned$date, 1), "%B %d, %Y")
 hospUpdated <- format(stateDataCleaned$date[nrow(stateDataCleaned) - 1], "%B %d, %Y")
 
 cases <- ggplot(stateDataCleaned, aes(x=date, group=1, text=paste("Date: ", date,
-                                                                      "<br>Cases: ", cases,
-                                                                      "<br>7-Day Average: ", Avg7Day_Cases)))+
+                                                                  "<br>Cases: ", cases,
+                                                                  "<br>7-Day Average: ", Avg7Day_Cases)))+
   geom_col(aes(y=cases))+
   geom_line(aes(y=Avg7Day_Cases), color="blue")+
   labs(title = paste("Latest Data:", updated,
-                     "\n<sup>New Positive Cases:", formatC((tail(stateDataCleaned$cases, 1)), format = "d", big.mark = ",")),
+                     "\n<sup>New Positive Cases:", numFormat(tail(stateDataCleaned$cases, 1))),
        x="Date", y = "New Positive Cases")
 cases <- ggArgs(cases)
 
-cases100k <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1, text=paste("Date:", date,
-                                                                       "<br>Cases per 100k (Last 7 Days):", Last7Days_100k)))+
+cases100k <- ggplot(stateDataCleaned, aes(x=date, y=Last7Days_100k, group=1,
+                                          text=paste("Date:", date,
+                                                     "<br>Cases per 100k (Last 7 Days):", Last7Days_100k)))+
   geom_line(color="blue")+
   labs(title = paste("Latest Data:", updated,
-                     "\n<sup>Cases per 100,000 (Last 7 Days):",formatC((tail(stateDataCleaned$Last7Days_100k, 1)), format = "d", big.mark = ",")),
+                     "\n<sup>Cases per 100,000 (Last 7 Days):", numFormat(tail(stateDataCleaned$Last7Days_100k, 1))),
        x="Date", y="Cases per 100,000 (Last 7 Days)")
 cases100k <- thresholdText(cases100k, "100 Cases per 100k", 100, 115)%>%
   ggArgs()
 
 tests <- ggplot(testData, aes(date, numTests, fill=result, group=1))+
   geom_col(aes(text=paste0("Date: ", date,
-                           "<br>", c("Positive", "Negative"), ": ", formatC(numTests, format = "d", big.mark = ","),
-                           "<br>Total Tests: ", formatC(total, format = "d", big.mark = ","))))+
+                           "<br>", c("Positive", "Negative"), ": ", numFormat(numTests),
+                           "<br>Total: ", numFormat(total))))+
   geom_line(aes(y=Avg7Day_Tests, text=paste0("Date: ", date,
-                                             "<br>7-Day Average: ", formatC(Avg7Day_Tests, format = "d", big.mark = ","))), color="blue")+
+                                             "<br>7-Day Average: ", numFormat(Avg7Day_Tests))), color="blue")+
   labs(title = paste("Latest Data:", updated,
-                     "\n<sup>Tests Performed:",formatC((tail(testData$total, 1)), format = "d", big.mark = ",")),
+                     "\n<sup>Tests Performed:",numFormat(tail(testData$total, 1))),
        x="Date", y="Tests Performed")+
   scale_fill_brewer(name="Result", palette="Set1")
-tests <- ggArgs(tests)
-tests$x$data[[1]]$name <- "Negative"
-tests$x$data[[2]]$name <- "Positive"
+tests <- ggArgs(tests, "Negative", "Positive")
 
 pos <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                   "<br>Percent Pos.: ", percentPos,
@@ -103,8 +111,8 @@ pos <- thresholdText(pos, "5% Positive", 5, 5.5)%>%
   ggArgs()
 
 admissions <- ggplot(stateDataCleaned,aes(x=date, group=1, text=paste("Date: ", date,
-                                                                                   "<br>Admissions: ", admissions,
-                                                                                   "<br>7-Day Average: ", Avg7Day_Adm)))+
+                                                                      "<br>Admissions: ", admissions,
+                                                                      "<br>7-Day Average: ", Avg7Day_Adm)))+
   geom_col(aes(y=admissions))+
   geom_line(aes(y=Avg7Day_Adm),color='blue')+
   labs(title=paste("Latest Data:", hospUpdated,
@@ -135,9 +143,7 @@ ICU <- ggplot(ICUData,aes(date, patients, fill=type, group=1))+
                      "\n<sup>ICU:", stateDataCleaned$ICU[nrow(stateDataCleaned) - 1],
                      "  |   Ventilator:", stateDataCleaned$vent[nrow(stateDataCleaned) - 1]),
        x="Date", y="ICU/Ventilator")
-ICU <- ggArgs(ICU)
-ICU$x$data[[1]]$name <- "ICU"
-ICU$x$data[[2]]$name <- "Ventilator"
+ICU <- ggArgs(ICU, "ICU", "Ventilator")
 
 deaths <- ggplot(stateDataCleaned,aes(date, group=1, text=paste("Date: ", date,
                                                                           "<br>Deaths Reported: ", dailyDeaths,
