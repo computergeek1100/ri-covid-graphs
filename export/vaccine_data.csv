@@ -1,4 +1,4 @@
-"date","totalDose1","totalDose2","dose1Only","totalDoses","totalDosesPriorDay","dist","percent"
+"date","totalDose1","totalDose2","dose1Only","totalDoses","totalDosesPriorDay","distributed","percent"
 2020-12-17,0,0,0,0,NA,NA,NA
 2020-12-18,1226,0,1226,1226,1226,NA,NA
 2020-12-21,4827,0,4827,4827,3601,NA,NA
