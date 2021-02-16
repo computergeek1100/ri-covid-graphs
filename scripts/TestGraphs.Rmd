@@ -265,3 +265,40 @@ widgetArgs(ICU)
 ICU
 ```
 
+
+## Historical vaccination data
+```{r}
+vaxHist <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
+  filter(Location == "RI" | Location == "CT" | Location == "MA")%>%
+  select(date = Date, state = Location, dist = Doses_Distributed, admin = Doses_Administered)%>%
+  filter(date >= "2021-01-04")%>%
+  mutate(pct = (round((admin / dist), 4)) * 100)
+
+vaxHist$date <- as.Date(vaxHist$date)
+```
+
+```{r}
+vaxRI <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
+  filter(Location == "RI")%>%
+  select(date = Date, dist = Doses_Distributed, admin = Doses_Administered)%>%
+  filter(date >= "2020-12-30")%>%
+  mutate(pct = (round((admin / dist), 4)) * 100)
+
+write.csv(vaxRI, "../export/vax-percent-02-14-21.csv", row.names=FALSE)
+```
+
+```{r}
+vaxPct <- ggplot(vaxHist, aes(date, pct, color = state, group=1, text = paste0("Date: ", date,
+                                                                      "\nState: ", state,
+                                                                      "\n% Administered: ", pct)))+
+  geom_line()+
+  labs(title="% Doses Administered in Southern NE", x = "Date", y = "% Doses Administered")
+
+vaxPct <- ggArgs(vaxPct)
+
+vaxPct
+
+saveWidget(vaxPct, file="../export/vax-percent.html", selfcontained = TRUE, title="Vaccine Percentage (New England)")
+```
+
+
