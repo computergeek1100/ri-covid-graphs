@@ -284,7 +284,8 @@ vaxRI <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vacci
   filter(date >= "2020-12-30")%>%
   mutate(pct = (round((admin / dist), 4)) * 100)
 
-write.csv(vaxRI, "../export/vax-percent-02-14-21.csv", row.names=FALSE)
+write.csv(vaxRI, "../export/vax-percent-RI-02-14-21.csv", row.names=FALSE)
+write.csv(vaxHist, "../export/vax-percent-SNE-02-14-21.csv", row.names=FALSE)
 ```
 
 ```{r}
