@@ -309,4 +309,7 @@ vaxRaw <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vacc
   filter(Location == "RI")%>%
   select(date = Date, dose1 = Administered_Dose1, dose2 = Administered_Dose2)
 ```
+```{r}
+write.csv(vaxData_export, "../export/vaccine_data.csv", row.names = FALSE)
+```
 
