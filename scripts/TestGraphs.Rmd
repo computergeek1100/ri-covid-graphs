@@ -293,6 +293,7 @@ vaxPct <- ggplot(vaxHist, aes(date, pct, color = state, group=1, text = paste0("
                                                                       "\nState: ", state,
                                                                       "\n% Administered: ", pct)))+
   geom_line()+
+  geom_line(data=vaxHist[!is.na(vaxHist$pct), ], linetype="dashed")+
   labs(title="% Doses Administered in Southern NE", x = "Date", y = "% Doses Administered")
 
 vaxPct <- ggArgs(vaxPct)
