@@ -268,13 +268,14 @@ ICU
 
 ## Historical vaccination data
 ```{r}
-vaxHist <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
+vaxSNE <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
   filter(Location == "RI" | Location == "CT" | Location == "MA")%>%
   select(date = Date, state = Location, dist = Doses_Distributed, admin = Doses_Administered)%>%
   filter(date >= "2021-01-04")%>%
+  arrange(date)%>%
   mutate(pct = (round((admin / dist), 4)) * 100)
 
-vaxHist$date <- as.Date(vaxHist$date)
+vaxSNE$date <- as.Date(vaxSNE$date)
 ```
 
 ```{r}
@@ -285,15 +286,15 @@ vaxRI <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vacci
   mutate(pct = (round((admin / dist), 4)) * 100)
 
 write.csv(vaxRI, "../export/vax-percent-RI-02-14-21.csv", row.names=FALSE)
-write.csv(vaxHist, "../export/vax-percent-SNE-02-14-21.csv", row.names=FALSE)
+write.csv(vaxSNE, "../export/vax-percent-SNE-02-14-21.csv", row.names=FALSE)
 ```
 
 ```{r}
-vaxPct <- ggplot(vaxHist, aes(date, pct, color = state, group=1, text = paste0("Date: ", date,
+vaxPct <- ggplot(vaxSNE, aes(date, pct, color = state, group=1, text = paste0("Date: ", date,
                                                                       "\nState: ", state,
                                                                       "\n% Administered: ", pct)))+
   geom_line()+
-  geom_line(data=vaxHist[!is.na(vaxHist$pct), ], linetype="dashed")+
+  geom_line(data=vaxSNE[!is.na(vaxSNE$pct), ], linetype="dashed")+
   labs(title="% Doses Administered in Southern NE", x = "Date", y = "% Doses Administered")
 
 vaxPct <- ggArgs(vaxPct)
@@ -303,4 +304,9 @@ vaxPct
 saveWidget(vaxPct, file="../export/vax-percent.html", selfcontained = TRUE, title="Vaccine Percentage (New England)")
 ```
 
+```{r}
+vaxRaw <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
+  filter(Location == "RI")%>%
+  select(date = Date, dose1 = Administered_Dose1, dose2 = Administered_Dose2)
+```
 

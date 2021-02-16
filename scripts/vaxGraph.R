@@ -27,6 +27,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
   vaxDataCleaned$totalDose1 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose1))
   vaxDataCleaned$totalDose2 <- as.numeric(gsub(",","",vaxDataCleaned$totalDose2))
   vaxDataCleaned <- vaxDataCleaned %>%
+    arrange(date)%>%
     mutate(dose1Only = totalDose1 - totalDose2,
            totalDoses = totalDose1+totalDose2,
            totalDosesPriorDay = totalDoses - lag(totalDoses),)
@@ -47,6 +48,7 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
     scale_fill_brewer(name="Dose", palette="Set1")
   vaccinations <- ggArgs(vaccinations, "First Dose Only", "Fully Vaccinated")
   
+  vaccinations
   widgetArgs(vaccinations)
 }
 
