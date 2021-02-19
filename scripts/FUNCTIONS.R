@@ -15,8 +15,8 @@ widgetArgs <- function(plt){
 }
 
 thresholdText <- function(plt, desc, linePos, textPos){
-  plt+geom_segment(x=head(stateDataCleaned$date, 1), y = linePos, xend = tail(stateDataCleaned$date, 1), yend=linePos, color="red")+
-    annotate("text", x=stateDataCleaned$date[round(nrow(stateDataCleaned)/2, 0)],y=textPos, label=desc, color = 'red', size = 5)
+  plt+geom_segment(x=head(state_cleaned$date, 1), y = linePos, xend = tail(state_cleaned$date, 1), yend=linePos, color="red")+
+    annotate("text", x=state_cleaned$date[round(nrow(state_cleaned)/2, 0)],y=textPos, label=desc, color = 'red', size = 5)
 }
 
 numFormat <- function(num){
