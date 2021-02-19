@@ -140,5 +140,6 @@ widgetArgs(ICU)
 widgetArgs(deaths)
 
 saveRDS(data_raw, "data/data_raw.rds")
+saveRDS(data_raw, "data/data_cleaned.rds")
 write.csv(data_cleaned, "../export/data_cleaned.csv")
 }
