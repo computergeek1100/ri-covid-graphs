@@ -313,3 +313,15 @@ vaxRaw <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vacc
 write.csv(vaxData_export, "../export/vaccine_data.csv", row.names = FALSE)
 ```
 
+```{r}
+vax_dist <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
+  filter(Location == "RI")%>%
+  select(date = Date, distributed = Doses_Distributed)
+
+vax_dist$date <- as.Date(vax_dist$date) - 1
+
+vax_dist <- left_join(vaxDataCleaned, vax_dist)%>%
+  select(1, 5, 7)%>%
+  mutate(percent = round(totalDoses / distributed * 100, 2))
+```
+
