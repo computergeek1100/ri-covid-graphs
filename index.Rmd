@@ -92,7 +92,10 @@ deaths
 Vaccine Distribution
 =====================================================================
 
-<center>**Vaccination data is correct _as of_ the date listed. Dates refer to when numbers were updated. Second doses are subtracted from first doses to give an accurate number of total people vaccinated (RIDOH reports doses, not people). Weekend vaccination data from [CDC.gov](http://cdc.gov)**</center>
+
+<center> **RIDOH updates data Monday through Friday in the early afternoon; all weekend data is posted on Mondays.**
+
+**Vaccination data presented with a one-day lag.** </center>
 
 ### People vaccinated {.no-title}
 
