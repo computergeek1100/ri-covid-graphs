@@ -139,7 +139,7 @@ saveRDS(hosp, "../graphs/hosp.rds")
 saveRDS(ICU, "../graphs/ICU.rds")
 saveRDS(deaths, "../graphs/deaths.rds")
 
-rmarkdown::render("../index.Rmd", output_format="html_document")
+rmarkdown::render("../index.Rmd")
 
 saveRDS(state_raw, "data/state_raw.rds")
 saveRDS(state_cleaned, "data/state_cleaned.rds")
