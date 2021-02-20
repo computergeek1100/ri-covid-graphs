@@ -270,7 +270,7 @@ ICU
 ```{r}
 vaxNE <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
   filter(Location == "RI" | Location == "CT" | Location == "MA" | Location == "NH" | Location == "VT" | Location == "ME")%>%
-  select(date = Date, state = Location, dist = Doses_Distributed, admin = Doses_Administered)%>%
+  select(date = Date, State = Location, dist = Doses_Distributed, admin = Doses_Administered)%>%
   filter(date >= "2021-01-04")%>%
   arrange(date)%>%
   mutate(pct = (round((admin / dist), 4)) * 100,
@@ -281,7 +281,7 @@ vaxNE <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vacci
 ```{r}
 vaxUSA <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
   select(date = Date, State = Location, dist = Doses_Distributed, admin = Doses_Administered)%>%
-  filter(!state %in% c("AS", "BP2", "DD2", "FM", "GU", "IH2", "LTC", "MH", "MP", "RP", "US", "VA2", "VI"))%>%
+  filter(!State %in% c("AS", "BP2", "DD2", "FM", "GU", "IH2", "LTC", "MH", "MP", "RP", "US", "VA2", "VI"))%>%
   filter(date >= "2021-01-04")%>%
   arrange(date)%>%
   mutate(pct = (round((admin / dist), 4)) * 100,
@@ -290,12 +290,12 @@ vaxUSA <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vacc
 ```
 
 ```{r}
-vaccine_percent_NE <- ggplot(vaxNE, aes(date, pct, color = state, group=1, text = paste0("Date: ", date,
-                                                                      "\nState: ", state,
+vaccine_percent_NE <- ggplot(vaxNE, aes(date, pct, color = State, group=1, text = paste0("Date: ", date,
+                                                                      "\nState: ", State,
                                                                       "\nAdministered: ", pct, "%")))+
   geom_line()+
   geom_line(data=vaxNE[!is.na(vaxNE$pct), ], linetype="dashed")+
-  labs(title="Percent of Doses Administered in New England\n<sup>Data from CDC.gov | Dashed lines represent days with no data reported</sup>",
+  labs(title="Percent of Doses Administered (New England)\n<sup>Data from CDC.gov | Dashed lines represent days with no data reported</sup>",
        x = "Date", y = "% Doses Administered")
 vaccine_percent_NE <- ggArgs(vaccine_percent_NE)
 
@@ -303,8 +303,8 @@ saveRDS(vaccine_percent_NE, "../graphs/vaccine_percent_NE.rds")
 ```
 
 ```{r}
-vaxPct_US <- ggplot(vaxUSA, aes(date, pct, color = state, group=1, text = paste0("Date: ", date,
-                                                                      "\nState: ", state,
+vaxPct_US <- ggplot(vaxUSA, aes(date, pct, color = State, group=1, text = paste0("Date: ", date,
+                                                                      "\nState: ", State,
                                                                       "\nAdministered: ", pct, "%")))+
   geom_line()+
   geom_line(data=vaxUSA[!is.na(vaxUSA$pct), ], linetype="dashed")+
