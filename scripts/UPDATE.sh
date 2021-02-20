@@ -8,10 +8,8 @@ echo > log.txt
 
 git pull ri-covid-graphs gh-pages
 
-Rscript dailyGraphs.R
+Rscript update_graphs.R
 
-Rscript vaxGraph.R
-
-git commit -a -m "Daily graph update"
+git commit -a -m "Daily update"
 
 git push
