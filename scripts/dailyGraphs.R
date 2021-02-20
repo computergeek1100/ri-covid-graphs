@@ -18,7 +18,7 @@ if(identical(state_previous,state_raw)){
   stop("Graphs already up to date")
 }else {
 state_cleaned <- state_raw%>%
-  select(date=1,posTest=2, negTest=5,tests=7,cases=9,admissions=15,discharges=17,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
+  select(date=1,posTest=2, negTest=5,tests=7,cases=9,admissions=15,discharges=17,currentHosp=21,ICU=23,vent=24,dailyDeaths=25, totalDosesPriorDay=29, totalDose1=32, totalDose2=34)%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
          Avg7Day_Cases = movingAvg(cases),
