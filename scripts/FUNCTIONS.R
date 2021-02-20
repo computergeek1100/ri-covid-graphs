@@ -10,11 +10,6 @@ ggArgs <- function(gg, lab1 = NULL, lab2 = NULL){
   return(plt)
 }
 
-widgetArgs <- function(plt){
-  saveWidget(plt, file=paste0("../graphs/",deparse(substitute(plt)),".html"),
-             selfcontained=FALSE, libdir="../graphs/plotlyJS", title=deparse(substitute(plt)))
-}
-
 thresholdText <- function(plt, desc, linePos, textPos){
   plt+geom_segment(x=head(state_cleaned$date, 1), y = linePos, xend = tail(state_cleaned$date, 1), yend=linePos, color="red")+
     annotate("text", x=state_cleaned$date[round(nrow(state_cleaned)/2, 0)],y=textPos, label=desc, color = 'red', size = 5)
