@@ -6,6 +6,7 @@ ggArgs <- function(gg, lab1 = NULL, lab2 = NULL){
     plt$x$data[[1]]$name <- lab1
     plt$x$data[[2]]$name <- lab2
   }
+  plotly_build(plt)
   return(plt)
 }
 

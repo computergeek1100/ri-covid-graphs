@@ -324,4 +324,25 @@ vax_dist <- left_join(vaxDataCleaned, vax_dist)%>%
   select(1, 5, 7)%>%
   mutate(percent = round(totalDoses / distributed * 100, 2))
 ```
+```{r}
+vaxPAD <- vaxDataCleaned%>%
+  select(date, totalDose1)%>%
+  padr::pad()
+
+vaxPAD$totalDose1 <- na.locf(vaxPAD$totalDose1)
+```
+
+```{r}
+vaccinations <- ggplot(vaxData_GRAPH, aes(x=date, y = number))+
+  geom_col(position=position_stack(reverse=F), aes(fill=as.factor(dose), text = paste0("Date: ", date,
+                                                          "\n", c("First Dose Only", "Fully Vaccinated"), ": ", numFormat(number))))+
+  labs(title=paste0("Last Updated: ", format(tail(vaxDataCleaned$date, 1), "%b %d, %Y"),
+                      "<sup>\nFirst Dose Only: ", numFormat(tail(vaxDataCleaned$dose1Only, 1)),
+                      "  |  Fully Vaccinated: ", numFormat(tail(vaxDataCleaned$totalDose2, 1)),
+                      "  |  Doses Since Last Update: +", numFormat(tail(vaxDataCleaned$totalDosesPriorDay, 1))),
+         margin = 30, x = "Date", y = "People Vaccinated")+
+  scale_fill_brewer(name="Dose", palette="Set1")
+
+ggArgs(vaccinations)
+```
 

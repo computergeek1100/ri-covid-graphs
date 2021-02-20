@@ -48,7 +48,6 @@ if(all(vaxVector==as.character(tail(vaxData,1)))){ # Check if data in graph
     scale_fill_brewer(name="Dose", palette="Set1")
   vaccinations <- ggArgs(vaccinations, "First Dose Only", "Fully Vaccinated")
   
-  vaccinations
-  widgetArgs(vaccinations)
+  saveRDS(vaccinations, "../graphs/vaccinations.rds")
 }
 

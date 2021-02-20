@@ -1,0 +1,101 @@
+---
+title: "RI COVID-19 Graphs"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: journal
+    orientation: columns
+    vertical_layout: fill
+    favicon: "favicon.ico"
+---
+
+```{r setup, include=FALSE}
+cases <- readRDS("graphs/cases.rds")
+cases100k <- readRDS("graphs/cases100k.rds")
+tests <- readRDS("graphs/tests.rds")
+pos <- readRDS("graphs/pos.rds")
+admissions <- readRDS("graphs/admissions.rds")
+hosp <- readRDS("graphs/hosp.rds")
+ICU <- readRDS("graphs/ICU.rds")
+deaths <- readRDS("graphs/deaths.rds")
+vaccinations <- readRDS("graphs/vaccinations.rds")
+```
+
+Cases/Testing
+===
+
+<center> **RIDOH updates data Monday through Friday in the early afternoon; all weekend data is posted on Mondays.**
+
+**Case/testing data presented with a one-day lag.** </center>
+
+Column {.tabset}
+---
+
+### Cases
+
+```{r}
+cases
+```
+
+### Cases per 100,000
+
+```{r}
+cases100k
+```
+
+### Tests Performed
+
+```{r}
+tests
+```
+
+### Test Positivity
+
+```{r}
+pos
+```
+
+Hospitalizations/Deaths
+===
+
+<center>**RIDOH updates data Monday through Friday in the early afternoon; all weekend data is posted on Mondays.**
+
+**Hospital data presented with a two-day lag; death data presented with a one-day lag.**</center>
+
+Column {.tabset}
+---
+
+### Hospital Admissions
+
+```{r}
+admissions
+```
+
+### Currently Hospitalized
+
+```{r}
+hosp
+```
+
+### ICU/Ventilator
+
+```{r}
+ICU
+```
+
+### Deaths
+
+```{r}
+deaths
+```
+
+
+Vaccine Distribution
+=====================================================================
+
+<center>**Vaccination data is correct _as of_ the date listed. Dates refer to when numbers were updated. Second doses are subtracted from first doses to give an accurate number of total people vaccinated (RIDOH reports doses, not people). Weekend vaccination data from [CDC.gov](http://cdc.gov)**</center>
+
+### People vaccinated {.no-title}
+
+```{r}
+vaccinations
+```
