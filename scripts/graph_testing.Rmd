@@ -295,7 +295,7 @@ vaccine_percent_NE <- ggplot(vaxNE, aes(date, pct, color = State, group=1, text 
                                                                       "\nAdministered: ", pct, "%")))+
   geom_line()+
   geom_line(data=vaxNE[!is.na(vaxNE$pct), ], linetype="dashed")+
-  labs(title="Percent of Doses Administered (New England)\n<sup>Data from CDC.gov | Dashed lines represent days with no data reported</sup>",
+  labs(title=paste0("Percent of Doses Administered (New England)\n<sup>Data from CDC.gov (", as.character(tail(vaxNE$date, 1), format="%b %d, %Y"), ") | Dashed lines represent days with no data reported</sup>"),
        x = "Date", y = "% Doses Administered")
 vaccine_percent_NE <- ggArgs(vaccine_percent_NE)
 
