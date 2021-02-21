@@ -1,7 +1,6 @@
 library(tidyverse)
 library(plotly)
 library(zoo)
-library(htmlwidgets)
 library(googlesheets4)
 
 source("FUNCTIONS.R")
@@ -167,6 +166,5 @@ saveRDS(vaccinated, "../graphs/vaccinations.rds")
 rmarkdown::render("../index.Rmd")
 
 saveRDS(state_raw, "data/state_raw.rds")
-saveRDS(state_cleaned, "data/state_cleaned.rds")
 write.csv(state_cleaned, "../export/state_cleaned.csv")
 }
