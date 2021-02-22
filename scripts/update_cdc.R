@@ -1,6 +1,8 @@
 library(tidyverse)
 library(plotly)
 
+source("FUNCTIONS.R")
+
 CDC_NE <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
   filter(Location == "RI" | Location == "CT" | Location == "MA" | Location == "NH" | Location == "VT" | Location == "ME")%>%
   select(date = Date, State = Location, dist = Doses_Distributed, admin = Doses_Administered)%>%
