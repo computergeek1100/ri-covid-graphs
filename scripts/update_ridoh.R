@@ -161,7 +161,7 @@ saveRDS(admissions, "../graphs/admissions.rds")
 saveRDS(hosp, "../graphs/hosp.rds")
 saveRDS(ICU, "../graphs/ICU.rds")
 saveRDS(deaths, "../graphs/deaths.rds")
-saveRDS(vaccinated, "../graphs/vaccinations.rds")
+saveRDS(vaccinations, "../graphs/vaccinations.rds")
 
 rmarkdown::render("../index.Rmd")
 

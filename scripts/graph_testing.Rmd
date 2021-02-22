@@ -316,4 +316,29 @@ vaxPct_US <- ggArgs(vaxPct_US)
 vaxPct_US
 ```
 
+```{r}
+data_vaccinated_GRAPH <- data_vaccinated%>%
+  pivot_longer(c(totalDose1, totalDose2), names_to="dose", values_to="number")
+```
+
+```{r}
+vaccinations <- ggplot(data_vaccinated_GRAPH, aes(date, number, fill=as.factor(dose),
+                                          text = paste0("Date: ", date,
+                                                        "\n", c("First Dose Only", "Fully Vaccinated"), ": ", numFormat(number))))+
+  geom_col(position=position_dodge2(0.5*365))+
+  labs(title=paste0("Latest Data: ", format(tail(data_vaccinated$date, 1), "%b %d, %Y"),
+                    "<sup>\nFirst Dose Only: ", numFormat(tail(data_vaccinated$dose1Only, 1)),
+                    "  |  Fully Vaccinated: ", numFormat(tail(data_vaccinated$totalDose2, 1)),
+                    "  |  Doses Since Last Update: +", numFormat(tail(data_vaccinated$totalDosesPriorDay, 1))),
+       margin = 30, x = "Date", y = "People Vaccinated")+
+  scale_fill_brewer(name="Dose", palette="Set1")
+vaccinations <- ggArgs(vaccinations, "First Dose*", "Fully Vaccinated**")%>%
+  layout(barmode="group", annotations = 
+           list(x = 1, y = -0.1, text = "*Two-dose vaccines only\n**Includes single-dose vaccines.", 
+                showarrow = F, xref='paper', yref='paper', 
+                xanchor='right', yanchor='auto', xshift=0, yshift=0,
+                font=list(size=8, color="black")))
+
+vaccinations
+```
 
