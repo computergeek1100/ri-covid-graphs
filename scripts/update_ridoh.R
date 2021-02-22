@@ -151,7 +151,7 @@ vaccinations <- ggplot(data_vaccinated_GRAPH, aes(date, number, fill=as.factor(d
                     "  |  Doses Since Last Update: +", numFormat(tail(data_vaccinated$totalDosesPriorDay, 1))),
        margin = 30, x = "Date", y = "People Vaccinated")+
   scale_fill_brewer(name="Dose", palette="Set1")
-vaccinations <- ggArgs(vaccinated, "First Dose Only", "Fully Vaccinated")
+vaccinations <- ggArgs(vaccinations, "First Dose Only", "Fully Vaccinated")
 
 saveRDS(cases, "../graphs/cases.rds")
 saveRDS(cases100k, "../graphs/cases100k.rds")
