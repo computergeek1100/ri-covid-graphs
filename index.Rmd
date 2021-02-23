@@ -8,7 +8,8 @@ output:
     favicon: "favicon.ico"
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, dev="CairoPNG"}
+knitr::opts_chunk$set(dev="CairoPNG")
 cases <- readRDS("graphs/cases.rds")
 cases100k <- readRDS("graphs/cases100k.rds")
 tests <- readRDS("graphs/tests.rds")
