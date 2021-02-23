@@ -10,6 +10,9 @@ output:
 
 ```{r setup, include=FALSE, dev="CairoPNG"}
 knitr::opts_chunk$set(dev="CairoPNG")
+```
+
+```{r read_data}
 cases <- readRDS("graphs/cases.rds")
 cases100k <- readRDS("graphs/cases100k.rds")
 tests <- readRDS("graphs/tests.rds")
