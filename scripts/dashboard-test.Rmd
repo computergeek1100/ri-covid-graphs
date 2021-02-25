@@ -32,23 +32,24 @@ state_cleaned <- readRDS("data/state_raw.rds")%>%
          totalDosesPriorDay=na_if(totalDosesPriorDay, "--")%>%as.numeric,
          totalDose1=na_if(totalDose1, "--")%>%as.numeric,
          totalDose2=na_if(totalDose2, "--")%>%as.numeric,
-         dose1Only=totalDose1-totalDose2)
+         dose1Only=totalDose1-totalDose2,
+         Avg7Day_totalDosesPriorDay=movingAvg(totalDosesPriorDay))
 ```
 
 
 Column {}
 ---
 
-### Cases (7-Day Average)
+### Daily Cases (7-Day Average)
 
 ```{r}
 valueBox(value = paste0(tail(state_cleaned$Avg7Day_Cases, 1), " (7 Days Ago: ", (state_cleaned$Avg7Day_Cases[nrow(state_cleaned) - 7]), ")"), color=ifelse(tail(state_cleaned$Avg7Day_Cases, 1) < state_cleaned$Avg7Day_Cases[nrow(state_cleaned) - 7], "success", "danger"), icon=ifelse(tail(state_cleaned$Avg7Day_Cases, 1) < state_cleaned$Avg7Day_Cases[nrow(state_cleaned) - 7], "fa-arrow-down", "fa-arrow-up"))
 ```
 
-### Testing
+### Cases per 100,000 (7-Day Sum)
 
 ```{r}
-
+valueBox(value = paste0(tail(state_cleaned$Last7Days_100k, 1), " (7 Days Ago: ", (state_cleaned$Last7Days_100k[nrow(state_cleaned) - 7]), ")"), color=ifelse(tail(state_cleaned$Last7Days_100k, 1) < state_cleaned$Last7Days_100k[nrow(state_cleaned) - 7], "success", "danger"), icon=ifelse(tail(state_cleaned$Last7Days_100k, 1) < state_cleaned$Last7Days_100k[nrow(state_cleaned) - 7], "fa-arrow-down", "fa-arrow-up"))
 ```
 
 Column {}
@@ -61,9 +62,9 @@ Column {}
 ```
 
 
-### Vaccines
+### Vaccines (7-Day Average, Doses Administered)
 
 ```{r}
-
+valueBox(value = paste0(tail(state_cleaned$Avg7Day_totalDosesPriorDay, 1), " (7 Days Ago: ", (state_cleaned$Avg7Day_totalDosesPriorDay[nrow(state_cleaned) - 7]), ")"), color=ifelse(tail(state_cleaned$Avg7Day_totalDosesPriorDay, 1) < state_cleaned$Avg7Day_totalDosesPriorDay[nrow(state_cleaned) - 7], "danger", "success"), icon=ifelse(tail(state_cleaned$Avg7Day_totalDosesPriorDay, 1) < state_cleaned$Avg7Day_totalDosesPriorDay[nrow(state_cleaned) - 7], "fa-arrow-down", "fa-arrow-up"))
 ```
 
