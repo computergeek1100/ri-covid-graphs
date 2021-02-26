@@ -45,3 +45,12 @@ vb_dec <- function(stat_, pct){
            icon=ifelse(tail(stat_, 1) < stat_[nrow(state_cleaned) - 7],
                        "fa-arrow-down", "fa-arrow-up"))
 }
+
+vb_hosp <- function(stat_, pct){
+  valueBox(value = paste0(stat_[nrow(state_cleaned) - 2],
+                          " (", pct[nrow(state_cleaned) - 2], "%)"),
+           color=ifelse(stat_[nrow(state_cleaned) - 2] < stat_[nrow(state_cleaned) - 8],
+                        "success", "danger"),
+           icon=ifelse(stat_[nrow(state_cleaned) - 2] < stat_[nrow(state_cleaned) - 8],
+                       "fa-arrow-down", "fa-arrow-up"))
+}

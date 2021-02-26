@@ -21,15 +21,20 @@ state_cleaned <- readRDS("data/state_raw.rds")%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
          Avg7Day_Cases = movingAvg(cases),
-         percentChange_cases = pctChange(Avg7Day_Cases),
+         percentChange_cases = pctChange(Avg7Day_Cases), # USES ROLLING AVG
          Last7Days_100k = round((rollsumr(cases, 7, fill=NA,align='right')) * (100000/1059361),0),
          percentChange_100k = pctChange(Last7Days_100k),
          Avg7Day_Tests = movingAvg(tests),
          Avg7Day_Pos = movingAvg(percentPos, 1),
+         percentChange_pos = pctChange(Avg7Day_Pos),
          Avg7Day_Adm = movingAvg(admissions),
+         percentChange_adm = pctChange(Avg7Day_Adm),
          Avg7Day_Hosp = movingAvg(currentHosp),
+         percentChange_hosp = pctChange(currentHosp), # USES RAW NUMS
          Avg7Day_ICU = movingAvg(ICU),
+         percentChange_ICU = pctChange(ICU), # USES RAW NUMS
          Avg7Day_Vent = movingAvg(vent),
+         percentChange_vent = pctChange(vent), # USES RAW NUMS
          Avg7Day_Deaths = movingAvg(dailyDeaths),
          totalDosesPriorDay=na_if(totalDosesPriorDay, "--")%>%as.numeric,
          Avg7Day_totalDosesPriorDay=movingAvg(totalDosesPriorDay),
@@ -40,13 +45,13 @@ state_cleaned <- readRDS("data/state_raw.rds")%>%
 Column {}
 ---
 
-### Daily Cases (7-Day Average)
+### Daily Cases (7-Day Average vs Last Week)
 
 ```{r}
 vb_dec(state_cleaned$Avg7Day_Cases, state_cleaned$percentChange_cases)
 ```
 
-### Cases per 100,000 (7-Day Sum)
+### Cases per 100,000 (7-Day Sum vs Last Week)
 
 ```{r}
 vb_dec(state_cleaned$Last7Days_100k, state_cleaned$percentChange_100k)
@@ -55,14 +60,28 @@ vb_dec(state_cleaned$Last7Days_100k, state_cleaned$percentChange_100k)
 Column {}
 ---
 
-### Hospitalizations/Deaths
+### Currently Hospitalized (vs Last Week)
 
 ```{r}
-
+vb_hosp(state_cleaned$currentHosp, state_cleaned$percentChange_hosp)
 ```
 
+### ICU (vs Last Week)
 
-### Vaccines (7-Day Average, Doses Administered)
+```{r}
+vb_hosp(state_cleaned$ICU, state_cleaned$percentChange_ICU)
+```
+
+### Ventilator (vs Last Week)
+
+```{r}
+vb_hosp(state_cleaned$vent, state_cleaned$percentChange_vent)
+```
+
+Column {}
+---
+
+### Vaccines (7-Day Average, Doses Administered vs Last Week)
 
 ```{r}
 vb_inc(state_cleaned$Avg7Day_totalDosesPriorDay, state_cleaned$percentChange_totalDoses)
