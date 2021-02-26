@@ -39,6 +39,11 @@ state_cleaned <- readRDS("data/state_raw.rds")%>%
          totalDosesPriorDay=na_if(totalDosesPriorDay, "--")%>%as.numeric,
          Avg7Day_totalDosesPriorDay=movingAvg(totalDosesPriorDay),
          percentChange_totalDoses = pctChange(Avg7Day_totalDosesPriorDay))
+
+CDC <- readRDS("data/CDC_NE.rds")%>%
+  filter(State == "RI")%>%
+  select(date, pct)%>%
+  mutate(percentChange = pct - lag(pct, 7))
 ```
 
 
@@ -48,13 +53,13 @@ Column {}
 ### Daily Cases (7-Day Average vs Last Week)
 
 ```{r}
-vb_dec(state_cleaned$Avg7Day_Cases, state_cleaned$percentChange_cases)
+vb_dec(state_cleaned$Avg7Day_Cases, state_cleaned$percentChange_cases, state_cleaned)
 ```
 
 ### Cases per 100,000 (7-Day Sum vs Last Week)
 
 ```{r}
-vb_dec(state_cleaned$Last7Days_100k, state_cleaned$percentChange_100k)
+vb_dec(state_cleaned$Last7Days_100k, state_cleaned$percentChange_100k, state_cleaned)
 ```
 
 Column {}
@@ -63,19 +68,19 @@ Column {}
 ### Currently Hospitalized (vs Last Week)
 
 ```{r}
-vb_hosp(state_cleaned$currentHosp, state_cleaned$percentChange_hosp)
+vb_hosp(state_cleaned$currentHosp, state_cleaned$percentChange_hosp, state_cleaned)
 ```
 
 ### ICU (vs Last Week)
 
 ```{r}
-vb_hosp(state_cleaned$ICU, state_cleaned$percentChange_ICU)
+vb_hosp(state_cleaned$ICU, state_cleaned$percentChange_ICU, state_cleaned)
 ```
 
 ### Ventilator (vs Last Week)
 
 ```{r}
-vb_hosp(state_cleaned$vent, state_cleaned$percentChange_vent)
+vb_hosp(state_cleaned$vent, state_cleaned$percentChange_vent, state_cleaned)
 ```
 
 Column {}
@@ -84,6 +89,12 @@ Column {}
 ### Vaccines (7-Day Average, Doses Administered vs Last Week)
 
 ```{r}
-vb_inc(state_cleaned$Avg7Day_totalDosesPriorDay, state_cleaned$percentChange_totalDoses)
+vb_inc(state_cleaned$Avg7Day_totalDosesPriorDay, state_cleaned$percentChange_totalDoses, state_cleaned)
+```
+
+### % Doses Utilized (vs Last Week)
+
+```{r}
+vb_inc(CDC$pct, CDC$percentChange, CDC)
 ```
 

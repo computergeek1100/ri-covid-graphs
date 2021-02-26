@@ -28,29 +28,36 @@ pctChange <- function(data, digits = 2){
    return(round(100 * (data-lag(data, 7)) / lag(data, 7), digits))
 }
 
-vb_inc <- function(stat_, pct){
+vb_inc <- function(stat_, pct, df){
   valueBox(value = paste0(tail(stat_, 1),
-                          " (", (tail(pct, 1)), "%)"),
-           color=ifelse(tail(stat_, 1) < stat_[nrow(state_cleaned) - 7],
+                          " (", ifelse(tail(pct,1) > 0, "+", "-"), (tail(pct, 1)), "%)"),
+           color=ifelse(tail(stat_, 1) < stat_[nrow(df) - 7],
                         "danger", "success"),
-           icon=ifelse(tail(stat_, 1) < stat_[nrow(state_cleaned) - 7],
+           icon=ifelse(tail(stat_, 1) < stat_[nrow(df) - 7],
                        "fa-arrow-down", "fa-arrow-up"))
 }
 
-vb_dec <- function(stat_, pct){
+vb_dec <- function(stat_, pct, df){
   valueBox(value = paste0(tail(stat_, 1),
-                          " (", (tail(pct, 1)), "%)"),
-           color=ifelse(tail(stat_, 1) < stat_[nrow(state_cleaned) - 7],
+                          " (", ifelse(tail(pct,1) > 0, "+", ""), (tail(pct, 1)), "%)"),
+           color=ifelse(tail(stat_, 1) < stat_[nrow(df) - 7],
                         "success", "danger"),
-           icon=ifelse(tail(stat_, 1) < stat_[nrow(state_cleaned) - 7],
+           icon=ifelse(tail(stat_, 1) < stat_[nrow(df) - 7],
                        "fa-arrow-down", "fa-arrow-up"))
 }
 
-vb_hosp <- function(stat_, pct){
-  valueBox(value = paste0(stat_[nrow(state_cleaned) - 2],
-                          " (", pct[nrow(state_cleaned) - 2], "%)"),
-           color=ifelse(stat_[nrow(state_cleaned) - 2] < stat_[nrow(state_cleaned) - 8],
-                        "success", "danger"),
-           icon=ifelse(stat_[nrow(state_cleaned) - 2] < stat_[nrow(state_cleaned) - 8],
-                       "fa-arrow-down", "fa-arrow-up"))
+vb_hosp <- function(stat_, pct, df){ # Hospitalizations require extra day of lag
+  if(pct[nrow(df) - 1] < -5){
+    vb_color = "success"
+    vb_icon = "fa-arrow-down"
+  } else if(dplyr::between(pct[nrow(df) - 1], -5, 5)) {
+    vb_color = "warning"
+    vb_icon = ifelse(pct[nrow(df) - 1] > 0, "fa-arrow-up", "fa-arrow-down")
+  } else if(pct[nrow(df) - 1] > 5){
+    vb_color = "danger"
+    vb_icon = "fa-arrow-up"
+  }
+  valueBox(value = paste0(stat_[nrow(df) - 1],
+                          " (", ifelse(pct[nrow(df) - 1] > 0, "+", ""), pct[nrow(df) - 1], "%)"),
+           color = vb_color, icon = vb_icon)
 }
