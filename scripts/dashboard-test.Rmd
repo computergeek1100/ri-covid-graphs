@@ -21,7 +21,9 @@ state_cleaned <- readRDS("data/state_raw.rds")%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
          Avg7Day_Cases = movingAvg(cases),
+         percentChange_cases = pctChange(Avg7Day_Cases),
          Last7Days_100k = round((rollsumr(cases, 7, fill=NA,align='right')) * (100000/1059361),0),
+         percentChange_100k = pctChange(Last7Days_100k),
          Avg7Day_Tests = movingAvg(tests),
          Avg7Day_Pos = movingAvg(percentPos, 1),
          Avg7Day_Adm = movingAvg(admissions),
@@ -30,10 +32,8 @@ state_cleaned <- readRDS("data/state_raw.rds")%>%
          Avg7Day_Vent = movingAvg(vent),
          Avg7Day_Deaths = movingAvg(dailyDeaths),
          totalDosesPriorDay=na_if(totalDosesPriorDay, "--")%>%as.numeric,
-         totalDose1=na_if(totalDose1, "--")%>%as.numeric,
-         totalDose2=na_if(totalDose2, "--")%>%as.numeric,
-         dose1Only=totalDose1-totalDose2,
-         Avg7Day_totalDosesPriorDay=movingAvg(totalDosesPriorDay))
+         Avg7Day_totalDosesPriorDay=movingAvg(totalDosesPriorDay),
+         percentChange_totalDoses = pctChange(Avg7Day_totalDosesPriorDay))
 ```
 
 
@@ -43,13 +43,13 @@ Column {}
 ### Daily Cases (7-Day Average)
 
 ```{r}
-valueBox(value = paste0(tail(state_cleaned$Avg7Day_Cases, 1), " (7 Days Ago: ", (state_cleaned$Avg7Day_Cases[nrow(state_cleaned) - 7]), ")"), color=ifelse(tail(state_cleaned$Avg7Day_Cases, 1) < state_cleaned$Avg7Day_Cases[nrow(state_cleaned) - 7], "success", "danger"), icon=ifelse(tail(state_cleaned$Avg7Day_Cases, 1) < state_cleaned$Avg7Day_Cases[nrow(state_cleaned) - 7], "fa-arrow-down", "fa-arrow-up"))
+vb_dec(state_cleaned$Avg7Day_Cases, state_cleaned$percentChange_cases)
 ```
 
 ### Cases per 100,000 (7-Day Sum)
 
 ```{r}
-valueBox(value = paste0(tail(state_cleaned$Last7Days_100k, 1), " (7 Days Ago: ", (state_cleaned$Last7Days_100k[nrow(state_cleaned) - 7]), ")"), color=ifelse(tail(state_cleaned$Last7Days_100k, 1) < state_cleaned$Last7Days_100k[nrow(state_cleaned) - 7], "success", "danger"), icon=ifelse(tail(state_cleaned$Last7Days_100k, 1) < state_cleaned$Last7Days_100k[nrow(state_cleaned) - 7], "fa-arrow-down", "fa-arrow-up"))
+vb_dec(state_cleaned$Last7Days_100k, state_cleaned$percentChange_100k)
 ```
 
 Column {}
@@ -65,6 +65,6 @@ Column {}
 ### Vaccines (7-Day Average, Doses Administered)
 
 ```{r}
-valueBox(value = paste0(tail(state_cleaned$Avg7Day_totalDosesPriorDay, 1), " (7 Days Ago: ", (state_cleaned$Avg7Day_totalDosesPriorDay[nrow(state_cleaned) - 7]), ")"), color=ifelse(tail(state_cleaned$Avg7Day_totalDosesPriorDay, 1) < state_cleaned$Avg7Day_totalDosesPriorDay[nrow(state_cleaned) - 7], "danger", "success"), icon=ifelse(tail(state_cleaned$Avg7Day_totalDosesPriorDay, 1) < state_cleaned$Avg7Day_totalDosesPriorDay[nrow(state_cleaned) - 7], "fa-arrow-down", "fa-arrow-up"))
+vb_inc(state_cleaned$Avg7Day_totalDosesPriorDay, state_cleaned$percentChange_totalDoses)
 ```
 

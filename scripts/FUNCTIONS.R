@@ -23,3 +23,25 @@ movingAvg <- function(data, digits = 0) {
   tmp <- rollmean(data,7,na.pad=TRUE, align="right")
   return(round(tmp, digits))
 }
+
+pctChange <- function(data, digits = 2){
+   return(round(100 * (data-lag(data, 7)) / lag(data, 7), digits))
+}
+
+vb_inc <- function(stat_, pct){
+  valueBox(value = paste0(tail(stat_, 1),
+                          " (", (tail(pct, 1)), "%)"),
+           color=ifelse(tail(stat_, 1) < stat_[nrow(state_cleaned) - 7],
+                        "danger", "success"),
+           icon=ifelse(tail(stat_, 1) < stat_[nrow(state_cleaned) - 7],
+                       "fa-arrow-down", "fa-arrow-up"))
+}
+
+vb_dec <- function(stat_, pct){
+  valueBox(value = paste0(tail(stat_, 1),
+                          " (", (tail(pct, 1)), "%)"),
+           color=ifelse(tail(stat_, 1) < stat_[nrow(state_cleaned) - 7],
+                        "success", "danger"),
+           icon=ifelse(tail(stat_, 1) < stat_[nrow(state_cleaned) - 7],
+                       "fa-arrow-down", "fa-arrow-up"))
+}
