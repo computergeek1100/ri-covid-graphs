@@ -155,8 +155,6 @@ vaccinations <- ggArgs(vaccinations, "First Dose*", "Second Dose^")%>%
                 showarrow = F, xref='paper', yref='paper', 
                 font=list(size=11, color="black")))
 
-vaccinations
-
 saveRDS(cases, "../graphs/cases.rds")
 saveRDS(cases100k, "../graphs/cases100k.rds")
 saveRDS(tests, "../graphs/tests.rds")
