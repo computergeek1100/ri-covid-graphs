@@ -22,6 +22,7 @@ hosp <- readRDS("graphs/hosp.rds")
 ICU <- readRDS("graphs/ICU.rds")
 deaths <- readRDS("graphs/deaths.rds")
 vaccinations <- readRDS("graphs/vaccinations.rds")
+vaccinations_daily <- readRDS("graphs/vaccinations_daily.rds")
 vaccine_percent_NE <- readRDS("graphs/vaccine_percent_NE.rds")
 ```
 
@@ -105,12 +106,17 @@ Vaccine Distribution
 Column {.tabset}
 ---
 
-### People Vaccinated (RI)
+### Doses Administered Prior Day
+
+```{r}
+vaccinations_daily
+```
+
+### Total Doses Administered
 
 ```{r}
 vaccinations
 ```
-
 
 ### Percent of Doses Administered (New England)
 

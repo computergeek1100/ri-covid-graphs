@@ -30,8 +30,11 @@ state_cleaned <- state_raw%>%
          Avg7Day_Vent = movingAvg(vent),
          Avg7Day_Deaths = movingAvg(dailyDeaths),
          totalDosesPriorDay=na_if(totalDosesPriorDay, "--")%>%as.numeric,
+         Avg7Day_totalDosesPriorDay = movingAvg(totalDosesPriorDay),
          totalDose1=na_if(totalDose1, "--")%>%as.numeric,
-         totalDose2=na_if(totalDose2, "--")%>%as.numeric)
+         dose1PriorDay=totalDose1-lag(totalDose1),
+         totalDose2=na_if(totalDose2, "--")%>%as.numeric,
+         dose2PriorDay=totalDose2-lag(totalDose2))
 
 data_tests <- state_cleaned%>%
   select(date,posTest,negTest,Avg7Day_Tests,total=tests)%>%
@@ -47,6 +50,13 @@ data_vaccinated <- state_cleaned%>%
 
 data_vaccinated_GRAPH <- data_vaccinated%>%
   pivot_longer(c(totalDose1, totalDose2), names_to="dose", values_to="number")
+
+data_vaccinated_DAILY <- state_cleaned%>%
+  select(date, dose1PriorDay, dose2PriorDay, totalDosesPriorDay, Avg7Day_totalDosesPriorDay)%>%
+  filter(date >= "2020-12-13")
+
+data_vaccinated_DAILY_GRAPH <- data_vaccinated_DAILY%>%
+  pivot_longer(c(dose1PriorDay, dose2PriorDay), names_to="dose", values_to="number")
 
 updated <- format(tail(state_cleaned$date, 1), "%B %d, %Y")
 hospUpdated <- format(state_cleaned$date[nrow(state_cleaned) - 1], "%B %d, %Y")
@@ -151,9 +161,28 @@ vaccinations <- ggplot(data_vaccinated_GRAPH, aes(date, number, fill=as.factor(d
   scale_fill_brewer(name="Dose", palette="Set1")
 vaccinations <- ggArgs(vaccinations, "First Dose*", "Second Dose^")%>%
   layout(barmode="group", annotations = 
-           list(x = 1, y = -0.13, text = "* Two-dose vaccines only\n^ Includes single-dose vaccines", 
+           list(x = 1, y = -0.12, text = "* Two-dose vaccines only\n^ Includes single-dose vaccines", 
                 showarrow = F, xref='paper', yref='paper', 
                 font=list(size=11, color="black")))
+
+vaccinations_daily <- ggplot(data_vaccinated_DAILY_GRAPH, aes(date, number, fill=as.factor(dose), group=1))+
+  geom_col(position=position_stack(reverse=T), aes(text = paste0("Date: ", date,
+                                                                 "\n", c("First Dose*", "Second Dose^"), ": ", numFormat(number))))+
+  geom_line(aes(y=Avg7Day_totalDosesPriorDay, text=paste0("Date: ", date,
+                                                           "<br>7-Day Average: ", numFormat(Avg7Day_totalDosesPriorDay))), color="blue")+
+  labs(title=paste0("Latest Data: ", format(tail(data_vaccinated_DAILY$date, 1), "%b %d, %Y"),
+                    "<sup>\nFirst Dose (Previous Day)*: ", numFormat(tail(data_vaccinated_DAILY$dose1PriorDay, 1)),
+                    "  |  Second Dose (Previous Day)^: ", numFormat(tail(data_vaccinated_DAILY$dose2PriorDay, 1)),
+                    "  |  Since Last Update: +", numFormat(tail(data_vaccinated_DAILY$totalDosesPriorDay, 1))),
+       margin = 30, x = "Date", y = "Doses Administered Prior Day")+
+  scale_fill_brewer(name="Dose", palette="Set1")
+vaccinations_daily <- ggArgs(vaccinations_daily, "First Dose*", "Second Dose^")%>%
+  layout(annotations = 
+           list(x = 1, y = -0.12, text = "* Two-dose vaccines only\n^ Includes single-dose vaccines", 
+                showarrow = F, xref='paper', yref='paper', 
+                font=list(size=11, color="black")))
+
+vaccinations_daily
 
 saveRDS(cases, "../graphs/cases.rds")
 saveRDS(cases100k, "../graphs/cases100k.rds")
@@ -164,6 +193,7 @@ saveRDS(hosp, "../graphs/hosp.rds")
 saveRDS(ICU, "../graphs/ICU.rds")
 saveRDS(deaths, "../graphs/deaths.rds")
 saveRDS(vaccinations, "../graphs/vaccinations.rds")
+saveRDS(vaccinations_daily, "../graphs/vaccinations_daily.rds")
 
 rmarkdown::render("../index.Rmd")
 
