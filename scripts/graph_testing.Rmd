@@ -342,3 +342,16 @@ vaccinations <- ggArgs(vaccinations, "First Dose*", "Fully Vaccinated**")%>%
 vaccinations
 ```
 
+## Testing cumulative sums
+
+```{r}
+state <- state_raw%>%
+  select(date=1, firstDoses=27, secondDoses=28, partial=32, fully=34)%>%
+  mutate(firstDoses=na_if(firstDoses, "--")%>%as.numeric(),
+         secondDoses=na_if(secondDoses, "--")%>%as.numeric(),
+         partial=na_if(partial, "--")%>%as.numeric(),
+         fully=na_if(fully, "--")%>%as.numeric(),
+         cumulativeFirst=cumsum(replace_na(firstDoses, 0)),
+         cumulativeSecond=cumsum(replace_na(secondDoses, 0)))
+```
+
