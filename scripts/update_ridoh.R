@@ -152,7 +152,7 @@ deaths <- ggArgs(deaths)
 vaccinations <- ggplot(data_vaccinated_GRAPH, aes(date, number, fill=as.factor(dose),
                                           text = paste0("Date: ", date,
                                                         "\n", c("First Dose*", "Second Dose^"), ": ", numFormat(number))))+
-  geom_col(position=position_dodge2(reverse=T))+
+  geom_col(position=position_stack(reverse=F))+
   labs(title=paste0("Latest Data: ", format(tail(data_vaccinated$date, 1), "%b %d, %Y"),
                     "<sup>\nFirst Dose*: ", numFormat(tail(data_vaccinated$totalDose1, 1)),
                     "  |  Second Dose^: ", numFormat(tail(data_vaccinated$totalDose2, 1)),
@@ -160,7 +160,7 @@ vaccinations <- ggplot(data_vaccinated_GRAPH, aes(date, number, fill=as.factor(d
        margin = 30, x = "Date", y = "Total Doses Administered")+
   scale_fill_brewer(name="Dose", palette="Set1")
 vaccinations <- ggArgs(vaccinations, "First Dose*", "Second Dose^")%>%
-  layout(barmode="group", annotations = 
+  layout(annotations = 
            list(x = 1, y = -0.12, text = "* Two-dose vaccines only\n^ Includes single-dose vaccines", 
                 showarrow = F, xref='paper', yref='paper', 
                 font=list(size=11, color="black")))
