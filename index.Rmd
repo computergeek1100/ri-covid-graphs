@@ -112,7 +112,7 @@ Column {.tabset}
 vaccinations_daily
 ```
 
-### Doses Administered (Total)
+### People Vaccinated (Total)
 
 ```{r}
 vaccinations
