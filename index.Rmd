@@ -106,13 +106,13 @@ Vaccine Distribution
 Column {.tabset}
 ---
 
-### Doses Administered Prior Day
+### Doses Administered (Daily)
 
 ```{r}
 vaccinations_daily
 ```
 
-### Total Doses Administered
+### Doses Administered (Total)
 
 ```{r}
 vaccinations
