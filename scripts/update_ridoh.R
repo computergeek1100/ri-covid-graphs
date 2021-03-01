@@ -171,10 +171,10 @@ vaccinations_daily <- ggplot(data_vaccinated_DAILY_GRAPH, aes(date, number, fill
   geom_line(aes(y=Avg7Day_totalDosesPriorDay, text=paste0("Date: ", date,
                                                            "<br>7-Day Average: ", numFormat(Avg7Day_totalDosesPriorDay))), color="blue")+
   labs(title=paste0("Latest Data: ", format(tail(data_vaccinated_DAILY$date, 1), "%b %d, %Y"),
-                    "<sup>\nFirst Dose (Previous Day)*: ", numFormat(tail(data_vaccinated_DAILY$dose1PriorDay, 1)),
-                    "  |  Second Dose (Previous Day)^: ", numFormat(tail(data_vaccinated_DAILY$dose2PriorDay, 1)),
+                    "<sup>\nFirst Dose*: ", numFormat(tail(data_vaccinated_DAILY$dose1PriorDay, 1)),
+                    "  |  Second Dose^: ", numFormat(tail(data_vaccinated_DAILY$dose2PriorDay, 1)),
                     "  |  Since Last Update: +", numFormat(tail(data_vaccinated_DAILY$totalDosesPriorDay, 1))),
-       margin = 30, x = "Date", y = "Doses Administered Prior Day")+
+       margin = 30, x = "Date", y = "Doses Administered")+
   scale_fill_brewer(name="Dose", palette="Set1")
 vaccinations_daily <- ggArgs(vaccinations_daily, "First Dose*", "Second Dose^")%>%
   layout(annotations = 
