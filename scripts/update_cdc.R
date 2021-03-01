@@ -1,9 +1,6 @@
 library(tidyverse)
 library(plotly)
 
-source("FUNCTIONS.R")
-
-
 CDC_NE <- read.csv("https://raw.githubusercontent.com/youyanggu/covid19-cdc-vaccination-data/main/aggregated_adjusted.csv")%>%
   filter(Location == "RI" | Location == "CT" | Location == "MA" | Location == "NH" | Location == "VT" | Location == "ME")%>%
   select(date = Date, State = Location, dist = Doses_Distributed, admin = Doses_Administered)%>%
@@ -23,9 +20,14 @@ if(identical(CDC_NE, CDC_NE_prev)){
                                                                                            "\nAdministered: ", pct, "%")))+
     geom_line()+
     geom_line(data=CDC_NE[!is.na(CDC_NE$pct), ], linetype="dashed")+
-    labs(title=paste0("Percent of Doses Administered (New England)\n<sup>Data from CDC.gov (", as.character(tail(CDC_NE$date, 1), format="%b %d, %Y"), ") | Dashed lines represent days with no data reported</sup>"),
+    labs(title=paste0("Percent of Doses Administered (New England)\n<sup>Data from CDC.gov (",
+                      as.character(tail(CDC_NE$date, 1), format="%b %d, %Y"), ") | Dashed lines represent days with no data reported</sup>"),
          x = "Date", y = "% Doses Administered")
-  vaccine_percent_NE <- ggArgs(vaccine_percent_NE)
+  vaccine_percent_NE <- ggplotly(vaccine_percent_NE,
+                                 tooltip="text", 
+                                 dynamicTicks=TRUE,
+                                 originalData=FALSE)%>%
+    config(displayModeBar=FALSE)
 
   vaccine_percent_NE
 
