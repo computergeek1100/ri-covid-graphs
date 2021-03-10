@@ -195,5 +195,5 @@ saveRDS(vaccinations_daily, "../graphs/vaccinations_daily.rds")
 rmarkdown::render("../index.Rmd")
 
 saveRDS(state_raw, "data/state_raw.rds")
-write.csv(state_cleaned, "../export/state_cleaned.csv")
+write.csv(state_cleaned, "../export/state_cleaned.csv", row.names = FALSE)
 }

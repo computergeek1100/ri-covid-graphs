@@ -99,9 +99,9 @@ Vaccine Distribution
 ===
 
 
-<center> **RI administration data from RI Dept of Health. Percentage data from [CDC.gov](https://cdc.gov).**
+<center> **RI administration data from RI Dept of Health. Percentage data from [Our World in Data](https://ourworldindata.org).**
 
-**RI data updated Monday through Friday. CDC data updated daily.** </center>
+**RI data updated Monday through Friday. Our World in Data updated daily.** </center>
 
 Column {.tabset}
 ---
@@ -123,5 +123,3 @@ vaccinations
 ```{r}
 vaccine_percent_NE
 ```
-
->**Source originally used will not be updated past March 7, 2021. Graph will be updated as soon as new source is found.**
