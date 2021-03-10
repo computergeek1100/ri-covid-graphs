@@ -11,6 +11,8 @@ library(tidyverse)
 library(zoo)
 library(htmlwidgets)
 library(plotly)
+
+source("FUNCTIONS.R")
 ```
 
 ## Graph of daily tests, shaded by pos/neg
@@ -355,4 +357,31 @@ state_vax <- state_raw%>%
          cumulativeFirst=cumsum(replace_na(firstDoses, 0)),
          cumulativeSecond=cumsum(replace_na(secondDoses, 0)))
 ```
+
+## OWID Graphs
+
+```{r}
+vaxUSA <- read.csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/us_state_vaccinations.csv")%>%
+  select(date, location, dist=total_distributed, admin=total_vaccinations, pct=share_doses_used)%>%
+  mutate(pct = pct * 100,
+         location= state.abb[match(location,state.name)],
+         date = as.Date(date))%>%
+  filter(!is.na(location))%>%
+  arrange(date)
+```
+
+```{r}
+vaxPct_US <- ggplot(vaxUSA, aes(date, pct, color = location, group=1, text = paste0("Date: ", date,
+                                                                      "\nState: ", location,
+                                                                      "\nAdministered: ", pct, "%")))+
+  geom_line()+
+  geom_line(data=vaxUSA[!is.na(vaxUSA$pct), ], linetype="dashed")+
+  labs(title="Percent of Doses Administered (USA)\n<sup>Data from Our World in Data | Dashed lines represent days with no data reported</sup>",
+       x = "Date", y = "% Doses Administered")
+
+vaxPct_US <- ggArgs(vaxPct_US)
+
+vaxPct_US
+```
+
 
