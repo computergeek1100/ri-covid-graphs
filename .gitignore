@@ -16,5 +16,5 @@ Thumbs.db
 scripts/RI_COVID.Rproj
 scripts/data/tmpVax.csv
 scripts/log_ridoh.txt
-scripts/log_cdc.txt
+scripts/log_owid.txt
 scripts/.RDataTmp
