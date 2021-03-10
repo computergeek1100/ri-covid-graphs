@@ -1,11 +1,10 @@
-ggArgs <- function(gg, lab1 = NULL, lab2 = NULL){
+ggArgs <- function(gg, lab1 = NULL, lab2 = NULL, lab3 = NULL){
   plt <- ggplotly(gg, tooltip="text",dynamicTicks=TRUE, originalData=FALSE)%>%
     config(displayModeBar=FALSE)%>%
     layout(yaxis=list(rangemode="tozero"))
-  if(!is.null(lab1) & !is.null(lab2)){
-    plt$x$data[[1]]$name <- lab1
-    plt$x$data[[2]]$name <- lab2
-  }
+  if(!is.null(lab1)) plt$x$data[[1]]$name <- lab1
+  if(!is.null(lab2)) plt$x$data[[2]]$name <- lab2
+  if(!is.null(lab3)) plt$x$data[[3]]$name <- lab3
   plotly_build(plt)
   return(plt)
 }

@@ -352,10 +352,18 @@ state_vax <- state_raw%>%
   filter(date > "2020-12-13")%>%
   mutate(firstDoses=na_if(firstDoses, "--")%>%as.numeric(),
          secondDoses=na_if(secondDoses, "--")%>%as.numeric(),
+         totalPriorDay = firstDoses + secondDoses,
          partial=na_if(partial, "--")%>%as.numeric(),
          fully=na_if(fully, "--")%>%as.numeric(),
          cumulativeFirst=cumsum(replace_na(firstDoses, 0)),
-         cumulativeSecond=cumsum(replace_na(secondDoses, 0)))
+         cumulativeSecond=cumsum(replace_na(secondDoses,0)), 
+         firstOnly =  partial - fully,
+         cumulativeJohnson = fully - cumulativeSecond,
+         johnsonLag = cumulativeJohnson - lag(cumulativeJohnson))
+
+state_vax_graph <- state_vax%>%
+  select(date, firstOnly, cumulativeSecond, cumulativeJohnson)%>%
+  pivot_longer(c(firstOnly, cumulativeSecond, cumulativeJohnson), names_to = 'vaccine', values_to = 'doses')
 ```
 
 ## OWID Graphs
@@ -384,4 +392,48 @@ vaxPct_US <- ggArgs(vaxPct_US)
 vaxPct_US
 ```
 
+## New vaccine graph
+```{r}
+vaxGRAPHTEST <- ggplot(state_vax_graph, aes(date, doses, fill=factor(vaccine, levels = c("firstOnly", "cumulativeJohnson", "cumulativeSecond")), text = paste0("Date: ", date,
+                                                                                     "\n", c("First Dose Only: ", "Two Doses: ", "Johnson & Johnson: "), numFormat(doses))))+
+  geom_col(position = position_stack(reverse=F))+
+  labs(title=paste0("Latest Data: ", format(tail(state_vax$date, 1), "%b %d, %Y"),
+                    "<sup>\nTotal Doses Prior Day: +", numFormat(tail(state_vax$totalPriorDay, 1))),
+       margin = 30, x = "Date", y = "Doses Administered")+
+  scale_fill_brewer(name="Dose", palette="Set1")
+
+ggArgs(vaxGRAPHTEST, "First Dose Only", "Johnson & Johnson", "Two Doses")
+```
+
+## New DAILY graph
+
+```{r}
+state_vax_daily <- state_vax%>%
+  select(date, firstDoses, secondDoses, johnsonLag)%>%
+  mutate(firstOfTwo = firstDoses-johnsonLag,
+         totalPriorDay = firstDoses + secondDoses,
+         avg7day = round(rollmean(totalPriorDay, 7, na.pad = TRUE, align='right'), 0),
+         totalCheck = firstOfTwo + johnsonLag + secondDoses)%>%
+  select(date, totalPriorDay, avg7day, firstOfTwo, johnsonLag, secondDoses)
+state_vax_daily_graph <- state_vax_daily%>%
+  pivot_longer(c(firstOfTwo, johnsonLag, secondDoses), names_to = 'vaccine', values_to="doses")
+```
+
+```{r}
+dailyVax_TEST <- ggplot(
+  state_vax_daily_graph, aes(date, doses, fill=factor(vaccine, levels = c("firstOfTwo", "johnsonLag", "secondDoses")), group = 1))+
+  geom_col(position = position_stack(reverse=F), aes(text = paste0("Date: ", date,
+                                    "\n", c("First Doses: ", "Johnson and Johnson: ", "Second Doses: "),
+                                    numFormat(doses))))+
+  geom_line(aes(y = avg7day, text = paste0("Date: ", date, 
+                                           "\n7-Day Average: ", numFormat(avg7day))), color = 'blue')+
+  labs(title=paste0("Latest Data: ", format(tail(state_vax$date, 1), "%b %d, %Y"),
+                    "<sup>\nDoses Administered: ", numFormat(tail(state_vax_daily$totalPriorDay, 1))),
+       margin = 30, x = "Date", y = "Doses Administered")+
+  scale_fill_brewer(name="Dose", palette="Set1")
+
+dailyVax_TEST <- ggArgs(dailyVax_TEST, "First Doses", "Johnson & Johnson", "Second Doses")
+
+dailyVax_TEST
+```
 
