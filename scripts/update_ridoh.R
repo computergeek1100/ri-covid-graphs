@@ -17,7 +17,8 @@ if(identical(state_previous,state_raw)){
   stop("Graphs already up to date")
 }else {
 state_cleaned <- state_raw%>%
-  select(date=1,posTest=2, negTest=5,tests=7,cases=9,admissions=15,discharges=17,currentHosp=21,ICU=23,vent=24,dailyDeaths=25)%>%
+  select(date=1,posTest=2, negTest=5,tests=7,cases=9,admissions=15,currentHosp=21,ICU=23,vent=24,dailyDeaths=25,
+         firstDoses_priorDay = 27, secondDoses_priorDay = 28, partial = 32, fully = 34)%>%
   filter(row_number() >= 11)%>%
   mutate(percentPos = round((cases/tests * 100),1),
          Avg7Day_Cases = movingAvg(cases),
@@ -28,7 +29,22 @@ state_cleaned <- state_raw%>%
          Avg7Day_Hosp = movingAvg(currentHosp),
          Avg7Day_ICU = movingAvg(ICU),
          Avg7Day_Vent = movingAvg(vent),
-         Avg7Day_Deaths = movingAvg(dailyDeaths))
+         Avg7Day_Deaths = movingAvg(dailyDeaths),
+         partial=na_if(partial, "--")%>%as.numeric(),
+         fully=na_if(fully, "--")%>%as.numeric(),
+         firstPriorDay=na_if(firstDoses_priorDay, "--")%>%as.numeric(),
+         cumulativeFirst=cumsum(replace_na(firstPriorDay, 0)),
+         secondPriorDay=na_if(secondDoses_priorDay, "--")%>%as.numeric(),
+         cumulativeSecond=cumsum(replace_na(secondPriorDay,0)),
+         cumulativeJohnson = fully - cumulativeSecond,
+         johnsonPriorDay = cumulativeJohnson - lag(cumulativeJohnson),
+         firstOfTwoPriorDay = firstPriorDay - johnsonPriorDay,
+         totalDoses_PriorDay = firstPriorDay + secondPriorDay,
+         cumulativeFirstOnly = partial - fully,
+         Avg7Day_totalDoses = round(rollmean(totalDoses_PriorDay, 7, na.pad = TRUE, align='right'), 0))%>%
+  select(!c(partial, fully, firstDoses_priorDay, secondDoses_priorDay))
+
+state_cleaned <- state_cleaned[, c(1, 5, 12, 13, 4, 14, 2:3, 11, 15, 6, 16, 7, 17, 8, 18, 9 ,19, 10, 20, 27, 26, 23, 28, 30, 29, 24, 25)]
 
 data_tests <- state_cleaned%>%
   select(date,posTest,negTest,Avg7Day_Tests,total=tests)%>%
@@ -38,34 +54,15 @@ data_ICU <- state_cleaned%>%
   select(date, ICU, vent, Avg7Day_ICU, Avg7Day_Vent)%>%
   pivot_longer(c("ICU", "vent"), names_to="type", values_to="patients")
 
-state_vax <- state_raw%>%
-  select(date=1, firstDoses=27, secondDoses=28, partial=32, fully=34)%>%
+data_vax <- state_cleaned%>%
+  select(date, cumulativeFirstOnly, cumulativeSecond, cumulativeJohnson)%>%
   filter(date > "2020-12-13")%>%
-  mutate(firstDoses=na_if(firstDoses, "--")%>%as.numeric(),
-         secondDoses=na_if(secondDoses, "--")%>%as.numeric(),
-         totalPriorDay = firstDoses + secondDoses,
-         partial=na_if(partial, "--")%>%as.numeric(),
-         fully=na_if(fully, "--")%>%as.numeric(),
-         cumulativeFirst=cumsum(replace_na(firstDoses, 0)),
-         cumulativeSecond=cumsum(replace_na(secondDoses,0)), 
-         firstOnly =  partial - fully,
-         cumulativeJohnson = fully - cumulativeSecond,
-         johnsonLag = cumulativeJohnson - lag(cumulativeJohnson))
+  pivot_longer(c(cumulativeFirstOnly, cumulativeSecond, cumulativeJohnson), names_to = 'vaccine', values_to = 'doses')
 
-state_vax_graph <- state_vax%>%
-  select(date, firstOnly, cumulativeSecond, cumulativeJohnson)%>%
-  pivot_longer(c(firstOnly, cumulativeSecond, cumulativeJohnson), names_to = 'vaccine', values_to = 'doses')
-
-state_vax_daily <- state_vax%>%
-  select(date, firstDoses, secondDoses, johnsonLag)%>%
-  mutate(firstOfTwo = firstDoses-johnsonLag,
-         totalPriorDay = firstDoses + secondDoses,
-         avg7day = round(rollmean(totalPriorDay, 7, na.pad = TRUE, align='right'), 0),
-         totalCheck = firstOfTwo + johnsonLag + secondDoses)%>%
-  select(date, totalPriorDay, avg7day, firstOfTwo, johnsonLag, secondDoses)
-
-state_vax_daily_graph <- state_vax_daily%>%
-  pivot_longer(c(firstOfTwo, johnsonLag, secondDoses), names_to = 'vaccine', values_to="doses")
+data_vax_daily <- state_cleaned%>%
+  select(date, firstOfTwoPriorDay, secondPriorDay, johnsonPriorDay, Avg7Day_totalDoses)%>%
+  filter(date > "2020-12-13")%>%
+  pivot_longer(c(firstOfTwoPriorDay, johnsonPriorDay, secondPriorDay), names_to = 'vaccine', values_to="doses")
 
 updated <- format(tail(state_cleaned$date, 1), "%B %d, %Y")
 hospUpdated <- format(state_cleaned$date[nrow(state_cleaned) - 1], "%B %d, %Y")
@@ -159,31 +156,29 @@ deaths <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", date,
 deaths <- ggArgs(deaths)
 
 vaccinations <- ggplot(
-  state_vax_graph,aes(date, doses,
+  data_vax,aes(date, doses,
                       fill=factor(vaccine,
-                                  levels = c("firstOnly", "cumulativeJohnson", "cumulativeSecond")),
+                                  levels = c("cumulativeFirstOnly", "cumulativeJohnson", "cumulativeSecond")),
                       text = paste0("Date: ", date,
                                     "\n", c("First Dose Only: ", "Two Doses: ", "Johnson & Johnson: "),
                                     numFormat(doses))))+
   geom_col(position = position_stack(reverse=F))+
-  labs(title=paste0("Latest Data: ", format(tail(state_vax$date, 1), "%b %d, %Y"),
-                    "<sup>\nDoses Administered: ", numFormat(tail(state_vax$totalPriorDay, 1))),
+  labs(title=paste0("Latest Data: ", format(tail(state_cleaned$date, 1), "%b %d, %Y"),
+                    "<sup>\nDoses Administered: ", numFormat(tail(state_cleaned$totalDoses_PriorDay, 1))),
        margin = 30, x = "Date", y = "People Vaccinated")+
   scale_fill_brewer(name="Dose", palette="Set1")
 
 vaccinations <- ggArgs(vaccinations, "First Dose Only", "Johnson & Johnson", "Two Doses")
 
-vaccinations
-
 vaccinations_daily <- ggplot(
-  state_vax_daily_graph, aes(date, doses, fill=factor(vaccine, levels = c("firstOfTwo", "johnsonLag", "secondDoses")), group = 1))+
+  data_vax_daily, aes(date, doses, fill=factor(vaccine, levels = c("firstOfTwoPriorDay", "johnsonPriorDay", "secondPriorDay")), group = 1))+
   geom_col(position = position_stack(reverse=F), aes(text = paste0("Date: ", date,
                                                                    "\n", c("First Doses: ", "Johnson & Johnson: ", "Second Doses: "),
                                                                    numFormat(doses))))+
-  geom_line(aes(y = avg7day, text = paste0("Date: ", date, 
-                                           "\n7-Day Average: ", numFormat(avg7day))), color = 'blue')+
-  labs(title=paste0("Latest Data: ", format(tail(state_vax$date, 1), "%b %d, %Y"),
-                    "<sup>\nDoses Administered: ", numFormat(tail(state_vax_daily$totalPriorDay, 1))),
+  geom_line(aes(y = Avg7Day_totalDoses, text = paste0("Date: ", date, 
+                                           "\n7-Day Average: ", numFormat(Avg7Day_totalDoses))), color = 'blue')+
+  labs(title=paste0("Latest Data: ", format(tail(state_cleaned$date, 1), "%b %d, %Y"),
+                    "<sup>\nDoses Administered: ", numFormat(tail(state_cleaned$totalDoses_PriorDay, 1))),
        margin = 30, x = "Date", y = "Doses Administered")+
   scale_fill_brewer(name="Dose", palette="Set1")
 
@@ -204,5 +199,4 @@ rmarkdown::render("../index.Rmd")
 
 saveRDS(state_raw, "data/state_raw.rds")
 write.csv(state_cleaned, "../export/state_cleaned.csv", row.names = FALSE)
-write.csv(state_vax, "../export/state_vaccinations.csv", row.names = FALSE)
 }
