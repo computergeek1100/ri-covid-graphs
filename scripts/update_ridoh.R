@@ -178,7 +178,7 @@ vaccinations
 vaccinations_daily <- ggplot(
   state_vax_daily_graph, aes(date, doses, fill=factor(vaccine, levels = c("firstOfTwo", "johnsonLag", "secondDoses")), group = 1))+
   geom_col(position = position_stack(reverse=F), aes(text = paste0("Date: ", date,
-                                                                   "\n", c("First Doses: ", "Johnson and Johnson: ", "Second Doses: "),
+                                                                   "\n", c("First Doses: ", "Johnson & Johnson: ", "Second Doses: "),
                                                                    numFormat(doses))))+
   geom_line(aes(y = avg7day, text = paste0("Date: ", date, 
                                            "\n7-Day Average: ", numFormat(avg7day))), color = 'blue')+
