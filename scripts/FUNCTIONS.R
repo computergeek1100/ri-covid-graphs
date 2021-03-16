@@ -18,6 +18,10 @@ numFormat <- function(num){
   return(formatC((num), format = "d", big.mark = ","))
 }
 
+dateFormat <- function(date){
+  return(format(date, "%b %d, %Y"))
+}
+
 movingAvg <- function(data, digits = 0) {
   tmp <- rollmean(data,7,na.pad=TRUE, align="right")
   return(round(tmp, digits))

@@ -57,19 +57,19 @@ data_ICU <- state_cleaned%>%
 data_vax <- state_cleaned%>%
   select(date, cumulativeFirstOnly, cumulativeSecond, cumulativeJohnson)%>%
   filter(date > "2020-12-13")%>%
-  pivot_longer(c(cumulativeFirstOnly, cumulativeSecond, cumulativeJohnson), names_to = 'vaccine', values_to = 'doses')
+  pivot_longer(c(cumulativeFirstOnly, cumulativeJohnson, cumulativeSecond), names_to = 'vaccine', values_to = 'doses')
 
 data_vax_daily <- state_cleaned%>%
   select(date, firstOfTwoPriorDay, secondPriorDay, johnsonPriorDay, Avg7Day_totalDoses)%>%
   filter(date > "2020-12-13")%>%
-  pivot_longer(c(firstOfTwoPriorDay, johnsonPriorDay, secondPriorDay), names_to = 'vaccine', values_to="doses")
+  pivot_longer(c(firstOfTwoPriorDay, secondPriorDay, johnsonPriorDay), names_to = 'vaccine', values_to="doses")
 
 updated <- format(tail(state_cleaned$date, 1), "%B %d, %Y")
 hospUpdated <- format(state_cleaned$date[nrow(state_cleaned) - 1], "%B %d, %Y")
 
-cases <- ggplot(state_cleaned, aes(x=date, group=1, text=paste("Date: ", date,
-                                                                  "<br>Cases: ", cases,
-                                                                  "<br>7-Day Average: ", Avg7Day_Cases)))+
+cases <- ggplot(state_cleaned, aes(x=date, group=1, text=paste("Date: ", dateFormat(date),
+                                                               "<br>Cases: ", cases,
+                                                               "<br>7-Day Average: ", Avg7Day_Cases)))+
   geom_col(aes(y=cases))+
   geom_line(aes(y=Avg7Day_Cases), color="blue")+
   labs(title = paste("Latest Data:", updated,
@@ -78,7 +78,7 @@ cases <- ggplot(state_cleaned, aes(x=date, group=1, text=paste("Date: ", date,
 cases <- ggArgs(cases)
 
 cases100k <- ggplot(state_cleaned, aes(x=date, y=Last7Days_100k, group=1,
-                                          text=paste("Date:", date,
+                                          text=paste("Date:", dateFormat(date),
                                                      "<br>Cases per 100k (Last 7 Days):", Last7Days_100k)))+
   geom_line(color="blue")+
   labs(title = paste("Latest Data:", updated,
@@ -88,10 +88,10 @@ cases100k <- thresholdText(cases100k, "100 Cases per 100k", 100, 115)%>%
   ggArgs()
 
 tests <- ggplot(data_tests, aes(date, numTests, fill=result, group=1))+
-  geom_col(aes(text=paste0("Date: ", date,
+  geom_col(aes(text=paste0("Date: ", dateFormat(date),
                            "<br>", c("Positive", "Negative"), ": ", numFormat(numTests),
                            "<br>Total: ", numFormat(total))))+
-  geom_line(aes(y=Avg7Day_Tests, text=paste0("Date: ", date,
+  geom_line(aes(y=Avg7Day_Tests, text=paste0("Date: ", dateFormat(date),
                                              "<br>7-Day Average: ", numFormat(Avg7Day_Tests))), color="blue")+
   labs(title = paste("Latest Data:", updated,
                      "\n<sup>Tests Performed:",numFormat(tail(data_tests$total, 1))),
@@ -99,9 +99,9 @@ tests <- ggplot(data_tests, aes(date, numTests, fill=result, group=1))+
   scale_fill_brewer(name="Result", palette="Set1")
 tests <- ggArgs(tests, "Negative", "Positive")
 
-pos <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", date,
-                                                                  "<br>Percent Pos.: ", percentPos,
-                                                                  "<br>7-Day Average: ", Avg7Day_Pos)))+
+pos <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", dateFormat(date),
+                                                          "<br>Percent Pos.: ", percentPos,
+                                                          "<br>7-Day Average: ", Avg7Day_Pos)))+
   geom_col(aes(y=percentPos))+
   geom_line(aes(y=Avg7Day_Pos),color="blue")+
   labs(title = paste0("Latest Data: ", updated,
@@ -110,9 +110,9 @@ pos <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", date,
 pos <- thresholdText(pos, "5% Positive", 5, 5.5)%>%
   ggArgs()
 
-admissions <- ggplot(state_cleaned,aes(x=date, group=1, text=paste("Date: ", date,
-                                                                      "<br>Admissions: ", admissions,
-                                                                      "<br>7-Day Average: ", Avg7Day_Adm)))+
+admissions <- ggplot(state_cleaned,aes(x=date, group=1, text=paste("Date: ", dateFormat(date),
+                                                                   "<br>Admissions: ", admissions,
+                                                                   "<br>7-Day Average: ", Avg7Day_Adm)))+
   geom_col(aes(y=admissions))+
   geom_line(aes(y=Avg7Day_Adm),color='blue')+
   labs(title=paste("Latest Data:", hospUpdated,
@@ -121,9 +121,9 @@ admissions <- ggplot(state_cleaned,aes(x=date, group=1, text=paste("Date: ", dat
 admissions <- thresholdText(admissions, "30 Admissions per Day (210 per Week)", 30, 32)%>%
   ggArgs()
 
-hosp <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", date,
-                                                                   "<br>Hospitalized: ", currentHosp,
-                                                                   "<br>7-Day Average: ", Avg7Day_Hosp)))+
+hosp <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", dateFormat(date),
+                                                           "<br>Hospitalized: ", currentHosp,
+                                                           "<br>7-Day Average: ", Avg7Day_Hosp)))+
   geom_col(aes(y=currentHosp))+
   geom_line(aes(y=Avg7Day_Hosp),color='blue')+
   labs(title = paste("Latest Data:", hospUpdated,
@@ -132,11 +132,11 @@ hosp <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", date,
 hosp <- ggArgs(hosp)
 
 ICU <- ggplot(data_ICU,aes(date, patients, fill=type, group=1))+
-  geom_col(aes(text=paste0("Date: ", date,
+  geom_col(aes(text=paste0("Date: ", dateFormat(date),
                            "<br>", c("ICU", "Ventilator"), ": ", patients)), position="dodge")+
-  geom_line(aes(y=Avg7Day_ICU, text=paste("Date: ", date,
+  geom_line(aes(y=Avg7Day_ICU, text=paste("Date: ", dateFormat(date),
                                           "<br>7-Day Average (ICU): ", Avg7Day_ICU)), color="blue")+
-  geom_line(aes(y=Avg7Day_Vent, text=paste("Date: ", date,
+  geom_line(aes(y=Avg7Day_Vent, text=paste("Date: ", dateFormat(date),
                                            "<br>7-Day Average (Ventilator): ", Avg7Day_Vent)),color='blue')+
   scale_fill_brewer(name="Legend",palette="Set1")+
   labs(title = paste("Latest Data:", hospUpdated,
@@ -145,9 +145,9 @@ ICU <- ggplot(data_ICU,aes(date, patients, fill=type, group=1))+
        x="Date", y="ICU/Ventilator")
 ICU <- ggArgs(ICU, "ICU", "Ventilator")
 
-deaths <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", date,
-                                                                          "<br>Deaths Reported: ", dailyDeaths,
-                                                                          "<br>7-Day Average: ", Avg7Day_Deaths)))+
+deaths <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", dateFormat(date),
+                                                             "<br>Deaths Reported: ", dailyDeaths,
+                                                             "<br>7-Day Average: ", Avg7Day_Deaths)))+
   geom_col(aes(y=dailyDeaths))+
   geom_line(aes(y=Avg7Day_Deaths),color="blue")+
   labs(title = paste("Latest Data:", updated,
@@ -156,33 +156,29 @@ deaths <- ggplot(state_cleaned,aes(date, group=1, text=paste("Date: ", date,
 deaths <- ggArgs(deaths)
 
 vaccinations <- ggplot(
-  data_vax,aes(date, doses,
-                      fill=factor(vaccine,
-                                  levels = c("cumulativeFirstOnly", "cumulativeJohnson", "cumulativeSecond")),
-                      text = paste0("Date: ", date,
-                                    "\n", c("First Dose Only: ", "Two Doses: ", "Johnson & Johnson: "),
-                                    numFormat(doses))))+
+  data_vax,aes(date, doses, fill=factor(vaccine, levels = c("cumulativeFirstOnly", "cumulativeSecond", "cumulativeJohnson")),
+               text = paste0("Date: ", dateFormat(date), "\n", c("First Dose Only: ", "Johnson & Johnson: ", "Two Doses: "), numFormat(doses))))+
   geom_col(position = position_stack(reverse=F))+
   labs(title=paste0("Latest Data: ", format(tail(state_cleaned$date, 1), "%b %d, %Y"),
                     "<sup>\nDoses Administered: ", numFormat(tail(state_cleaned$totalDoses_PriorDay, 1))),
        margin = 30, x = "Date", y = "People Vaccinated")+
   scale_fill_brewer(name="Dose", palette="Set1")
 
-vaccinations <- ggArgs(vaccinations, "First Dose Only", "Johnson & Johnson", "Two Doses")
+vaccinations <- ggArgs(vaccinations, "First Dose Only", "Two Doses", "Johnson & Johnson")
 
 vaccinations_daily <- ggplot(
-  data_vax_daily, aes(date, doses, fill=factor(vaccine, levels = c("firstOfTwoPriorDay", "johnsonPriorDay", "secondPriorDay")), group = 1))+
+  data_vax_daily, aes(date, doses, fill=factor(vaccine, levels = c("firstOfTwoPriorDay", "secondPriorDay", "johnsonPriorDay")), group = 1))+
   geom_col(position = position_stack(reverse=F), aes(text = paste0("Date: ", date,
-                                                                   "\n", c("First Doses: ", "Johnson & Johnson: ", "Second Doses: "),
+                                                                   "\n", c("First Doses: ", "Second Doses: ", "Johnson & Johnson: "),
                                                                    numFormat(doses))))+
-  geom_line(aes(y = Avg7Day_totalDoses, text = paste0("Date: ", date, 
+  geom_line(aes(y = Avg7Day_totalDoses, text = paste0("Date: ", dateFormat(date), 
                                            "\n7-Day Average: ", numFormat(Avg7Day_totalDoses))), color = 'blue')+
   labs(title=paste0("Latest Data: ", format(tail(state_cleaned$date, 1), "%b %d, %Y"),
                     "<sup>\nDoses Administered: ", numFormat(tail(state_cleaned$totalDoses_PriorDay, 1))),
        margin = 30, x = "Date", y = "Doses Administered")+
-  scale_fill_brewer(name="Dose", palette="Set1")
+  scale_fill_brewer(name="Dose",  palette="Set1")
 
-vaccinations_daily <- ggArgs(vaccinations_daily, "First Doses", "Johnson & Johnson", "Second Doses")
+vaccinations_daily <- ggArgs(vaccinations_daily, "First Doses", "Second Doses", "Johnson & Johnson")
 
 saveRDS(cases, "../graphs/cases.rds")
 saveRDS(cases100k, "../graphs/cases100k.rds")
