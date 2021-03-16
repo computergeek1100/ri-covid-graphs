@@ -24,18 +24,15 @@ if(identical(owid_NE, owid_prev)){
     geom_line(data=owid_NE[!is.na(owid_NE$pct), ], linetype="dashed")+
     labs(title=paste0("Percent of Doses Administered (New England)\n<sup>Data from Our World in Data (",
                       as.character(tail(owid_NE$date, 1), format="%b %d, %Y"), ") | Dashed lines represent days with no data reported</sup>"),
-         x = "Date", y = "% Doses Administered")
+         x = "Date", y = "% Doses Administered")+
+    scale_color_brewer(palette = "Set1")
   vaccine_percent_NE <- ggplotly(vaccine_percent_NE,
                                  tooltip="text", 
                                  dynamicTicks=TRUE,
                                  originalData=FALSE)%>%
     config(displayModeBar=FALSE)
 
-  vaccine_percent_NE
-
   saveRDS(vaccine_percent_NE, "../graphs/vaccine_percent_NE.rds")
-
   rmarkdown::render("../index.Rmd")
-
   write.csv(owid_NE, "../export/new_england_vaccination.csv", row.names=FALSE)
 }
